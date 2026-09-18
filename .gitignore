@@ -1,20 +1,13 @@
-# Nothing that grants access to a real system is ever committed.
-# Week 1 Task 3 asks you to review and extend this file -- it ships here so
-# that an accidental `git add .` before you get there cannot put a key or a
-# state file into your history, which the grading pipeline fails on and which
-# deleting in a later commit does not undo.
 *.pem
-*.key
 *.tfstate
 *.tfstate.backup
-*.tfstate.*.backup
 .terraform/
 .env
 credentials
-# NOTE: .terraform.lock.hcl is deliberately NOT ignored. Commit it -- it pins the
-# exact provider versions so your workstation and CI resolve the same ones.
-# Terraform's own `init` output tells you to.
-
-# Ansible / Packer working files
-*.retry
-packer_cache/
+EOF 
+*.pem
+*.tfstate
+*.tfstate.backup
+.terraform/
+.env
+credentials
