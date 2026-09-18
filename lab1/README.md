@@ -3,3 +3,5 @@
 Instructions for this section will be provided in class and on Blackboard when we reach it.
 
 Put your work for Lab 1 in this folder.
+
+I have added 4 scripts in this lab - to create and delete a security group and instances.
