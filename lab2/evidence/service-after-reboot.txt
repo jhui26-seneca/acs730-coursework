@@ -1,0 +1,38 @@
+=== after reboot - captured Sun Sep 27 19:45:05 UTC 2026 - target acs730-lab2-web 44.214.106.200 ===
+--- last boot time: 2026-09-27 19:41:37
+--- acs730-web enabled? enabled
+--- httpd enabled on its own? disabled
+● acs730-web.service - ACS730 Lab 2 web server
+     Loaded: loaded (/etc/systemd/system/acs730-web.service; enabled; preset: disabled)
+     Active: active (exited) since Sun 2026-09-27 19:41:39 UTC; 3min 27s ago
+    Process: 1732 ExecStart=/usr/bin/systemctl start httpd (code=exited, status=0/SUCCESS)
+   Main PID: 1732 (code=exited, status=0/SUCCESS)
+        CPU: 9ms
+
+Sep 27 19:41:38 ip-172-31-1-154.ec2.internal systemd[1]: Starting acs730-web.service - ACS730 Lab 2 web server...
+Sep 27 19:41:39 ip-172-31-1-154.ec2.internal systemd[1]: Finished acs730-web.service - ACS730 Lab 2 web server.
+
+● httpd.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; preset: disabled)
+     Active: active (running) since Sun 2026-09-27 19:41:39 UTC; 3min 27s ago
+       Docs: man:httpd.service(8)
+   Main PID: 1742 (httpd)
+     Status: "Total requests: 0; Idle/Busy workers 100/0;Requests/sec: 0; Bytes served/sec:   0 B/sec"
+      Tasks: 177 (limit: 1059)
+     Memory: 19.0M
+        CPU: 290ms
+     CGroup: /system.slice/httpd.service
+             ├─1742 /usr/sbin/httpd -DFOREGROUND
+             ├─1743 /usr/sbin/httpd -DFOREGROUND
+             ├─1744 /usr/sbin/httpd -DFOREGROUND
+             ├─1749 /usr/sbin/httpd -DFOREGROUND
+             └─1766 /usr/sbin/httpd -DFOREGROUND
+
+Sep 27 19:41:38 ip-172-31-1-154.ec2.internal systemd[1]: Starting httpd.service - The Apache HTTP Server...
+Sep 27 19:41:39 ip-172-31-1-154.ec2.internal systemd[1]: Started httpd.service - The Apache HTTP Server.
+Sep 27 19:41:39 ip-172-31-1-154.ec2.internal httpd[1742]: Server configured, listening on: port 80
+-rw-r--r--. 1 acs730-lab2-user acs730-lab2-user 85 Sep 27 19:21 /var/www/html/index.html
+--- curl localhost:
+<h1>ACS730 Lab 2 - deployed by acs730-lab2-user on ip-172-31-1-154.ec2.internal</h1>
+--- curl from workstation over the internet:
+<h1>ACS730 Lab 2 - deployed by acs730-lab2-user on ip-172-31-1-154.ec2.internal</h1>

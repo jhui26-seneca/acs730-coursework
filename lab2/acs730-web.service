@@ -1,0 +1,12 @@
+[Unit]
+Description=ACS730 Lab 2 web server
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl start httpd
+ExecStop=/usr/bin/systemctl stop httpd
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
