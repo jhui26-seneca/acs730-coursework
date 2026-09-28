@@ -1,0 +1,21 @@
+=== Lab 3 deploy evidence - captured Mon Sep 28 00:50:01 UTC 2026 ===
+Run URL:    https://github.com/jhui26-seneca/acs730-coursework/actions/runs/36363185258
+Title:      Merge pull request #4 from jhui26-seneca/lab3-revision2
+Trigger:    push to main
+Commit:     91ab14839be22e2cecc0f61e3208b460ea02a2cc
+Conclusion: success
+Started:    2026-09-28T00:42:21Z
+--- plan and apply lines from the run log:
+  ~ update in-place
+          ~ "Revision"  = "1" -> "2"
+          ~ "Revision"  = "1" -> "2"
+Plan: 0 to add, 1 to change, 0 to destroy.
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+--- acs730-lab3-sg in AWS (must be exactly one row):
+--------------------------------------------------------
+|                DescribeSecurityGroups                |
++-----------------------+------------------+-----------+
+|          ID           |      Name        | Revision  |
++-----------------------+------------------+-----------+
+|  sg-0b097709c323bb8be |  acs730-lab3-sg  |  2        |
++-----------------------+------------------+-----------+
