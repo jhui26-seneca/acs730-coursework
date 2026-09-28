@@ -1,0 +1,36 @@
+name: Lab 3 CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['lab3/**', '.github/workflows/lab3-ci.yml']
+  pull_request:
+    paths: ['lab3/**', '.github/workflows/lab3-ci.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check script syntax
+        run: |
+          shopt -s nullglob
+          for f in lab3/scripts/*.sh; do
+            echo "bash -n $f"
+            bash -n "$f"
+          done
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "<2.0.0"
+
+      - name: Terraform format and validate (no AWS access)
+        working-directory: lab3
+        run: |
+          terraform fmt -check -diff
+          terraform init -backend=false -input=false
+          terraform validate
