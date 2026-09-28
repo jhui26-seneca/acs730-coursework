@@ -29,7 +29,7 @@ resource "aws_security_group" "lab3" {
     Name      = "acs730-lab3-sg"
     Lab       = "lab3"
     ManagedBy = "terraform"
-    Revision  = "1"
+    Revision  = "2"
   }
 }
 
