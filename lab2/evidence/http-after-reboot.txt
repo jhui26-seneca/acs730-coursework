@@ -1,0 +1,11 @@
+HTTP/1.0 200 OK
+Server: SimpleHTTP/0.6 Python/3.9.25
+Date: Fri, 02 Oct 2026 20:42:10 GMT
+Content-type: text/html
+Content-Length: 225
+Last-Modified: Fri, 02 Oct 2026 20:25:25 GMT
+
+<!doctype html>
+<html><head><title>ACS730 Lab 2</title></head>
+<body><h1>ACS730 Lab 2</h1>
+<p>Deployed by deploy-web.sh on ip-172-31-17-232.ec2.internal, served by acs730-lab2-svc and kept alive by systemd.</p></body></html>
