@@ -46,7 +46,7 @@ The web server runs as `acs730-lab2-svc`, a system account with no home director
 
 ## Experiments
 
-For each experiment I wrote my prediction first, then made the change on the test instance from my workstation, observed the result, and undid the change before moving on to the next one.
+For each experiment I made the change on the test instance from my workstation, observed the result, and undid the change before moving on to the next one.
 
 ### 1. Start without enable
 
