@@ -50,11 +50,15 @@ For each experiment I wrote my prediction first, then made the change on the tes
 
 ### 1. Start without enable
 
+**Prediction:** <your prediction>
+
 **What happened:** After I disabled the service, the website kept working, because disabling only removes the instruction to start the service at boot; it does not stop a service that is already running. After the reboot the instance came back up but the website did not: my request from the workstation was refused immediately, and systemd reported the service as disabled and inactive, with no error recorded.
 
 **Why:** Enabling a service is what tells systemd to start it during boot, while starting it only affects the machine as it is running right now. Because I had disabled it, nothing asked for the web application at boot, so it simply never started, which is exactly why a production service needs to be both enabled and started.
 
 ### 2. Drop the capability
+
+**Prediction:** <your prediction>
 
 **What happened:** Without the extra permission, the service crashed as soon as it started, with a "Permission denied" error at the exact moment Python tried to claim port 80. Systemd kept restarting it every few seconds, but every attempt failed the same way, and the website stayed unreachable until I restored the original unit file.
 
@@ -62,17 +66,23 @@ For each experiment I wrote my prediction first, then made the change on the tes
 
 ### 3. Tighten HTTP
 
+**Prediction:** <your prediction>
+
 **What happened:** Once port 80 was limited to my laptop's address, the page still loaded in my laptop's browser, but the request from my workstation hung for ten seconds and then timed out. When I put the rule back to allow everyone, the workstation could reach the page again.
 
 **Why:** A security group decides based on where a request comes from, so the new rule let in my laptop and silently blocked everyone else, including my workstation, even though it sits inside AWS and is still allowed in for SSH. Blocked traffic is dropped without any reply, so the failure showed up as a long timeout; that is different from the instant refusal in Experiments 1 and 2, where traffic did reach the instance but nothing was listening.
 
 ### 4. Run it as root
 
+**Prediction:** <your prediction>
+
 **What happened:** With the service set to run as root it worked exactly as before, and nothing visible from the outside changed. Only the process list on the instance showed the difference: the web server was now owned by root, while the website files were still owned by my service account.
 
 **Why:** If an attacker found a bug in the web server while it ran as root, they would control the whole machine: they could read or change any file, create accounts, plant their own SSH key and leave a backdoor that survives reboots. Running as my no-login service account, the same bug would give them only that account's limited rights, with no shell, no sudo and a read-only system, so the worst they could realistically do is change the web page itself.
 
 ### 5. Break the idempotency
+
+**Prediction:** <your prediction>
 
 **What happened:** Without the check for an existing user, the deploy script failed every time I ran it, because the service account had already been created by my real deployment, and the script stopped at that point so none of the remaining steps ran. My real deploy script, which checks first, ran twice in a row with no errors.
 
