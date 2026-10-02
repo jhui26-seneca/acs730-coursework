@@ -1,23 +1,23 @@
---- captured Fri Oct  2 20:29:46 UTC 2026 on ip-172-31-17-232.ec2.internal as acs730-lab2-admin
---- last boot time: 2026-10-02 20:14:37
+--- captured Fri Oct  2 20:41:07 UTC 2026 on ip-172-31-17-232.ec2.internal as acs730-lab2-admin
+--- last boot time: 2026-10-02 20:29:57
 --- is-enabled: enabled
 --- is-active:  active
 ● acs730-web.service - ACS730 Lab 2 web application
      Loaded: loaded (/etc/systemd/system/acs730-web.service; enabled; preset: disabled)
-     Active: active (running) since Fri 2026-10-02 20:25:26 UTC; 4min 20s ago
-   Main PID: 2683 (python3)
+     Active: active (running) since Fri 2026-10-02 20:30:02 UTC; 11min ago
+   Main PID: 1875 (python3)
       Tasks: 1 (limit: 1059)
-     Memory: 10.2M
-        CPU: 107ms
+     Memory: 9.6M
+        CPU: 214ms
      CGroup: /system.slice/acs730-web.service
-             └─2683 /usr/bin/python3 -m http.server 80 --directory /opt/acs730-lab2-web
+             └─1875 /usr/bin/python3 -m http.server 80 --directory /opt/acs730-lab2-web
 
-Oct 02 20:25:26 ip-172-31-17-232.ec2.internal systemd[1]: Starting acs730-web.service - ACS730 Lab 2 web application...
-Oct 02 20:25:26 ip-172-31-17-232.ec2.internal systemd[1]: Started acs730-web.service - ACS730 Lab 2 web application.
-Oct 02 20:25:27 ip-172-31-17-232.ec2.internal python3[2683]: 127.0.0.1 - - [02/Oct/2026 20:25:27] "GET / HTTP/1.1" 200 -
+Oct 02 20:30:02 ip-172-31-17-232.ec2.internal systemd[1]: Starting acs730-web.service - ACS730 Lab 2 web application...
+Oct 02 20:30:02 ip-172-31-17-232.ec2.internal systemd[1]: Started acs730-web.service - ACS730 Lab 2 web application.
+Oct 02 20:30:49 ip-172-31-17-232.ec2.internal python3[1875]: 3.95.204.108 - - [02/Oct/2026 20:30:49] "GET / HTTP/1.1" 200 -
 --- process owner:
-USER     CMD
-acs730-+ /usr/bin/python3 -m http.server 80 --directory /opt/acs730-lab2-web
+USER                 CMD
+acs730-lab2-svc      /usr/bin/python3 -m http.server 80 --directory /opt/acs730-lab2-web
 --- app files:
 total 4
 -rw-r--r--. 1 acs730-lab2-svc acs730-lab2-svc 225 Oct  2 20:25 index.html

@@ -26,7 +26,7 @@ ssh -i "$KEY_FILE" "${ADMIN_USER}@${WEB_IP}" '
   echo "--- is-enabled: $(systemctl is-enabled acs730-web)"
   echo "--- is-active:  $(systemctl is-active acs730-web)"
   systemctl status acs730-web --no-pager
-  echo "--- process owner:"; ps -o user,cmd -C python3
+  echo "--- process owner:"; ps -o user:20,cmd -C python3
   echo "--- app files:"; ls -l /opt/acs730-lab2-web' \
   | tee "$EVIDENCE_DIR/service-${LABEL}-reboot.txt"
 
