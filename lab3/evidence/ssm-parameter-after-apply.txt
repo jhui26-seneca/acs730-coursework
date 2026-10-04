@@ -1,0 +1,12 @@
+Sun Oct  4 17:55:33 UTC 2026
+{
+    "Parameter": {
+        "Name": "acs730-lab3-param",
+        "Type": "String",
+        "Value": "hello from GitHub Actions",
+        "Version": 1,
+        "LastModifiedDate": "2026-10-04T17:55:26.963000+00:00",
+        "ARN": "arn:aws:ssm:us-east-1:572751986246:parameter/acs730-lab3-param",
+        "DataType": "text"
+    }
+}
