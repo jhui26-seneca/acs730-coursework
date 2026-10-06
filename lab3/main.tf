@@ -43,4 +43,3 @@ resource "aws_ssm_parameter" "lab3" {
 output "ssm_parameter_name" {
   value = aws_ssm_parameter.lab3.name
 }
-# experiment 4 - race
