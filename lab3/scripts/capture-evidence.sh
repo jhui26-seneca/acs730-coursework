@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-# Lab 3 evidence: the latest successful deploy run triggered by a push (merge) to main,
-# plus proof from AWS that only ONE acs730-lab3-sg exists (updated, not duplicated).
-OUT="$(dirname "$0")/../evidence/deploy-run.txt"
+# Lab 3 evidence. Run on the WORKSTATION straight after the merge to main, before anything else is pushed.
+# Writes: evidence/apply-run.json, evidence/apply-run-log.txt, evidence/ssm-parameter-after-apply.txt
+EVIDENCE_DIR="$(dirname "$0")/../evidence"
+PARAM_NAME="acs730-lab3-param"
 
-RUN_ID=$(gh run list --workflow lab3-deploy.yml --branch main --event push \
-  --status success --limit 1 --json databaseId --jq '.[0].databaseId')
-
+RUN_ID=$(gh run list --workflow lab3-deploy.yml --branch main --event push --limit 1 \
+  --json databaseId --jq '.[0].databaseId')
 if [ -z "$RUN_ID" ]; then
-  echo "No successful push-to-main run of lab3-deploy.yml found yet." >&2
+  echo "No push-to-main run of lab3-deploy.yml found yet." >&2
   exit 1
 fi
 
-{
-  echo "=== Lab 3 deploy evidence - captured $(date -u) ==="
-  gh run view "$RUN_ID" --json url,displayTitle,event,headBranch,headSha,conclusion,createdAt \
-    --jq '"Run URL:    \(.url)\nTitle:      \(.displayTitle)\nTrigger:    \(.event) to \(.headBranch)\nCommit:     \(.headSha)\nConclusion: \(.conclusion)\nStarted:    \(.createdAt)"'
-  echo "--- plan and apply lines from the run log:"
-  gh run view "$RUN_ID" --log \
-    | grep -E "update in-place|Revision|Plan:|Apply complete" | cut -f3- | sed 's/^[0-9TZ:.-]* //'
-  echo "--- acs730-lab3-sg in AWS (must be exactly one row):"
-  aws ec2 describe-security-groups \
-    --filters "Name=tag:Name,Values=acs730-lab3-sg" \
-    --query 'SecurityGroups[].{ID:GroupId,Name:GroupName,Revision:Tags[?Key==`Revision`]|[0].Value}' \
-    --output table
-} | tee "$OUT"
+# 1. The merged apply run: conclusion, event, branch, commit, URL
+gh run view "$RUN_ID" \
+  --json databaseId,workflowName,displayTitle,event,headBranch,headSha,status,conclusion,url,createdAt \
+  | tee "$EVIDENCE_DIR/apply-run.json"
+
+# 2. The plan and apply lines from that run's log (proves "1 changed", not "1 added")
+{ echo "=== run $RUN_ID - captured $(date -u)"
+  gh run view "$RUN_ID" --log | grep -E "will be|Plan:|Apply complete"
+} 2>&1 | tee "$EVIDENCE_DIR/apply-run-log.txt"
+
+# 3. The parameter, read back from AWS
+{ date -u; aws ssm get-parameter --name "$PARAM_NAME" --output json; } 2>&1 \
+  | tee "$EVIDENCE_DIR/ssm-parameter-after-apply.txt"

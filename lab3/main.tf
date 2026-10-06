@@ -21,34 +21,23 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_security_group" "lab3" {
-  name        = "acs730-lab3-sg"
-  description = "ACS730 lab3 - managed by Terraform through the pipeline"
-
-  tags = {
-    Name      = "acs730-lab3-sg"
-    Lab       = "lab3"
-    ManagedBy = "terraform"
-    Revision  = "2"
-  }
+variable "greeting" {
+  description = "Value stored in the Lab 3 SSM parameter"
+  type        = string
+  default     = "hello from GitHub Actions"
 }
 
-# A value that reaches AWS only through the pipeline - nobody types it into AWS.
 resource "aws_ssm_parameter" "lab3" {
   name        = "acs730-lab3-param"
-  description = "ACS730 lab3 - written by Terraform from GitHub Actions"
+  description = "ACS730 lab3 - managed by Terraform through the pipeline"
   type        = "String"
-  value       = "hello from GitHub Actions"
+  value       = var.greeting
 
   tags = {
     Name      = "acs730-lab3-param"
     Lab       = "lab3"
     ManagedBy = "terraform"
   }
-}
-
-output "security_group_id" {
-  value = aws_security_group.lab3.id
 }
 
 output "ssm_parameter_name" {
