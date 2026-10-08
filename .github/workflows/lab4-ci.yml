@@ -17,15 +17,9 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/python-deps
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
-          cache-dependency-path: |
-            lab4/requirements.txt
-            lab4/requirements-dev.txt
-      - name: Install dependencies
-        run: python -m pip install -r lab4/requirements.txt -r lab4/requirements-dev.txt
       - name: Run the tests
         working-directory: lab4
         run: python -m pytest
@@ -75,37 +69,30 @@ jobs:
           docker logs app
           exit 1
 
+  image:
+    needs: test
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      context: lab4
+      image-name: acs730-lab4
+      push: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: read
+      packages: write
+
+  report:
+    needs: image
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "built ${{ needs.image.outputs.image-ref }}"
+
   summary:
-    needs: [test, build, smoke]
+    needs: [test, build, smoke, image]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Write the run summary
-        run: echo "test ${{ needs.test.result }} build ${{ needs.build.result }} smoke ${{ needs.smoke.result }} tag ${{ needs.build.outputs.image-tag }}" >> "$GITHUB_STEP_SUMMARY"
+        run: echo "test ${{ needs.test.result }} build ${{ needs.build.result }} smoke ${{ needs.smoke.result }} image ${{ needs.image.result }} tag ${{ needs.build.outputs.image-tag }}" >> "$GITHUB_STEP_SUMMARY"
       - name: Re-raise an upstream failure
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: exit 1
-
-  publish:
-    needs: [test, build]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read      # restated on purpose: a job-level block replaces the workflow-level one
-      packages: write     # the only widening in the whole workflow
-    steps:
-      - uses: actions/checkout@v4
-      - id: owner
-        run: echo "lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
-      - uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push by SHA
-        env:
-          IMAGE: ghcr.io/${{ steps.owner.outputs.lc }}/acs730-lab4
-        run: |
-          TAG="sha-${GITHUB_SHA::12}"
-          docker build -t "$IMAGE:$TAG" lab4/
-          docker push "$IMAGE:$TAG"
