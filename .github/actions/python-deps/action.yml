@@ -14,8 +14,7 @@ runs:
         python-version: ${{ inputs.python-version }}
         cache: pip
         cache-dependency-path: |
-          lab4/requirements.txt
-          lab4/requirements-dev.txt
+          lab4/README.md
     # Every run: step in a composite action MUST declare a shell.
     - name: Install dependencies
       shell: bash
