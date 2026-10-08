@@ -6,3 +6,6 @@
 credentials
 tfplan
 *.save
+__pycache__/
+*.pyc
+.pytest_cache/

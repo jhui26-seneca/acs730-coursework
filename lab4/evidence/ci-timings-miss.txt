@@ -1,0 +1,19 @@
+=== lab4-ci run 37743450541 (miss) - captured Thu Oct  8 07:31:32 UTC 2026
+Lab 4 pipeline | success | wall clock: 74 s
+--- jobs:
+test (3.11): 9 s
+test (3.12): 10 s
+build: 40 s
+smoke: 10 s
+summary: 3 s
+--- install and build steps:
+test (3.11) / Install dependencies: 4 s
+test (3.12) / Install dependencies: 3 s
+build / Run docker/setup-buildx-action@v3: 10 s
+build / Build the image (with the layer cache): 16 s
+build / Post Build the image (with the layer cache): 1 s
+build / Post Run docker/setup-buildx-action@v3: 2 s
+--- cache lines from the log:
+test (3.11)	Post Run actions/setup-python@v5	2026-10-08T07:26:46.0727682Z Cache saved with the key: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.16-pip-2c9ba5fb20a1dfbedc3cdca3e22106820817277a506134b22a4f06e71ebaa423
+test (3.12)	Post Run actions/setup-python@v5	2026-10-08T07:26:46.6997269Z Cache saved with the key: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.14-pip-2c9ba5fb20a1dfbedc3cdca3e22106820817277a506134b22a4f06e71ebaa423
+build	Build the image (with the layer cache)	2026-10-08T07:27:06.4203004Z #7 importing cache manifest from gha:13848535814371798576

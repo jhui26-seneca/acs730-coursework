@@ -1,0 +1,26 @@
+=== lab4-ci run 37744007308 (hit) - captured Thu Oct  8 07:33:01 UTC 2026
+Lab 4 pipeline | success | wall clock: 63 s
+--- jobs:
+test (3.12): 10 s
+test (3.11): 8 s
+build: 29 s
+smoke: 12 s
+summary: 3 s
+--- install and build steps:
+test (3.12) / Install dependencies: 4 s
+test (3.11) / Install dependencies: 2 s
+build / Run docker/setup-buildx-action@v3: 9 s
+build / Build the image (with the layer cache): 7 s
+build / Post Build the image (with the layer cache): 1 s
+build / Post Run docker/setup-buildx-action@v3: 1 s
+--- cache lines from the log:
+test (3.12)	Run actions/setup-python@v5	2026-10-08T07:32:02.9432104Z Cache restored successfully
+test (3.12)	Run actions/setup-python@v5	2026-10-08T07:32:02.9438050Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.15-pip-2c9ba5fb20a1dfbedc3cdca3e22106820817277a506134b22a4f06e71ebaa423
+test (3.11)	Run actions/setup-python@v5	2026-10-08T07:32:01.5916695Z Cache restored successfully
+test (3.11)	Run actions/setup-python@v5	2026-10-08T07:32:01.5922210Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.17-pip-2c9ba5fb20a1dfbedc3cdca3e22106820817277a506134b22a4f06e71ebaa423
+build	Build the image (with the layer cache)	2026-10-08T07:32:25.4865341Z #7 importing cache manifest from gha:1372718744664728476
+build	Build the image (with the layer cache)	2026-10-08T07:32:25.7034209Z #8 CACHED
+build	Build the image (with the layer cache)	2026-10-08T07:32:25.7035355Z #9 CACHED
+build	Build the image (with the layer cache)	2026-10-08T07:32:25.7036038Z #10 CACHED
+build	Build the image (with the layer cache)	2026-10-08T07:32:25.7036428Z #11 CACHED
+build	Build the image (with the layer cache)	2026-10-08T07:32:25.7037240Z #12 CACHED

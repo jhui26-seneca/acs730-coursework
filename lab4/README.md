@@ -38,3 +38,5 @@ Records: `evidence/build-naive.txt`, `evidence/build-slim.txt`, `evidence/image-
 | `.dockerignore` | Keeps `.git`, `.github`, caches, `evidence/`, `scripts/`, images, docs and Dockerfiles out of the build context | - | - | Read by `docker build` |
 | `scripts/measure-image.sh` | Builds an image, rebuilds after a one-line edit, and writes `evidence/build-<tag>.txt` (times, size, user, `/app` listing, layer history) | Nothing (restores `app.py` afterwards) | `<Dockerfile> <tag>` | Workstation |
 | `../.github/workflows/lab4-ci.yml` | Builds the image and smoke-tests `/healthz`; no secrets and no cloud credentials | - | - | GitHub Actions: pull requests and pushes to `main` |
+
+
