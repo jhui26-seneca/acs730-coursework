@@ -1,0 +1,32 @@
+=== acs730-lab4:slim from Dockerfile - Thu Oct  8 06:39:23 UTC 2026
+--- first build: 4.269006235 s
+#3 transferring context: 188B done
+#4 transferring context: 473B done
+#8 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+--- image size: 137MB
+--- rebuild after a one-line code change: .640161083 s
+#3 transferring context: 188B done
+#5 transferring context: 473B done
+#6 CACHED
+#7 CACHED
+#8 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#8 CACHED
+--- runs as: appuser
+--- files in /app:
+.
+..
+app.py
+requirements.txt
+--- layers (newest first):
+SIZE      CREATED BY
+0B        CMD ["gunicorn" "--bind" "0.0.0.0:8000" "--w…
+0B        EXPOSE map[8000/tcp:{}]
+0B        USER appuser
+4.63kB    RUN /bin/sh -c useradd --system --no-create-…
+285B      COPY app.py ./ # buildkit
+6.38MB    RUN /bin/sh -c pip install --no-cache-dir -r…
+30B       COPY requirements.txt ./ # buildkit
+0B        WORKDIR /app
+0B        ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFER…
+0B        CMD ["python3"]
+36B       RUN /bin/sh -c set -eux;  for src in idle3 p…
