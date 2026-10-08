@@ -1,0 +1,6 @@
+# Every common mistake, on purpose. Kept so the comparison can be re-run.
+FROM python:latest
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+CMD python -m gunicorn --bind 0.0.0.0:8000 app:app

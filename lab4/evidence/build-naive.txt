@@ -1,0 +1,35 @@
+=== acs730-lab4:naive from Dockerfile.naive - Thu Oct  8 06:35:40 UTC 2026
+--- first build: 4.547476701 s
+#3 transferring context: 2B done
+#4 transferring context: 88.00kB done
+#8 [4/4] RUN pip install -r requirements.txt
+--- image size: 1.14GB
+--- rebuild after a one-line code change: 4.292403276 s
+#3 transferring context: 2B done
+#5 transferring context: 1.49kB done
+#6 CACHED
+#8 [4/4] RUN pip install -r requirements.txt
+--- runs as: root
+--- files in /app:
+.
+..
+Dockerfile.naive
+README.md
+app.py
+evidence
+requirements.txt
+scripts
+tests
+--- layers (newest first):
+SIZE      CREATED BY
+0B        CMD ["/bin/sh" "-c" "python -m gunicorn --bi…
+17.3MB    RUN /bin/sh -c pip install -r requirements.t…
+87.1kB    COPY . . # buildkit
+0B        WORKDIR /app
+0B        CMD ["python3"]
+36B       RUN /bin/sh -c set -eux;  for src in idle3 p…
+78.6MB    RUN /bin/sh -c set -eux;   savedAptMark="$(a…
+0B        ENV PYTHON_SHA256=c2215904f02b175596dc493515…
+0B        ENV PYTHON_VERSION=3.14.8
+17.9MB    RUN /bin/sh -c set -eux;  apt-get update;  a…
+0B        ENV PATH=/usr/local/bin:/usr/local/sbin:/usr…

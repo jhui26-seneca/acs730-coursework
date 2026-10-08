@@ -1,0 +1,29 @@
+name: lab4-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Workflow-level default. Every job inherits it unless it says otherwise.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the image
+        run: docker build -t acs730-lab4:ci lab4/
+
+      - name: Smoke test it
+        run: |
+          docker run -d --name app -p 8000:8000 acs730-lab4:ci
+          for i in $(seq 1 15); do
+            curl -fsS http://localhost:8000/healthz && exit 0
+            sleep 2
+          done
+          docker logs app
+          exit 1
