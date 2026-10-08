@@ -14,4 +14,4 @@ def test_healthz_reports_ok():
 
 
 def test_unknown_path_is_404():
-    assert app.test_client().get("/nope").status_code == 200
+    assert app.test_client().get("/nope").status_code == 404
