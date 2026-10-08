@@ -20,6 +20,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            lab4/requirements.txt
+            lab4/requirements-dev.txt
       - name: Install dependencies
         run: python -m pip install -r lab4/requirements.txt -r lab4/requirements-dev.txt
       - name: Run the tests
@@ -35,8 +39,15 @@ jobs:
       - uses: actions/checkout@v4
       - id: meta
         run: echo "image-tag=sha-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
-      - name: Build the image
-        run: docker build -t acs730-lab4:${{ steps.meta.outputs.image-tag }} lab4/
+      - uses: docker/setup-buildx-action@v3
+      - name: Build the image (with the layer cache)
+        uses: docker/build-push-action@v6
+        with:
+          context: lab4
+          load: true
+          tags: acs730-lab4:${{ steps.meta.outputs.image-tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - run: docker save acs730-lab4:${{ steps.meta.outputs.image-tag }} -o image.tar
       - uses: actions/upload-artifact@v4
         with:

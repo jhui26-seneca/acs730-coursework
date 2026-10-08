@@ -1,0 +1,13 @@
+=== lab4-ci run 37742524867 (baseline) - captured Thu Oct  8 07:25:23 UTC 2026
+Lab 4 pipeline | success | wall clock: 59 s
+--- jobs:
+test (3.12): 9 s
+test (3.11): 7 s
+build: 20 s
+smoke: 17 s
+summary: 2 s
+--- install and build steps:
+test (3.12) / Install dependencies: 2 s
+test (3.11) / Install dependencies: 2 s
+build / Build the image: 8 s
+--- cache lines from the log:
