@@ -21,6 +21,6 @@ DUR='((.completedAt|fromdateiso8601) - (.startedAt|fromdateiso8601))'
           | select(.name | test(\"install|python-deps|build\"; \"i\"))
           | \"\(\$j) / \(.name): \($DUR) s\""
   echo "--- cache lines from the log:"
-  gh run view "$RUN" --log | grep -iE "cache restored|cache not found|cache saved|importing cache|exporting cache" \
+  gh run view "$RUN" --log | grep -iE "cache restored|cache not found|cache saved|importing cache|exporting cache|#[0-9]+ CACHED" \
     | head -20 || true
 } | tee "$OUT"
