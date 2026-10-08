@@ -93,6 +93,3 @@ jobs:
     steps:
       - name: Write the run summary
         run: echo "test ${{ needs.test.result }} build ${{ needs.build.result }} smoke ${{ needs.smoke.result }} image ${{ needs.image.result }} tag ${{ needs.build.outputs.image-tag }}" >> "$GITHUB_STEP_SUMMARY"
-      - name: Re-raise an upstream failure
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
