@@ -1,0 +1,20 @@
+gates	terraform fmt -check	﻿2026-10-13T20:16:02.0791794Z ##[group]Run terraform fmt -check -recursive -diff
+gates	terraform fmt -check	2026-10-13T20:16:02.0792184Z ^[[36;1mterraform fmt -check -recursive -diff^[[0m
+gates	terraform fmt -check	2026-10-13T20:16:02.1435772Z shell: /usr/bin/bash -e {0}
+gates	terraform fmt -check	2026-10-13T20:16:02.1436044Z env:
+gates	terraform fmt -check	2026-10-13T20:16:02.1436354Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/e71d5bfc-776c-4401-a9e9-e950c35bab93
+gates	terraform fmt -check	2026-10-13T20:16:02.1436709Z ##[endgroup]
+gates	terraform fmt -check	2026-10-13T20:16:02.9027893Z network.tf
+gates	terraform fmt -check	2026-10-13T20:16:02.9028456Z --- old/network.tf
+gates	terraform fmt -check	2026-10-13T20:16:02.9029078Z +++ new/network.tf
+gates	terraform fmt -check	2026-10-13T20:16:02.9029625Z @@ -22,7 +22,7 @@
+gates	terraform fmt -check	2026-10-13T20:16:02.9029931Z  }
+gates	terraform fmt -check	2026-10-13T20:16:02.9030170Z  
+gates	terraform fmt -check	2026-10-13T20:16:02.9030417Z  resource "aws_vpc" "main" {
+gates	terraform fmt -check	2026-10-13T20:16:02.9030788Z -cidr_block = var.vpc_cidr
+gates	terraform fmt -check	2026-10-13T20:16:02.9031124Z +  cidr_block           = var.vpc_cidr
+gates	terraform fmt -check	2026-10-13T20:16:02.9031490Z    enable_dns_support   = true
+gates	terraform fmt -check	2026-10-13T20:16:02.9031829Z    enable_dns_hostnames = true
+gates	terraform fmt -check	2026-10-13T20:16:02.9032129Z  
+gates	terraform fmt -check	2026-10-13T20:16:02.9088804Z ##[error]Terraform exited with code 3.
+gates	terraform fmt -check	2026-10-13T20:16:02.9157341Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,62 @@
+name: lab5-ci
+
+on:
+  pull_request:
+    paths: ['lab5/**', '.github/workflows/lab5-ci.yml']
+  push:
+    branches: [main]
+    paths: ['lab5/**', '.github/workflows/lab5-ci.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lab5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "<2.0.0"
+      - name: terraform fmt -check
+        run: terraform fmt -check -recursive -diff
+      - name: terraform validate (no backend, no cloud)
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
+
+  localstack:
+    needs: gates
+    runs-on: ubuntu-latest
+    services:
+      localstack:
+        image: localstack/localstack:3.8
+        ports: ['4566:4566']
+        options: >-
+          --health-cmd "curl -sf http://localhost:4566/_localstack/health"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+    env:
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+    defaults:
+      run:
+        working-directory: lab5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "<2.0.0"
+          terraform_wrapper: false
+      - run: terraform init -input=false
+      - run: terraform plan -input=false -var-file=localstack.tfvars -out=tfplan
+      - run: terraform apply -input=false tfplan
+      - name: Refuse anything but LocalStack
+        run: |
+          target=$(terraform output -raw provider_target)
+          echo "provider_target = $target"
+          case "$target" in localstack*) ;; *) echo "Not LocalStack!"; exit 1 ;; esac
+      - run: terraform destroy -input=false -auto-approve -var-file=localstack.tfvars
