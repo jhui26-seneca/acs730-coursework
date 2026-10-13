@@ -9,3 +9,4 @@ tfplan
 __pycache__/
 *.pyc
 .pytest_cache/
+.terraform.tfstate.lock.info
