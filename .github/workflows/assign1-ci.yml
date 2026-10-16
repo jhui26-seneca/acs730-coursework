@@ -1,0 +1,79 @@
+name: assign1-ci
+
+on:
+  pull_request:
+    paths: ['assignment1/**', '.github/workflows/assign1-ci.yml']
+  push:
+    branches: [main]
+    paths: ['assignment1/**', '.github/workflows/assign1-ci.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: assignment1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+      - name: bash -n on every script
+        run: |
+          shopt -s nullglob
+          for f in scripts/*.sh; do echo "bash -n $f"; bash -n "$f"; done
+      - name: terraform fmt -check (module and every caller)
+        run: terraform fmt -check -recursive -diff terraform
+      - name: terraform validate (no backend, no cloud)
+        working-directory: assignment1/terraform
+        run: |
+          for d in modules/web-env dev staging prod ci-localstack; do
+            [ -d "$d" ] || continue
+            echo "--- $d"
+            terraform -chdir="$d" init -backend=false -input=false -no-color > /dev/null
+            terraform -chdir="$d" validate -no-color
+          done
+
+  localstack:
+    needs: gates
+    runs-on: ubuntu-24.04
+    services:
+      localstack:
+        image: localstack/localstack:3.8
+        ports: ['4566:4566']
+        options: >-
+          --health-cmd "curl -sf http://localhost:4566/_localstack/health"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+    env:
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+      LS: http://localhost:4566
+    defaults:
+      run:
+        working-directory: assignment1/terraform/ci-localstack
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+          terraform_wrapper: false
+      - name: Seed LocalStack with what the Academy account already has
+        run: |
+          aws --endpoint-url "$LS" iam create-instance-profile --instance-profile-name LabInstanceProfile
+          aws --endpoint-url "$LS" ssm put-parameter --name /acs730/assign1/ci/db_password \
+            --type SecureString --value placeholder-not-a-real-password-ci
+      - run: terraform init -input=false -no-color
+      - run: terraform plan -input=false -no-color -out=tfplan
+      - run: terraform apply -input=false -no-color tfplan
+      - name: Refuse anything but LocalStack, then check the module outputs
+        run: |
+          acct=$(terraform output -raw account_id)
+          echo "account_id = $acct"
+          [ "$acct" = "000000000000" ] || { echo "Not LocalStack!"; exit 1; }
+          echo "alarm: $(terraform output -raw cpu_alarm_name)"
+          echo "ssm parameter version read: $(terraform output -raw db_password_parameter_version)"
+      - run: terraform destroy -input=false -no-color -auto-approve
