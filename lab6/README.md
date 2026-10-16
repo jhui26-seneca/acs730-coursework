@@ -10,8 +10,8 @@ I used Ansible over SSM (the community.aws.aws_ssm connection), because the inst
 
 | Approach | Launch request to page served |
 |---|---|
-| Plain Amazon Linux 2023 + Ansible over SSM | <N> s (evidence/boot-to-ready-ansible.txt) |
-| Golden AMI baked by Packer | <N> s (evidence/boot-to-ready-golden.txt) |
+| Plain Amazon Linux 2023 + Ansible over SSM | 84 s (evidence/boot-to-ready-ansible.txt) |
+| Golden AMI baked by Packer | 24 s (evidence/boot-to-ready-golden.txt) |
 
 The golden AMI is faster and has nothing left to fail at launch, but it is only as current as its last build; the Ansible path is slower and depends on SSM and the package mirror at boot, but every run applies the latest playbook.
 
