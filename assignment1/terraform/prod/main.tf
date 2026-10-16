@@ -5,7 +5,7 @@ module "web_env" {
 
   environment                = "prod"
   vpc_cidr                   = "10.30.0.0/16"
-  instance_type              = "t3.small"
+  instance_type              = "t3.micro"
   detailed_monitoring        = true
   cpu_alarm_threshold        = 60
   db_password_parameter_name = "/acs730/assign1/prod/db_password"
