@@ -1,0 +1,109 @@
+name: assign1-deploy
+
+# Promotion flow: a merge to main applies staging automatically; prod waits for
+# the required reviewer on the GitHub Environment "prod" (main branch only).
+# Each job reads ONLY its own environment's AWS secrets.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assignment1/**'
+      - '!assignment1/evidence/**'
+      - '!assignment1/**/*.md'
+      - '.github/workflows/assign1-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: assign1-deploy
+  cancel-in-progress: false
+
+jobs:
+  staging:
+    runs-on: ubuntu-24.04
+    environment:
+      name: staging
+      url: ${{ steps.smoke.outputs.url }}
+    defaults:
+      run:
+        working-directory: assignment1/terraform/staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Who am I
+        run: aws sts get-caller-identity --query Arn --output text
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+          terraform_wrapper: false
+      - name: Terraform init
+        run: terraform init -input=false -no-color
+      - name: Terraform plan
+        run: terraform plan -input=false -no-color -out=tfplan
+      - name: Terraform apply
+        run: terraform apply -input=false -no-color tfplan
+      - name: Smoke test - the staging page answers
+        id: smoke
+        run: |
+          URL=$(terraform output -raw web_url)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          for i in $(seq 1 30); do
+            if curl -fsS -m 5 "$URL" | grep -q "ACS730 assign1 - staging"; then
+              curl -sS -m 5 "$URL"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "The staging page never answered at $URL"
+          exit 1
+
+  prod:
+    needs: staging
+    runs-on: ubuntu-24.04
+    environment:
+      name: prod
+      url: ${{ steps.smoke.outputs.url }}
+    defaults:
+      run:
+        working-directory: assignment1/terraform/prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Who am I
+        run: aws sts get-caller-identity --query Arn --output text
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+          terraform_wrapper: false
+      - name: Terraform init
+        run: terraform init -input=false -no-color
+      - name: Terraform plan
+        run: terraform plan -input=false -no-color -out=tfplan
+      - name: Terraform apply
+        run: terraform apply -input=false -no-color tfplan
+      - name: Smoke test - the prod page answers
+        id: smoke
+        run: |
+          URL=$(terraform output -raw web_url)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          for i in $(seq 1 30); do
+            if curl -fsS -m 5 "$URL" | grep -q "ACS730 assign1 - prod"; then
+              curl -sS -m 5 "$URL"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "The prod page never answered at $URL"
+          exit 1
