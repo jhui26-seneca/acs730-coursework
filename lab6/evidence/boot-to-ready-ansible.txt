@@ -1,0 +1,20 @@
+=== boot-to-ready (ansible) - Fri Oct 16 01:44:00 UTC 2026 ===
+AMI: ami-0ed59cbb87dfa8dba
++0s     launch requested: i-0456f95d3e8a40d16
++19s   instance running (172.31.80.207)
+i-0456f95d3e8a40d16: PingStatus Online
++20s   SSM online
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+[WARNING]: Found variable using reserved name 'tags'.
+Origin: <unknown>
+
+tags
+
+PLAY RECAP *********************************************************************
+i-0456f95d3e8a40d16        : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
++84s   playbook finished
++84s   READY: page served
+<h1>ACS730 lab6</h1>
+Terminated i-0456f95d3e8a40d16

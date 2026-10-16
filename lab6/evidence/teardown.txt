@@ -1,0 +1,32 @@
+=== Lab 6 teardown - Fri Oct 16 01:49:01 UTC 2026 ===
+--- 1. Leftover boot-to-ready instances
+None.
+--- 2. Golden AMIs and the snapshots behind them
+{
+    "Return": true,
+    "DeleteSnapshotResults": []
+}
+Deregistered AMI ami-0e0ac5e47a0e6c3f6
+Deleted snapshot snap-08c2ecffe46996db4
+--- 3. terraform destroy (target instance and both security groups)
+Destroy complete! Resources: 3 destroyed.
+--- 4. SSM transfer bucket (created by create-ssm-bucket.sh, not Terraform)
+{
+    "BucketArn": "arn:aws:s3:::acs730-lab6-ssm-572751986246",
+    "BucketRegion": "us-east-1",
+    "AccessPointAlias": false
+}
+Deleted bucket acs730-lab6-ssm-572751986246 and its contents
+--- 5. Proof nothing is left (each list must be [])
+Instances tagged Lab=lab6, not terminated:
+[]
+AMIs named acs730-lab6-*:
+[]
+Snapshots tagged Lab=lab6:
+[]
+Security groups acs730-lab6-*:
+[]
+S3 buckets acs730-lab6-*:
+[]
+Terraform state entries:
+0

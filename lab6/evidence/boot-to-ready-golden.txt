@@ -1,0 +1,7 @@
+=== boot-to-ready (golden) - Fri Oct 16 01:46:00 UTC 2026 ===
+AMI: ami-0e0ac5e47a0e6c3f6
++0s     launch requested: i-04f92284e13499da8
++20s   instance running (172.31.85.115)
++24s   READY: page served
+<h1>ACS730 lab6</h1>
+Terminated i-04f92284e13499da8
