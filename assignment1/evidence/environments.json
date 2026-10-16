@@ -1,0 +1,84 @@
+{
+  "captured_at_utc": "2026-10-16T03:47:54Z",
+  "environments": {
+    "total_count": 2,
+    "environments": [
+      {
+        "id": 24456338331,
+        "node_id": "EN_kwDOUfe8DM8AAAAFsbYbmw",
+        "name": "prod",
+        "url": "https://api.github.com/repos/jhui26-seneca/acs730-coursework/environments/prod",
+        "html_url": "https://github.com/jhui26-seneca/acs730-coursework/deployments/activity_log?environments_filter=prod",
+        "created_at": "2026-10-16T03:46:28Z",
+        "updated_at": "2026-10-16T03:46:28Z",
+        "can_admins_bypass": true,
+        "protection_rules": [
+          {
+            "id": 68986441,
+            "node_id": "GA_kwDOUfe8DM4EHKZJ",
+            "type": "required_reviewers",
+            "prevent_self_review": false,
+            "reviewers": [
+              {
+                "type": "User",
+                "reviewer": {
+                  "login": "jhui26-seneca",
+                  "id": 330646340,
+                  "node_id": "U_kgDOE7VDRA",
+                  "avatar_url": "https://avatars.githubusercontent.com/u/330646340?v=4",
+                  "gravatar_id": "",
+                  "url": "https://api.github.com/users/jhui26-seneca",
+                  "html_url": "https://github.com/jhui26-seneca",
+                  "followers_url": "https://api.github.com/users/jhui26-seneca/followers",
+                  "following_url": "https://api.github.com/users/jhui26-seneca/following{/other_user}",
+                  "gists_url": "https://api.github.com/users/jhui26-seneca/gists{/gist_id}",
+                  "starred_url": "https://api.github.com/users/jhui26-seneca/starred{/owner}{/repo}",
+                  "subscriptions_url": "https://api.github.com/users/jhui26-seneca/subscriptions",
+                  "organizations_url": "https://api.github.com/users/jhui26-seneca/orgs",
+                  "repos_url": "https://api.github.com/users/jhui26-seneca/repos",
+                  "events_url": "https://api.github.com/users/jhui26-seneca/events{/privacy}",
+                  "received_events_url": "https://api.github.com/users/jhui26-seneca/received_events",
+                  "type": "User",
+                  "user_view_type": "public",
+                  "site_admin": false
+                }
+              }
+            ]
+          },
+          {
+            "id": 68986442,
+            "node_id": "GA_kwDOUfe8DM4EHKZK",
+            "type": "branch_policy"
+          }
+        ],
+        "deployment_branch_policy": {
+          "protected_branches": false,
+          "custom_branch_policies": true
+        }
+      },
+      {
+        "id": 24456338050,
+        "node_id": "EN_kwDOUfe8DM8AAAAFsbYagg",
+        "name": "staging",
+        "url": "https://api.github.com/repos/jhui26-seneca/acs730-coursework/environments/staging",
+        "html_url": "https://github.com/jhui26-seneca/acs730-coursework/deployments/activity_log?environments_filter=staging",
+        "created_at": "2026-10-16T03:46:27Z",
+        "updated_at": "2026-10-16T03:46:27Z",
+        "can_admins_bypass": true,
+        "protection_rules": [],
+        "deployment_branch_policy": null
+      }
+    ]
+  },
+  "prod_deployment_branch_policies": {
+    "total_count": 1,
+    "branch_policies": [
+      {
+        "id": 63229231,
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k2MzIyOTIzMQ==",
+        "name": "main",
+        "type": "branch"
+      }
+    ]
+  }
+}

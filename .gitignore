@@ -13,3 +13,4 @@ __pycache__/
 *.retry
 packer_cache/
 crash.log
+assignment1/terraform/modules/**/.terraform.lock.hcl
