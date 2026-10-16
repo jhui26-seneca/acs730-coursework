@@ -1,0 +1,13 @@
+=== SSM parameter vs Terraform data source (prod) - Fri Oct 16 06:12:52 UTC 2026 ===
+--- stored in AWS (aws ssm get-parameter --with-decryption):
+{
+    "Name": "/acs730/assign1/prod/db_password",
+    "Type": "SecureString",
+    "Version": 1,
+    "Value": "placeholder-not-a-real-password-prod",
+    "LastModifiedDate": "2026-10-16T04:47:20.897000+00:00"
+}
+--- read by Terraform's data source (terraform output, from the prod state):
+db_password_parameter_name    = /acs730/assign1/prod/db_password
+db_password_parameter_version = 1
+db_password                   = placeholder-not-a-real-password-prod
