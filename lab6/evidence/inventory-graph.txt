@@ -1,0 +1,9 @@
+Fri Oct 16 01:02:17 UTC 2026
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+@all:
+  |--@ungrouped:
+  |--@aws_ec2:
+  |  |--i-07220900903cf5a3b
+  |--@role_web:
+  |  |--i-07220900903cf5a3b
