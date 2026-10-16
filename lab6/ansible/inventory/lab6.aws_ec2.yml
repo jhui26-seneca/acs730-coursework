@@ -1,0 +1,17 @@
+# Dynamic inventory: ask AWS at run time. No host list, no IDs or IPs in this file.
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+filters:
+  tag:Role: web
+  tag:Lab: lab6
+  instance-state-name: running
+# tags.Role = web  ->  group "role_web" (matches group_vars/role_web.yml)
+keyed_groups:
+  - key: tags.Role
+    prefix: role
+hostnames:
+  - instance-id
+# SSM connects by instance ID, so the host's address is its ID
+compose:
+  ansible_host: instance_id

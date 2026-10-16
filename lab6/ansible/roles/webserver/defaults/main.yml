@@ -1,0 +1,5 @@
+webserver_package: httpd
+webserver_service: httpd
+webserver_docroot: /var/www/html
+webserver_title: "ACS730 lab6"
+webserver_message: "Configured by Ansible over SSM - no SSH, no port 22."

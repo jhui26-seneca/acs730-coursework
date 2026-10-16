@@ -1,0 +1,5 @@
+- name: Configure the lab6 web servers
+  hosts: role_web
+  become: true
+  roles:
+    - webserver
