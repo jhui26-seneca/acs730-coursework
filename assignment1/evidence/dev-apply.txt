@@ -1,9 +1,6 @@
-=== assign1 dev - create-dev.sh - Fri Oct 16 04:09:19 UTC 2026 ===
+=== assign1 dev - create-dev.sh - Fri Oct 16 04:47:22 UTC 2026 ===
 --- state key: assign1/dev/terraform.tfstate
 Initializing the backend...
-
-Successfully configured the backend "s3"! Terraform will automatically
-use this backend unless the backend configuration changes.
 
 Initializing modules...
 
@@ -20,11 +17,11 @@ should now work.
 If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
+module.web_env.data.aws_ami.web: Reading...
 module.web_env.data.aws_availability_zones.available: Reading...
 module.web_env.data.aws_ssm_parameter.db_password: Reading...
-module.web_env.data.aws_ami.web: Reading...
-module.web_env.data.aws_ssm_parameter.db_password: Read complete after 0s [id=/acs730/assign1/dev/db_password]
 module.web_env.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.web_env.data.aws_ssm_parameter.db_password: Read complete after 0s [id=/acs730/assign1/dev/db_password]
 module.web_env.data.aws_ami.web: Read complete after 0s [id=ami-0ed59cbb87dfa8dba]
 
 Terraform used the selected providers to generate the following execution
@@ -363,26 +360,26 @@ To perform exactly these actions, run the following command to apply:
     terraform apply "tfplan"
 module.web_env.aws_vpc.main: Creating...
 module.web_env.aws_vpc.main: Still creating... [00m10s elapsed]
-module.web_env.aws_vpc.main: Creation complete after 11s [id=vpc-01dae60b5687dda55]
+module.web_env.aws_vpc.main: Creation complete after 12s [id=vpc-076f6a6fc3ac6c524]
 module.web_env.aws_internet_gateway.main: Creating...
 module.web_env.aws_subnet.public["b"]: Creating...
-module.web_env.aws_security_group.web: Creating...
 module.web_env.aws_subnet.public["a"]: Creating...
-module.web_env.aws_internet_gateway.main: Creation complete after 1s [id=igw-0a409363db505c596]
+module.web_env.aws_security_group.web: Creating...
+module.web_env.aws_internet_gateway.main: Creation complete after 0s [id=igw-0f52d525a44620e93]
 module.web_env.aws_route_table.public: Creating...
-module.web_env.aws_route_table.public: Creation complete after 2s [id=rtb-07d5fd65ca2df5787]
-module.web_env.aws_security_group.web: Creation complete after 3s [id=sg-031d53e95fdf28256]
+module.web_env.aws_security_group.web: Creation complete after 2s [id=sg-0aed9fb4005d0de27]
+module.web_env.aws_route_table.public: Creation complete after 3s [id=rtb-06f4dabb839976f5d]
 module.web_env.aws_subnet.public["b"]: Still creating... [00m10s elapsed]
 module.web_env.aws_subnet.public["a"]: Still creating... [00m10s elapsed]
-module.web_env.aws_subnet.public["a"]: Creation complete after 11s [id=subnet-0bcd559f623f5c057]
-module.web_env.aws_subnet.public["b"]: Creation complete after 11s [id=subnet-0ed714dae987985c7]
+module.web_env.aws_subnet.public["b"]: Creation complete after 11s [id=subnet-0bbee3a6cd8ba2134]
+module.web_env.aws_subnet.public["a"]: Creation complete after 11s [id=subnet-07edf046cc823b6d2]
 module.web_env.aws_route_table_association.public["a"]: Creating...
 module.web_env.aws_route_table_association.public["b"]: Creating...
-module.web_env.aws_route_table_association.public["b"]: Creation complete after 1s [id=rtbassoc-0f2a395ad0860baf7]
-module.web_env.aws_route_table_association.public["a"]: Creation complete after 1s [id=rtbassoc-0af94ca5332e26a1c]
+module.web_env.aws_route_table_association.public["a"]: Creation complete after 0s [id=rtbassoc-0ca1f1667b2d25056]
+module.web_env.aws_route_table_association.public["b"]: Creation complete after 0s [id=rtbassoc-01d7564f2129ec106]
 module.web_env.aws_instance.web: Creating...
 module.web_env.aws_instance.web: Still creating... [00m10s elapsed]
-module.web_env.aws_instance.web: Creation complete after 13s [id=i-05fd27971fa4f7ddc]
+module.web_env.aws_instance.web: Creation complete after 13s [id=i-001b1bff09ffc6b7c]
 module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Creating...
 module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Creation complete after 0s [id=acs730-assign1-dev-cpu-alarm]
 
@@ -395,16 +392,16 @@ db_password = <sensitive>
 db_password_parameter_name = "/acs730/assign1/dev/db_password"
 db_password_parameter_version = 1
 environment = "dev"
-instance_id = "i-05fd27971fa4f7ddc"
-web_url = "http://13.221.181.105"
+instance_id = "i-001b1bff09ffc6b7c"
+web_url = "http://44.211.64.161"
 cpu_alarm_name = "acs730-assign1-dev-cpu-alarm"
 db_password = <sensitive>
 db_password_parameter_name = "/acs730/assign1/dev/db_password"
 db_password_parameter_version = 1
 environment = "dev"
-instance_id = "i-05fd27971fa4f7ddc"
-web_url = "http://13.221.181.105"
---- waiting for http://13.221.181.105 (user_data installs httpd at first boot)
+instance_id = "i-001b1bff09ffc6b7c"
+web_url = "http://44.211.64.161"
+--- waiting for http://44.211.64.161 (user_data installs httpd at first boot)
 <h1>ACS730 assign1 - dev</h1>
-<p>Host: ip-10-10-1-127.ec2.internal</p>
+<p>Host: ip-10-10-1-57.ec2.internal</p>
 <p>Database password: loaded from /acs730/assign1/dev/db_password (version 1) into /etc/acs730/app.env - never shown here.</p>
