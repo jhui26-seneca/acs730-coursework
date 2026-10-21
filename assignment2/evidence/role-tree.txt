@@ -1,0 +1,22 @@
+Wed Oct 21 09:06:06 UTC 2026
+ansible-galaxy init layout of roles/webserver:
+roles/webserver
+roles/webserver/README.md
+roles/webserver/defaults
+roles/webserver/defaults/main.yml
+roles/webserver/files
+roles/webserver/files/.gitkeep
+roles/webserver/handlers
+roles/webserver/handlers/main.yml
+roles/webserver/meta
+roles/webserver/meta/main.yml
+roles/webserver/tasks
+roles/webserver/tasks/main.yml
+roles/webserver/templates
+roles/webserver/templates/acs730-httpd.conf.j2
+roles/webserver/templates/index.html.j2
+roles/webserver/tests
+roles/webserver/tests/inventory
+roles/webserver/tests/test.yml
+roles/webserver/vars
+roles/webserver/vars/main.yml

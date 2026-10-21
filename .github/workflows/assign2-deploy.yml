@@ -1,0 +1,101 @@
+name: assign2-deploy
+
+# Assignment 2 Task 4: Ansible converges the servers in the step immediately after terraform apply.
+# Connection: Option A - Ansible over SSM (community.aws.aws_ssm). No inbound SSH, no stored key;
+# the runner uses the same session-scoped AWS credentials as Terraform, read from the assign2 environment.
+on:
+  pull_request:
+    paths: ['assignment2/**', '.github/workflows/assign2-deploy.yml']
+  push:
+    branches: [main]
+    paths:
+      - 'assignment2/**'
+      - '!assignment2/evidence/**'
+      - '!assignment2/**/*.md'
+      - '.github/workflows/assign2-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: assign2-deploy
+  cancel-in-progress: false
+
+env:
+  ANSIBLE_CONFIG: ${{ github.workspace }}/assignment2/ansible/ansible.cfg
+
+defaults:
+  run:
+    shell: bash   # -eo pipefail: a failing ansible-playbook fails the step even when piped to tee
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    environment: assign2
+    defaults:
+      run:
+        working-directory: assignment2/terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+      - run: terraform fmt -check -diff
+      - run: terraform init -input=false -no-color
+      - run: terraform validate -no-color
+      - run: terraform plan -input=false -no-color
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    environment: assign2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+          terraform_wrapper: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Ansible (pinned, same line as the workstation), boto3 and botocore
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "ansible>=12,<13" boto3 botocore
+          ansible --version | head -1
+      - name: Install session-manager-plugin (pip does not provide it)
+        run: |
+          curl -sSfo /tmp/session-manager-plugin.deb \
+            https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb
+          sudo dpkg -i /tmp/session-manager-plugin.deb
+          session-manager-plugin --version
+      - name: Terraform apply
+        working-directory: assignment2/terraform
+        run: |
+          terraform init -input=false -no-color
+          terraform apply -input=false -no-color -auto-approve
+      - name: Ansible converge (role webserver over SSM)
+        working-directory: assignment2/ansible
+        run: |
+          bash ../scripts/wait-for-ssm.sh
+          ansible-inventory --graph
+          ansible-playbook site.yml
+      - name: Second run must report changed=0
+        working-directory: assignment2/ansible
+        run: |
+          ansible-playbook site.yml | tee /tmp/run2.txt
+          if grep -Eq 'changed=[1-9]|failed=[1-9]' /tmp/run2.txt; then echo "Not idempotent"; exit 1; fi

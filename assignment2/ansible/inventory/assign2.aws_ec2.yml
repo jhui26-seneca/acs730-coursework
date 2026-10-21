@@ -1,0 +1,18 @@
+# Dynamic inventory: ask AWS at run time. No host list, no instance IDs, no IP addresses in this file.
+# The tags Terraform writes (Role=web, Assignment=assign2) are the contract between the two tools.
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+filters:
+  tag:Role: web
+  tag:Assignment: assign2
+  instance-state-name: running
+# tags.Role = web  ->  group "role_web" (matches group_vars/role_web.yml)
+keyed_groups:
+  - key: tags.Role
+    prefix: role
+# Name hosts by instance ID, never by IP: SSM connects by ID, and no IP lands in any output.
+hostnames:
+  - instance-id
+compose:
+  ansible_host: instance_id
