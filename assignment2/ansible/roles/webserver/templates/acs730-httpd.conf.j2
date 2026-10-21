@@ -1,0 +1,4 @@
+# Managed by Ansible (role: webserver). Local edits are overwritten on the next run.
+# Hide the Apache version and the OS in response headers and error pages.
+ServerTokens {{ webserver_server_tokens }}
+ServerSignature {{ webserver_server_signature }}

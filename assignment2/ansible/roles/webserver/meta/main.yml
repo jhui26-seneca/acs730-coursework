@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: webserver
+  author: jhui26-seneca
+  description: Installs, configures and starts Apache httpd on Amazon Linux 2023 (ACS730 Assignment 2)
+  license: MIT
+  min_ansible_version: "2.19"
+  galaxy_tags:
+    - web
+    - httpd
+dependencies: []

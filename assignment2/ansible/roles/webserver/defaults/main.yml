@@ -1,0 +1,11 @@
+---
+# defaults file for webserver - every value the tasks and templates use, overridable per play.
+webserver_package: httpd
+webserver_service: httpd
+webserver_docroot: /var/www/html
+webserver_conf_dir: /etc/httpd/conf.d
+webserver_title: "ACS730 assign2"
+webserver_message: "Configured by the webserver Ansible role over SSM - no SSH, no port 22."
+webserver_server_tokens: Prod
+# Quoted on purpose: a bare Off is YAML for false and would render as "False".
+webserver_server_signature: "Off"

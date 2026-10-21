@@ -1,0 +1,7 @@
+# Reach every role_web host over AWS Systems Manager - no SSH, no port 22, no key.
+# These settings apply only to the role_web group, so Packer's own connection (Session 2) is unaffected.
+ansible_connection: community.aws.aws_ssm
+ansible_aws_ssm_region: us-east-1
+ansible_aws_ssm_bucket_name: acs730-assign2-ssm-572751986246
+ansible_aws_ssm_s3_addressing_style: virtual
+ansible_python_interpreter: /usr/bin/python3

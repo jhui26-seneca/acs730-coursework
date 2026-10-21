@@ -1,0 +1,7 @@
+---
+# A deliberately thin play: everything lives in the role.
+- name: Configure the assign2 web servers
+  hosts: role_web
+  become: true
+  roles:
+    - webserver
