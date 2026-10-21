@@ -1,0 +1,15 @@
+=== boot-to-ready (ansible) - Wed Oct 21 10:06:09 UTC 2026 ===
+Clock start: the moment terraform apply is started for one fresh t3.micro (terraform/timing, mode=ansible)
+Clock stop:  the first curl of the instance's home page that returns HTTP 200 with the ACS730 assign2 page
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+AMI: ami-0636d90d6337ae368
++24s  terraform apply finished, instance i-04ada286aa08c0ccc launched
+i-04ada286aa08c0ccc: PingStatus Online
++26s  SSM online
+PLAY RECAP *********************************************************************
+i-04ada286aa08c0ccc        : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
++92s  converge finished
+<h1>ACS730 assign2</h1>
+RESULT: boot-to-ready (ansible) = 92 seconds from terraform apply start to first HTTP 200
+Destroy complete! Resources: 1 destroyed.

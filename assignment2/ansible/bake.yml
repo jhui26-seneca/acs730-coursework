@@ -1,0 +1,9 @@
+---
+# Packer's play: the same webserver role, applied to the temporary build instance that becomes the golden AMI.
+# hosts: all, because Packer hands Ansible a one-host inventory ("default") that is not in role_web,
+# so the SSM settings in group_vars/role_web.yml do not apply - Packer connects through its own tunnel.
+- name: Bake the webserver role into the golden AMI
+  hosts: all
+  become: true
+  roles:
+    - webserver
