@@ -1,0 +1,70 @@
+{
+    "Images": [
+        {
+            "PlatformDetails": "Linux/UNIX",
+            "UsageOperation": "RunInstances",
+            "BlockDeviceMappings": [
+                {
+                    "Ebs": {
+                        "DeleteOnTermination": true,
+                        "Iops": 3000,
+                        "SnapshotId": "snap-09ec6c758beface48",
+                        "VolumeSize": 8,
+                        "VolumeType": "gp3",
+                        "Throughput": 125,
+                        "Encrypted": false
+                    },
+                    "DeviceName": "/dev/xvda"
+                }
+            ],
+            "EnaSupport": true,
+            "Hypervisor": "xen",
+            "Name": "acs730-assign2-golden-20261021094429",
+            "RootDeviceName": "/dev/xvda",
+            "RootDeviceType": "ebs",
+            "SriovNetSupport": "simple",
+            "Tags": [
+                {
+                    "Key": "ManagedBy",
+                    "Value": "packer"
+                },
+                {
+                    "Key": "Course",
+                    "Value": "ACS730"
+                },
+                {
+                    "Key": "SourceAMIName",
+                    "Value": "al2023-ami-2023.12.20261016.0-kernel-6.1-x86_64"
+                },
+                {
+                    "Key": "ConfiguredBy",
+                    "Value": "ansible-role-webserver"
+                },
+                {
+                    "Key": "Assignment",
+                    "Value": "assign2"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "acs730-assign2-golden"
+                }
+            ],
+            "VirtualizationType": "hvm",
+            "BootMode": "uefi-preferred",
+            "ImdsSupport": "v2.0",
+            "SourceInstanceId": "i-042baa2596ac6daee",
+            "DeregistrationProtection": "disabled",
+            "SourceImageId": "ami-0636d90d6337ae368",
+            "SourceImageRegion": "us-east-1",
+            "FreeTierEligible": true,
+            "ImageId": "ami-09aa9cd6223cb2891",
+            "ImageLocation": "572751986246/acs730-assign2-golden-20261021094429",
+            "State": "available",
+            "OwnerId": "572751986246",
+            "CreationDate": "2026-10-21T09:48:19.000Z",
+            "Public": false,
+            "Architecture": "x86_64",
+            "ImageType": "machine"
+        }
+    ]
+}

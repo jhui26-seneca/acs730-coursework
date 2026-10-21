@@ -1,0 +1,9 @@
+=== boot-to-ready (golden) - Wed Oct 21 10:01:08 UTC 2026 ===
+Clock start: the moment terraform apply is started for one fresh t3.micro (terraform/timing, mode=golden)
+Clock stop:  the first curl of the instance's home page that returns HTTP 200 with the ACS730 assign2 page
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+AMI: ami-09aa9cd6223cb2891
++24s  terraform apply finished, instance i-01801b2ca87a55136 launched
+<h1>ACS730 assign2</h1>
+RESULT: boot-to-ready (golden) = 30 seconds from terraform apply start to first HTTP 200
+Destroy complete! Resources: 1 destroyed.

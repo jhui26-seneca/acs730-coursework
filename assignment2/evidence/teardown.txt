@@ -1,0 +1,26 @@
+=== Assignment 2 teardown - Wed Oct 21 10:11:25 UTC 2026 ===
+--- 1. Timing instance (terraform/timing)
+None.
+--- 2. Golden AMIs and the snapshots behind them
+Deregistered AMI ami-09aa9cd6223cb2891
+Deleted snapshot snap-09ec6c758beface48
+--- 3. terraform destroy (both web servers and both security groups)
+Destroy complete! Resources: 4 destroyed.
+--- 4. SSM transfer bucket (created by create-ssm-bucket.sh, not Terraform)
+Deleted bucket acs730-assign2-ssm-572751986246 and its contents
+--- 5. Proof nothing is left (each list must be [])
+Instances tagged Assignment=assign2, not terminated:
+[]
+AMIs named acs730-assign2-*:
+[]
+Snapshots tagged Assignment=assign2:
+[]
+Security groups acs730-assign2-* and leftover packer_*:
+[]
+Key pairs left by Packer (packer_*):
+[]
+S3 buckets acs730-assign2-*:
+[]
+Terraform state entries (main, timing):
+0
+0

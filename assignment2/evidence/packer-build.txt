@@ -1,0 +1,89 @@
+Wed Oct 21 09:44:28 UTC 2026
+[1;32mamazon-ebs.web: output will be in this color.[0m
+
+[1;32m==> amazon-ebs.web: Prevalidating any provided VPC information[0m
+[1;32m==> amazon-ebs.web: Prevalidating AMI Name: acs730-assign2-golden-20261021094429[0m
+[1;32m==> amazon-ebs.web: Found Image ID: ami-0636d90d6337ae368[0m
+[1;32m==> amazon-ebs.web: Found Subnet ID: subnet-0733b460939dec9d7[0m
+[1;32m==> amazon-ebs.web: Creating temporary keypair: packer_6ad8897d-e75b-1e4b-3614-949669bcf39f[0m
+[1;32m==> amazon-ebs.web: Found Security Group(s): sg-0ba1c746ce50c5354[0m
+[1;32m==> amazon-ebs.web: Launching a source AWS instance...[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Assignment": "assign2"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Name": "acs730-assign2-packer-build"[0m
+[1;32m==> amazon-ebs.web: changing public IP address config to true for instance on subnet "subnet-0733b460939dec9d7"[0m
+[1;32m==> amazon-ebs.web: Instance ID: i-042baa2596ac6daee[0m
+[1;32m==> amazon-ebs.web: Waiting for instance (i-042baa2596ac6daee) to become ready...[0m
+[1;32m==> amazon-ebs.web: Using SSH communicator to connect: localhost[0m
+[1;32m==> amazon-ebs.web: Waiting for SSH to become available...[0m
+[1;32m==> amazon-ebs.web: Starting portForwarding session "i-0dd1c590059340240-3783789pcgop4jagpr9thekpqy".[0m
+[1;32m==> amazon-ebs.web: Starting session with SessionId: i-0dd1c590059340240-3783789pcgop4jagpr9thekpqy[0m
+[1;32m==> amazon-ebs.web: Port 8701 opened for sessionId i-0dd1c590059340240-3783789pcgop4jagpr9thekpqy.[0m
+[1;32m==> amazon-ebs.web: Waiting for connections...[0m
+[1;32m==> amazon-ebs.web: Connection accepted for session [i-0dd1c590059340240-3783789pcgop4jagpr9thekpqy][0m
+[1;32m==> amazon-ebs.web: Connected to SSH![0m
+[1;32m==> amazon-ebs.web: Provisioning with Ansible...[0m
+[1;32m==> amazon-ebs.web: Not using Proxy adapter for Ansible run:
+==> amazon-ebs.web: 	Using ssh keys from Packer communicator...[0m
+[1;32m==> amazon-ebs.web: Executing Ansible: ansible-playbook -e packer_build_name="web" -e packer_builder_type=amazon-ebs --ssh-extra-args '-o IdentitiesOnly=yes' -e ansible_python_interpreter=/usr/bin/python3 -e ansible_ssh_private_key_file=/tmp/ansible-key4162763333 -i /tmp/packer-provisioner-ansible590216102 /home/ec2-user/acs730-coursework/assignment2/ansible/bake.yml[0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: PLAY [Bake the webserver role into the golden AMI] *****************************[0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: TASK [Gathering Facts] *********************************************************[0m
+[1;32m==> amazon-ebs.web: ok: [default][0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: TASK [webserver : Install the web server package] ******************************[0m
+[1;32m==> amazon-ebs.web: changed: [default][0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: TASK [webserver : Apply the server settings from the template] *****************[0m
+[1;32m==> amazon-ebs.web: changed: [default][0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: TASK [webserver : Render the home page from the template] **********************[0m
+[1;32m==> amazon-ebs.web: changed: [default][0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: TASK [webserver : Start the web server now and at every boot] ******************[0m
+[1;32m==> amazon-ebs.web: changed: [default][0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: RUNNING HANDLER [webserver : Restart web server] *******************************[0m
+[1;32m==> amazon-ebs.web: changed: [default][0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: PLAY RECAP *********************************************************************[0m
+[1;32m==> amazon-ebs.web: default                    : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0[0m
+[1;32m==> amazon-ebs.web:[0m
+[1;32m==> amazon-ebs.web: Stopping the source instance...[0m
+[1;32m==> amazon-ebs.web: Stopping instance[0m
+[1;32m==> amazon-ebs.web: Waiting for the instance to stop...[0m
+[1;32m==> amazon-ebs.web: Exiting session with sessionId: i-0dd1c590059340240-3783789pcgop4jagpr9thekpqy.[0m
+[1;32m==> amazon-ebs.web: Creating AMI acs730-assign2-golden-20261021094429 from instance i-042baa2596ac6daee[0m
+[1;32m==> amazon-ebs.web: Attaching run tags to AMI...[0m
+[1;32m==> amazon-ebs.web: AMI: ami-09aa9cd6223cb2891[0m
+[1;32m==> amazon-ebs.web: Waiting for AMI to become ready...[0m
+[1;32m==> amazon-ebs.web: Skipping Enable AMI deprecation...[0m
+[1;32m==> amazon-ebs.web: Skipping Enable AMI deregistration protection...[0m
+[1;32m==> amazon-ebs.web: Adding tags to AMI (ami-09aa9cd6223cb2891)...[0m
+[1;32m==> amazon-ebs.web: Tagging snapshot: snap-09ec6c758beface48[0m
+[1;32m==> amazon-ebs.web: Creating AMI tags[0m
+[1;32m==> amazon-ebs.web: Adding tag: "SourceAMIName": "al2023-ami-2023.12.20261016.0-kernel-6.1-x86_64"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Assignment": "assign2"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "ConfiguredBy": "ansible-role-webserver"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Course": "ACS730"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "ManagedBy": "packer"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Name": "acs730-assign2-golden"[0m
+[1;32m==> amazon-ebs.web: Creating snapshot tags[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Assignment": "assign2"[0m
+[1;32m==> amazon-ebs.web: Adding tag: "Name": "acs730-assign2-golden"[0m
+[1;32m==> amazon-ebs.web: Terminating the source AWS instance...[0m
+[1;32m==> amazon-ebs.web: Cleaning up any extra volumes...[0m
+[1;32m==> amazon-ebs.web: No volumes to clean up, skipping[0m
+[1;32m==> amazon-ebs.web: Deleting temporary keypair...[0m
+[1;32mBuild 'amazon-ebs.web' finished after 7 minutes 4 seconds.[0m
+
+==> Wait completed after 7 minutes 4 seconds
+
+==> Builds finished. The artifacts of successful builds are:
+--> amazon-ebs.web: AMIs were created:
+us-east-1: ami-09aa9cd6223cb2891
+
+
+real	7m6.845s
+user	0m10.499s
+sys	0m2.602s
