@@ -56,7 +56,13 @@ Installing the Python dependencies is two steps that must run on the same runner
 
 ## GitHub Actions vs AWS-native
 
-For a team that is all-in on AWS, I would recommend the AWS-native tools (CodeBuild and CodePipeline). Their builds run under IAM roles directly, with no OIDC bridge or stored keys, and every build and deployment lands in CloudTrail and CloudWatch alongside the rest of the team's AWS estate. GitHub Actions would win if the team valued its large marketplace of ready-made actions or expected to use another cloud later; for a team committed to AWS, tighter IAM integration and a single audit trail matter more than portability.
+The AWS-native shape of this pipeline is CodePipeline for the job graph, CodeBuild for the runners and ECR in place of GHCR. I compared them on three points:
+
+- **Where the runner lives:** GitHub Actions runs each job on a fresh GitHub-hosted virtual machine outside AWS; CodeBuild runs each build in a container inside the AWS account, and CodePipeline only orchestrates the stages.
+- **What credential each needs:** my pipeline needs nothing beyond the run's own short-lived `GITHUB_TOKEN`, because it never calls AWS and GHCR accepts that token for the push. CodeBuild and CodePipeline act through IAM service roles instead, and pushing to ECR is authorised by those roles rather than by a token.
+- **What I could actually build in the Academy account:** IAM writes are denied, so I cannot create the service roles that CodeBuild and CodePipeline normally require, while GitHub Actions needed no AWS access at all. In this account GitHub Actions is the only one of the two I could build and run end to end.
+
+For a team that is all-in on AWS, I would still recommend the AWS-native tools: builds run under IAM roles with no stored keys, the image stays in ECR next to the services that run it, and every build and deployment lands in CloudTrail and CloudWatch alongside the rest of the team's AWS estate. GitHub Actions would win if the team valued its large marketplace of ready-made actions, expected to use another cloud later, or - as in this course - could not create IAM roles.
 
 ## Files
 
@@ -85,6 +91,14 @@ Branch protection on `main` requires the `summary` check before any pull request
 - `evidence/ci-timings-*.txt` - baseline, cache miss, second run and cache hit
 - `evidence/ghcr-package.png` - the `acs730-lab4` package with tag `sha-2ab80c8f48fb`, matching a merge commit on `main`
 - `evidence/required-check.png` - a pull request with a failing required `summary` check and a disabled merge button
+
+## Differences from the instructor's walkthrough (20 Oct 2026)
+
+My pipeline reaches the same results as the walkthrough, with three differences in how it gets there:
+
+- **No separate `publish` job.** Part 9's `publish` job was replaced in Part 10 by the `image` job, which calls the reusable `docker-build.yml` and pushes to GHCR only on `main`. Keeping both would give two jobs `packages: write`; this way exactly one job widens past read, as the definition of done asks.
+- **Experiment 3 ran on a branch and stayed green.** I removed `contents: read` from the reusable workflow's build job on a branch instead of pushing the change to `main`. The run stayed green because this repository is public; the job's token log shows the contents permission had dropped away (only `Metadata: read` and `Packages: write` remained), and on a private repository the same change fails at checkout with "repository not found".
+- **Measurements recorded by script.** Image sizes and CI timings were also captured as text by `scripts/measure-image.sh` and `scripts/ci-timings.sh`, alongside the required screenshots, and the CI timings table includes an extra run that explains a pip cache miss.
 
 ## Experiments
 
