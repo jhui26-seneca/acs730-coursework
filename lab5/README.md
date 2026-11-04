@@ -50,7 +50,7 @@ Deletes: everything above, with `terraform destroy -var-file=localstack.tfvars`.
 - `evidence/describe-vpcs-after-destroy.json` - no `acs730-lab5-vpc` left after destroy
 - `evidence/ci-run-green.txt` - green run with both jobs
 - `evidence/ci-run-red.txt`, `evidence/pr-blocked.json`, `evidence/required-check-blocked.png` - the deliberate break, with the merge blocked
-- `evidence/ci-runs.txt` - the run history: green, red, green
+- `evidence/ci-runs.txt` - the `lab5-ci` run history: each deliberate break (red) followed by its fix (green), on the original pull request and on the rework pull request
 
 ## Experiments
 
@@ -70,7 +70,9 @@ Each experiment ran on a throwaway copy of this configuration (the scripts and t
 
 ### 3. Break only the formatting
 
-Run in CI on the rework pull request; write-up below once the run has finished.
+**What happened:** On the rework pull request I pushed three spaces before the closing brace of the `aws_vpc` resource in `network.tf`. The `gates` job failed at `terraform fmt -check` after 9 seconds ("Terraform exited with code 3", naming `network.tf` and showing the diff it wanted), and the `localstack` job was skipped without ever starting its container. On the green run just before it, `gates` took 15 seconds and `localstack` 1 minute 53 seconds, so the job ordering saved almost two minutes of runner time on a change that could never pass. `terraform fmt -recursive` put the brace back, and `git diff` showed that one line and nothing else.
+
+**Why:** `fmt -check` exits non-zero on any formatting difference without changing the file, and `needs: gates` makes the expensive LocalStack job wait for the cheap checks, so a formatting mistake is reported in seconds instead of after a container start and a full apply. The file was still valid HCL - `validate` would have passed - which is why it takes the `fmt` gate to catch it.
 
 ### 4. Turn the bucket off
 
