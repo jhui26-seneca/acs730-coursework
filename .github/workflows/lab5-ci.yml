@@ -38,10 +38,6 @@ jobs:
         options: >-
           --health-cmd "curl -sf http://localhost:4566/_localstack/health"
           --health-interval 5s --health-timeout 5s --health-retries 30
-    env:
-      AWS_ACCESS_KEY_ID: test
-      AWS_SECRET_ACCESS_KEY: test
-      AWS_DEFAULT_REGION: us-east-1
     defaults:
       run:
         working-directory: lab5
