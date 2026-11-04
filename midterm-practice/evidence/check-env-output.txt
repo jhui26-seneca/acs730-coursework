@@ -1,0 +1,68 @@
+
+=== 1. Workstation ===
+instance type: t3.large
+               total        used        free      shared  buff/cache   available
+Mem:           7.6Gi       711Mi       5.4Gi       0.0Ki       1.6Gi       6.7Gi
+/dev/nvme0n1p1   20G  6.2G   14G  31% /
+arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240
+
+=== 2. Tools ===
+Docker version 25.0.14, build 0bab007
+docker without sudo: OK
+Terraform v1.16.4
+gh version 2.101.0 (2026-09-15)
+  ✓ Logged in to github.com account jhui26-seneca (/home/ec2-user/.config/gh/hosts.yml)
+  - Token scopes: 'gist', 'read:org', 'read:packages', 'repo', 'workflow'
+git version 2.50.1
+Python 3.9.25
+1.7.12
+yamllint 1.37.1
+
+=== 3. LocalStack ===
+LocalStack ready on :4566
+NAMES                IMAGE                       STATUS
+midterm-localstack   localstack/localstack:3.8   Up 3 minutes (healthy)
+
+=== 4. Repository ===
+?? midterm-practice/evidence/
+?? midterm-practice/scripts/
+0ace291 Merge pull request #34 from jhui26-seneca/lab5-readme2
+c288669 Lab 5: README - what I built, add-key case, fuller design note
+23aa911 Merge pull request #33 from jhui26-seneca/lab5-rework
+--- midterm-practice/:
+total 20
+drwxr-xr-x.  4 ec2-user ec2-user    54 Nov  4 05:11 .
+drwxr-xr-x. 18 ec2-user ec2-user 16384 Nov  4 04:09 ..
+-rw-r--r--.  1 ec2-user ec2-user   254 Sep 18 00:11 README.md
+drwxr-xr-x.  2 ec2-user ec2-user    34 Nov  4 05:12 evidence
+drwxr-xr-x.  2 ec2-user ec2-user    26 Nov  4 05:12 scripts
+
+=== 5. Branch protection on main ===
+{"admins_enforced":false,"pr_required":true,"required_checks":["summary"]}
+--- rulesets:
+
+=== 6. Workflows (trigger and paths filter) ===
+  .github/workflows/assign1-ci.yml : paths-filtered, on push: push
+  .github/workflows/assign1-deploy.yml : paths-filtered, on push: push
+  .github/workflows/assign2-deploy.yml : paths-filtered, on push: push
+  .github/workflows/docker-build.yml : NO paths filter, on push: push
+  .github/workflows/lab3-ci.yml : paths-filtered, on push: push
+  .github/workflows/lab3-deploy.yml : paths-filtered, on push: push
+  .github/workflows/lab4-ci.yml : NO paths filter, on push: push
+  .github/workflows/lab5-ci.yml : paths-filtered, on push: push
+  .github/workflows/lab6-configure.yml : paths-filtered, on push: push
+
+=== 7. Actions token default ===
+{"default_workflow_permissions":"read","can_approve_pull_request_reviews":false}
+=== 8. Secrets, variables, environments ===
+AWS_REGION	us-east-1	2026-10-21T08:49:06Z
+assign2
+prod
+staging
+
+=== 9. Base images (pre-pull) ===
+docker.io/library/python:3.12-slim
+docker.io/library/python:3.11-slim
+Hello from Docker!
+
+=== CHECK COMPLETE ===~
