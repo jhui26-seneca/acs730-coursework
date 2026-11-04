@@ -1,2 +1,7 @@
+completed	success	Lab 5 rework: no dummy credentials in CI, for_each/count justification, experiments	lab5-ci	lab5-rework	pull_request	41770739730	2m7s	2026-11-04T04:02:24Z
+completed	failure	Lab 5 rework: no dummy credentials in CI, for_each/count justification, experiments	lab5-ci	lab5-rework	pull_request	41770551126	12s	2026-11-04T04:00:37Z
+completed	success	Lab 5 rework: no dummy credentials in CI, for_each/count justification, experiments	lab5-ci	lab5-rework	pull_request	41770260820	2m12s	2026-11-04T03:57:38Z
+completed	success	Merge pull request #22 from jhui26-seneca/lab5	lab5-ci	main	push	38466768182	2m22s	2026-10-13T20:56:24Z
+completed	success	Lab 5: Terraform network and web server, LocalStack CI	lab5-ci	lab5	pull_request	38466376975	2m16s	2026-10-13T20:53:24Z
 completed	failure	Lab 5: Terraform network and web server, LocalStack CI	lab5-ci	lab5	pull_request	38461431673	12s	2026-10-13T20:15:54Z
 completed	success	Lab 5: Terraform network and web server, LocalStack CI	lab5-ci	lab5	pull_request	38459156551	2m11s	2026-10-13T19:58:58Z

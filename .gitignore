@@ -14,3 +14,4 @@ __pycache__/
 packer_cache/
 crash.log
 assignment1/terraform/modules/**/.terraform.lock.hcl
+*.tfstate.*
