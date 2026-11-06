@@ -1,0 +1,87 @@
+name: Midterm Practice Terraform (LocalStack)
+
+# This workflow is provided and is correct. Do not edit it -- it is the check
+# that grades Tasks 3 and 4. Make your Terraform pass it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'midterm-practice/terraform/**'
+      - '.github/workflows/midterm-practice-terraform.yml'
+  pull_request:
+    paths:
+      - 'midterm-practice/terraform/**'
+      - '.github/workflows/midterm-practice-terraform.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fmt-validate:
+    name: fmt and validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: midterm-practice/terraform
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.10.5"
+
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+
+      - name: Init without a backend (no state, no credentials)
+        run: terraform init -backend=false
+
+      - name: Validate
+        run: terraform validate
+
+  localstack:
+    name: plan and apply against LocalStack
+    needs: fmt-validate
+    runs-on: ubuntu-latest
+
+    services:
+      localstack:
+        image: localstack/localstack:3
+        ports: ['4566:4566']
+
+    defaults:
+      run:
+        working-directory: midterm-practice/terraform
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.10.5"
+
+      - name: Wait for LocalStack to answer
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:4566/_localstack/health > /dev/null; then
+              echo "LocalStack is ready after ${i} attempt(s)"
+              exit 0
+            fi
+            echo "waiting for LocalStack (${i}/30)"
+            sleep 5
+          done
+          echo "LocalStack never became ready" >&2
+          exit 1
+
+      - name: Init
+        run: terraform init
+
+      - name: Plan
+        run: terraform plan -var-file=localstack.tfvars -out=tfplan
+
+      - name: Apply
+        run: terraform apply -auto-approve tfplan
+
+      - name: Show outputs
+        run: terraform output

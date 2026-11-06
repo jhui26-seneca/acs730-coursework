@@ -1,0 +1,68 @@
+name: Midterm Practice CI
+
+# This workflow is not doing its job. Task 2.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install lint tooling
+        run: pip install flake8==7.1.0
+
+      - name: Lint the application
+        run: flake8 --max-line-length=100 midterm-practice/app.py
+
+      - name: Check script syntax
+        run: |
+          shopt -s nullglob
+          for f in midterm-practice/scripts/*.sh; do
+            bash -n "$f"
+          done
+
+  build:
+    name: build
+    needs: lint
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: acs730-midterm:${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the image
+        run: docker build -t "$IMAGE" midterm-practice/app
+
+      - name: Fail the build if the image runs as root
+        run: |
+          user=$(docker image inspect -f '{{.Config.User}}' "$IMAGE")
+          if [ -z "$user" ] || [ "$user" = "root" ] || [ "$user" = "0" ]; then
+            echo "Image runs as root: add a USER instruction to the Dockerfile"
+            exit 1
+          fi
+          echo "Image runs as: $user"
+
+      - name: Smoke test the container
+        run: |
+          docker run -d --name api -p 8080:8000 "$IMAGE"
+          for _ in $(seq 1 30); do
+            curl -fsS http://localhost:8080/healthz >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://localhost:8080/healthz
+          curl -fsS http://localhost:8080/
+          docker logs api
+          docker rm -f api
