@@ -41,7 +41,7 @@ spec:
                   key: PLACEHOLDER_SECRET
           readinessProbe:           # only send traffic once /healthz answers
             httpGet:
-              path: /healthz-broken
+              path: /healthz
               port: http
             initialDelaySeconds: 2
             periodSeconds: 5
