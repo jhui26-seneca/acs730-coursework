@@ -1,0 +1,38 @@
+# Lab 7: validate the Kubernetes manifests on every pull request that touches Lab 7.
+# Runs on a GitHub-hosted runner (ubuntu-latest), never the self-hosted one, so a pull request
+# from anyone runs on GitHub's machine, not on the workstation next to the cluster.
+# kubeconform -strict checks every object in lab7/k8s/ against the Kubernetes v1.31.0 schemas
+# (the version kind v0.24.0 runs), and fails on unknown or misspelled fields.
+# Not a required check, so its paths: filter can't block pull requests that don't touch Lab 7.
+name: lab7-ci
+
+on:
+  pull_request:
+    paths:
+      - "lab7/**"
+      - ".github/workflows/lab7-ci.yml"
+      - ".github/workflows/lab7-deploy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  kubeconform:
+    runs-on: ubuntu-latest
+    env:
+      KUBECONFORM_VERSION: v0.6.7
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kubeconform (checksum verified)
+        run: |
+          base="https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}"
+          curl -fsSLO "$base/kubeconform-linux-amd64.tar.gz"
+          curl -fsSLO "$base/CHECKSUMS"
+          grep ' kubeconform-linux-amd64.tar.gz$' CHECKSUMS | sha256sum -c -
+          tar -xzf kubeconform-linux-amd64.tar.gz kubeconform
+          sudo install -m 0755 kubeconform /usr/local/bin/kubeconform
+          kubeconform -v
+
+      - name: Validate lab7/k8s against the Kubernetes v1.31.0 schemas
+        run: kubeconform -strict -summary -output text -kubernetes-version 1.31.0 lab7/k8s/

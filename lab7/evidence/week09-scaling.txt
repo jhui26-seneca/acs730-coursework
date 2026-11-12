@@ -1,0 +1,42 @@
+Thu Nov 12 05:30:40 UTC 2026
+--- before
+NAME                               READY   STATUS    RESTARTS   AGE
+acs730-lab7-web-5d87fd5488-f854x   1/1     Running   0          2m7s
+acs730-lab7-web-5d87fd5488-fpbnz   1/1     Running   0          2m7s
+
+$ kubectl scale --replicas=4
+deployment.apps/acs730-lab7-web scaled
+Waiting for deployment "acs730-lab7-web" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "acs730-lab7-web" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "acs730-lab7-web" rollout to finish: 3 of 4 updated replicas are available...
+deployment "acs730-lab7-web" successfully rolled out
+NAME                               READY   STATUS    RESTARTS   AGE
+acs730-lab7-web-5d87fd5488-28mkb   1/1     Running   0          5s
+acs730-lab7-web-5d87fd5488-bps49   1/1     Running   0          5s
+acs730-lab7-web-5d87fd5488-f854x   1/1     Running   0          2m13s
+acs730-lab7-web-5d87fd5488-fpbnz   1/1     Running   0          2m13s
+Pod count: 4
+
+$ kubectl scale --replicas=2
+deployment.apps/acs730-lab7-web scaled
+NAME                               READY   STATUS    RESTARTS   AGE
+acs730-lab7-web-5d87fd5488-f854x   1/1     Running   0          2m28s
+acs730-lab7-web-5d87fd5488-fpbnz   1/1     Running   0          2m28s
+Pod count: 2
+
+--- self-healing: delete one Pod and the ReplicaSet replaces it
+$ kubectl delete pod acs730-lab7-web-5d87fd5488-f854x
+pod "acs730-lab7-web-5d87fd5488-f854x" deleted
+NAME                               READY   STATUS    RESTARTS   AGE
+acs730-lab7-web-5d87fd5488-fpbnz   1/1     Running   0          2m31s
+acs730-lab7-web-5d87fd5488-j94wt   0/1     Running   0          2s
+Waiting for deployment "acs730-lab7-web" rollout to finish: 1 of 2 updated replicas are available...
+deployment "acs730-lab7-web" successfully rolled out
+NAME                               READY   STATUS    RESTARTS   AGE
+acs730-lab7-web-5d87fd5488-fpbnz   1/1     Running   0          2m35s
+acs730-lab7-web-5d87fd5488-j94wt   1/1     Running   0          6s
+
+--- declarative wins: a manual scale to 3 is undone by re-applying deployment.yaml (replicas: 2)
+deployment.apps/acs730-lab7-web scaled
+deployment.apps/acs730-lab7-web configured
+spec.replicas after apply: 2

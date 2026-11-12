@@ -1,0 +1,21 @@
+Thu Nov 12 05:30:09 UTC 2026
+$ curl -i http://localhost:30080/
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Thu, 12 Nov 2026 05:30:09 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Length: 29
+
+ACS730 Lab 4 -- version lab7
+
+$ curl -i http://localhost:30080/healthz
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Thu, 12 Nov 2026 05:30:09 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 33
+
+{"status":"ok","version":"lab7"}
+

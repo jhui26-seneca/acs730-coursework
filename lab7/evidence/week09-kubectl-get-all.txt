@@ -1,0 +1,29 @@
+Thu Nov 12 05:29:52 UTC 2026
+$ kubectl get nodes -o wide
+NAME                        STATUS   ROLES           AGE     VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                    CONTAINER-RUNTIME
+acs730-lab7-control-plane   Ready    control-plane   5m24s   v1.31.0   172.18.0.2    <none>        Debian GNU/Linux 12 (bookworm)   6.18.48-107.148.amzn2023.x86_64   containerd://1.7.18
+
+$ kubectl -n acs730-lab7 get all -o wide
+NAME                                   READY   STATUS    RESTARTS   AGE   IP           NODE                        NOMINATED NODE   READINESS GATES
+pod/acs730-lab7-web-5d87fd5488-f854x   1/1     Running   0          79s   10.244.0.6   acs730-lab7-control-plane   <none>           <none>
+pod/acs730-lab7-web-5d87fd5488-fpbnz   1/1     Running   0          79s   10.244.0.5   acs730-lab7-control-plane   <none>           <none>
+
+NAME                      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+service/acs730-lab7-svc   NodePort   10.96.112.236   <none>        80:30080/TCP   79s   app=acs730-lab7-web
+
+NAME                              READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/acs730-lab7-web   2/2     2            2           79s   web          acs730-lab4:week9   app=acs730-lab7-web
+
+NAME                                         DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES              SELECTOR
+replicaset.apps/acs730-lab7-web-5d87fd5488   2         2         2       79s   web          acs730-lab4:week9   app=acs730-lab7-web,pod-template-hash=5d87fd5488
+
+$ kubectl -n acs730-lab7 get endpoints,configmap,secret
+NAME                        ENDPOINTS                         AGE
+endpoints/acs730-lab7-svc   10.244.0.5:8000,10.244.0.6:8000   79s
+
+NAME                           DATA   AGE
+configmap/acs730-lab7-config   1      79s
+configmap/kube-root-ca.crt     1      79s
+
+NAME                        TYPE     DATA   AGE
+secret/acs730-lab7-secret   Opaque   1      79s

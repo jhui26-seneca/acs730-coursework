@@ -1,0 +1,79 @@
+# Lab 7: deploy to the kind cluster on the workstation, through the self-hosted runner.
+# Triggers: push to main only (after review and merge), plus workflow_dispatch for testing.
+# Never pull_request: that would let a stranger's fork run code on the workstation, next to the
+# cluster and the instance's credentials.
+# The runner (user acs730-lab7-runner) logs in to the cluster as the acs730-lab7-deployer
+# ServiceAccount, so every kubectl here is limited by lab7/k8s/rbac.yaml.
+# The paths filter means evidence and README commits don't redeploy.
+name: lab7-deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lab7/k8s/**"
+      - "lab4/**"
+      - ".github/workflows/lab7-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:              # two merges in a row deploy one after the other, never at the same time
+  group: lab7-deploy
+  cancel-in-progress: false
+
+env:
+  CLUSTER: acs730-lab7
+  NAMESPACE: acs730-lab7
+  DEPLOYMENT: acs730-lab7-web
+  IMAGE: acs730-lab4
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, acs730-lab7]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show the cluster identity this job runs as
+        run: kubectl auth whoami
+
+      - name: Build the Week 4 image from lab4/, tagged with the commit SHA
+        run: docker build -t "$IMAGE:${GITHUB_SHA::12}" lab4/
+
+      - name: Load it into the kind node (its containerd is not the workstation's Docker)
+        run: kind load docker-image "$IMAGE:${GITHUB_SHA::12}" --name "$CLUSTER"
+
+      # Paused, the Deployment records the manifest and the new image as ONE change, so each
+      # deploy is one revision and kubectl rollout undo goes back to the last good build.
+      # apply comes BEFORE set image: the other way round, apply would reset the image to the
+      # week9 tag written in deployment.yaml and the run would "succeed" with the wrong build.
+      - name: Apply the manifests the pipeline owns, then point the Deployment at this build
+        run: |
+          kubectl -n "$NAMESPACE" rollout pause "deployment/$DEPLOYMENT"
+          kubectl -n "$NAMESPACE" apply -f lab7/k8s/configmap.yaml -f lab7/k8s/deployment.yaml -f lab7/k8s/service.yaml
+          kubectl -n "$NAMESPACE" set image "deployment/$DEPLOYMENT" web="$IMAGE:${GITHUB_SHA::12}"
+          kubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT"
+
+      # The gate. set image returns as soon as the API server accepts the change; this waits
+      # until the new Pods are Ready and exits non-zero if they aren't, failing the run.
+      - name: Wait for the rollout to finish
+        run: kubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=120s
+
+      - name: Smoke test through the Service
+        run: |
+          for i in $(seq 1 10); do
+            curl -fsS http://localhost:30080/healthz && echo && exit 0
+            sleep 3
+          done
+          echo "the Service never answered on /healthz" >&2
+          exit 1
+
+      - name: Never leave the Deployment paused
+        if: always()
+        run: kubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT" 2>/dev/null || true
+
+      - name: Record what is running
+        if: always()
+        run: kubectl -n "$NAMESPACE" get deployment,replicaset,pods -o wide

@@ -1,0 +1,9 @@
+# Lab 7: the namespace every other Lab 7 object lives in.
+# Apply this file on its own first: kubectl apply -f lab7/k8s/ goes alphabetically and would
+# try to create the Deployment before the namespace exists.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: acs730-lab7
+  labels:
+    app.kubernetes.io/part-of: acs730-lab7
