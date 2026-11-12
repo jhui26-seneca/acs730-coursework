@@ -1,0 +1,497 @@
+Thu Nov 12 18:24:19 UTC 2026
+=== 1. Kubernetes: the final project's namespace, then Lab 7's Service back on NodePort 30080
+namespace "acs730-final" deleted
+service/acs730-lab7-svc created
+deployment.apps/acs730-lab7-web scaled
+
+=== 2. The self-hosted runner: stop the service, deregister it from GitHub
+
+/etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service
+○ actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)
+     Loaded: loaded (/etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service; enabled; preset: disabled)
+     Active: inactive (dead) since Thu 2026-11-12 18:24:31 UTC; 18ms ago
+   Duration: 25min 20.523s
+    Process: 10307 ExecStart=/home/acs730-lab7-runner/actions-runner/runsvc.sh (code=exited, status=0/SUCCESS)
+   Main PID: 10307 (code=exited, status=0/SUCCESS)
+        CPU: 20.822s
+
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopping actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)...
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Shutting down runner listener
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGINT to runner listener to stop
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGKILL to runner listener
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Exiting...
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exited with error code 0
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exit with 0 return code, stop the service, no retry needed.
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Deactivated successfully.
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopped actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner).
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Consumed 20.822s CPU time.
+
+/etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service
+○ actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)
+     Loaded: loaded (/etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service; enabled; preset: disabled)
+     Active: inactive (dead) since Thu 2026-11-12 18:24:31 UTC; 60ms ago
+   Duration: 25min 20.523s
+    Process: 10307 ExecStart=/home/acs730-lab7-runner/actions-runner/runsvc.sh (code=exited, status=0/SUCCESS)
+   Main PID: 10307 (code=exited, status=0/SUCCESS)
+        CPU: 20.822s
+
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopping actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)...
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Shutting down runner listener
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGINT to runner listener to stop
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGKILL to runner listener
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Exiting...
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exited with error code 0
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exit with 0 return code, stop the service, no retry needed.
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Deactivated successfully.
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopped actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner).
+Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Consumed 20.822s CPU time.
+Removed "/etc/systemd/system/multi-user.target.wants/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service".
+
+# Runner removal
+
+
+√ Runner removed successfully
+√ Removed .credentials
+√ Removed .runner
+
+--- proof
+runners registered in GitHub: 0
+runner services on this machine: 0
+
+=== 3. Terraform: destroy the staging stack (the Assignment 1 module)
+module.web_env.data.aws_ssm_parameter.db_password: Reading...
+module.web_env.data.aws_ami.web: Reading...
+module.web_env.data.aws_availability_zones.available: Reading...
+module.web_env.aws_vpc.main: Refreshing state... [id=vpc-0423392a767fd12e4]
+module.web_env.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.web_env.data.aws_ssm_parameter.db_password: Read complete after 0s [id=/acs730/assign1/final-staging/db_password]
+module.web_env.data.aws_ami.web: Read complete after 1s [id=ami-0355052079a448ed4]
+module.web_env.aws_subnet.public["a"]: Refreshing state... [id=subnet-0c93ffec16c0877d6]
+module.web_env.aws_internet_gateway.main: Refreshing state... [id=igw-010e2285c44da3fa8]
+module.web_env.aws_subnet.public["b"]: Refreshing state... [id=subnet-0417deb5e3931ec00]
+module.web_env.aws_security_group.web: Refreshing state... [id=sg-0123e8959381b2cfd]
+module.web_env.aws_route_table.public: Refreshing state... [id=rtb-0b5ffb59a1ece1f68]
+module.web_env.aws_route_table_association.public["a"]: Refreshing state... [id=rtbassoc-0d389a79ceda3d2da]
+module.web_env.aws_route_table_association.public["b"]: Refreshing state... [id=rtbassoc-08fab4e0251cc1bd0]
+module.web_env.aws_instance.web: Refreshing state... [id=i-07fd9bc5fec936f1b]
+module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Refreshing state... [id=acs730-assign1-staging-cpu-alarm]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # module.web_env.aws_cloudwatch_metric_alarm.cpu_high will be destroyed
+  - resource "aws_cloudwatch_metric_alarm" "cpu_high" {
+      - actions_enabled                       = true -> null
+      - alarm_actions                         = [] -> null
+      - alarm_description                     = "ACS730 assign1 staging: average CPU of acs730-assign1-staging-web above 70% for 3 periods of 60 s" -> null
+      - alarm_name                            = "acs730-assign1-staging-cpu-alarm" -> null
+      - arn                                   = "arn:aws:cloudwatch:us-east-1:572751986246:alarm:acs730-assign1-staging-cpu-alarm" -> null
+      - comparison_operator                   = "GreaterThanThreshold" -> null
+      - datapoints_to_alarm                   = 0 -> null
+      - dimensions                            = {
+          - "InstanceId" = "i-07fd9bc5fec936f1b"
+        } -> null
+      - evaluation_periods                    = 3 -> null
+      - id                                    = "acs730-assign1-staging-cpu-alarm" -> null
+      - insufficient_data_actions             = [] -> null
+      - metric_name                           = "CPUUtilization" -> null
+      - namespace                             = "AWS/EC2" -> null
+      - ok_actions                            = [] -> null
+      - period                                = 60 -> null
+      - statistic                             = "Average" -> null
+      - tags                                  = {
+          - "Name" = "acs730-assign1-staging-cpu-alarm"
+        } -> null
+      - tags_all                              = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-cpu-alarm"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - threshold                             = 70 -> null
+      - treat_missing_data                    = "missing" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.web_env.aws_instance.web will be destroyed
+  - resource "aws_instance" "web" {
+      - ami                                  = "ami-0355052079a448ed4" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:572751986246:instance/i-07fd9bc5fec936f1b" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "us-east-1a" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 2 -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - iam_instance_profile                 = "LabInstanceProfile" -> null
+      - id                                   = "i-07fd9bc5fec936f1b" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t3.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - monitoring                           = true -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-08f04622e3fedd3f6" -> null
+      - private_dns                          = "ip-10-40-1-100.ec2.internal" -> null
+      - private_ip                           = "10.40.1.100" -> null
+      - public_dns                           = "ec2-44-211-141-61.compute-1.amazonaws.com" -> null
+      - public_ip                            = "<vm-public-ip>" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-0c93ffec16c0877d6" -> null
+      - tags                                 = {
+          - "Name" = "acs730-assign1-staging-web"
+        } -> null
+      - tags_all                             = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-web"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data                            = (sensitive value) -> null
+      - user_data_replace_on_change          = true -> null
+      - vpc_security_group_ids               = [
+          - "sg-0123e8959381b2cfd",
+        ] -> null
+        # (7 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count       = 1 -> null
+          - threads_per_core = 2 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "unlimited" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/xvda" -> null
+          - encrypted             = false -> null
+          - iops                  = 3000 -> null
+          - tags                  = {
+              - "Course"      = "ACS730"
+              - "Environment" = "staging"
+              - "ManagedBy"   = "terraform"
+              - "Project"     = "final"
+              - "Role"        = "web"
+            } -> null
+          - tags_all              = {
+              - "Course"      = "ACS730"
+              - "Environment" = "staging"
+              - "ManagedBy"   = "terraform"
+              - "Project"     = "final"
+              - "Role"        = "web"
+            } -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-0a4976a3bc9b3ccd9" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp3" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # module.web_env.aws_internet_gateway.main will be destroyed
+  - resource "aws_internet_gateway" "main" {
+      - arn      = "arn:aws:ec2:us-east-1:572751986246:internet-gateway/igw-010e2285c44da3fa8" -> null
+      - id       = "igw-010e2285c44da3fa8" -> null
+      - owner_id = "572751986246" -> null
+      - tags     = {
+          - "Name" = "acs730-assign1-staging-igw"
+        } -> null
+      - tags_all = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-igw"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - vpc_id   = "vpc-0423392a767fd12e4" -> null
+    }
+
+  # module.web_env.aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:us-east-1:572751986246:route-table/rtb-0b5ffb59a1ece1f68" -> null
+      - id               = "rtb-0b5ffb59a1ece1f68" -> null
+      - owner_id         = "572751986246" -> null
+      - propagating_vgws = [] -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-010e2285c44da3fa8"
+                # (11 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "acs730-assign1-staging-rt"
+        } -> null
+      - tags_all         = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-rt"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - vpc_id           = "vpc-0423392a767fd12e4" -> null
+    }
+
+  # module.web_env.aws_route_table_association.public["a"] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0d389a79ceda3d2da" -> null
+      - route_table_id = "rtb-0b5ffb59a1ece1f68" -> null
+      - subnet_id      = "subnet-0c93ffec16c0877d6" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.web_env.aws_route_table_association.public["b"] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-08fab4e0251cc1bd0" -> null
+      - route_table_id = "rtb-0b5ffb59a1ece1f68" -> null
+      - subnet_id      = "subnet-0417deb5e3931ec00" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.web_env.aws_security_group.web will be destroyed
+  - resource "aws_security_group" "web" {
+      - arn                    = "arn:aws:ec2:us-east-1:572751986246:security-group/sg-0123e8959381b2cfd" -> null
+      - description            = "ACS730 assign1 staging web server - HTTP only, no SSH" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "All outbound (dnf, SSM agent)"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0123e8959381b2cfd" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTP from anywhere"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+        ] -> null
+      - name                   = "acs730-assign1-staging-sg" -> null
+      - owner_id               = "572751986246" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "acs730-assign1-staging-sg"
+        } -> null
+      - tags_all               = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-sg"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - vpc_id                 = "vpc-0423392a767fd12e4" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.web_env.aws_subnet.public["a"] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:572751986246:subnet/subnet-0c93ffec16c0877d6" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1a" -> null
+      - availability_zone_id                           = "use1-az2" -> null
+      - cidr_block                                     = "10.40.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0c93ffec16c0877d6" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "572751986246" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Name" = "acs730-assign1-staging-subnet-a"
+        } -> null
+      - tags_all                                       = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-subnet-a"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - vpc_id                                         = "vpc-0423392a767fd12e4" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.web_env.aws_subnet.public["b"] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:572751986246:subnet/subnet-0417deb5e3931ec00" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1b" -> null
+      - availability_zone_id                           = "use1-az4" -> null
+      - cidr_block                                     = "10.40.2.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0417deb5e3931ec00" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "572751986246" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Name" = "acs730-assign1-staging-subnet-b"
+        } -> null
+      - tags_all                                       = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-subnet-b"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - vpc_id                                         = "vpc-0423392a767fd12e4" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.web_env.aws_vpc.main will be destroyed
+  - resource "aws_vpc" "main" {
+      - arn                                  = "arn:aws:ec2:us-east-1:572751986246:vpc/vpc-0423392a767fd12e4" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.40.0.0/16" -> null
+      - default_network_acl_id               = "acl-087ce0852d68c4278" -> null
+      - default_route_table_id               = "rtb-069f30bfd78f2a5ab" -> null
+      - default_security_group_id            = "sg-0fb719c82aa20e67f" -> null
+      - dhcp_options_id                      = "dopt-001cf5cd26a6ccd11" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-0423392a767fd12e4" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-069f30bfd78f2a5ab" -> null
+      - owner_id                             = "572751986246" -> null
+      - tags                                 = {
+          - "Name" = "acs730-assign1-staging-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-vpc"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 10 to destroy.
+
+Changes to Outputs:
+  - cpu_alarm_name                = "acs730-assign1-staging-cpu-alarm" -> null
+  - db_password_parameter_version = 1 -> null
+  - environment                   = "staging" -> null
+  - instance_id                   = "i-07fd9bc5fec936f1b" -> null
+  - web_url                       = "http://<vm-public-ip>" -> null
+module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Destroying... [id=acs730-assign1-staging-cpu-alarm]
+module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Destruction complete after 1s
+module.web_env.aws_instance.web: Destroying... [id=i-07fd9bc5fec936f1b]
+module.web_env.aws_instance.web: Still destroying... [id=i-07fd9bc5fec936f1b, 00m10s elapsed]
+module.web_env.aws_instance.web: Destruction complete after 19s
+module.web_env.aws_route_table_association.public["a"]: Destroying... [id=rtbassoc-0d389a79ceda3d2da]
+module.web_env.aws_security_group.web: Destroying... [id=sg-0123e8959381b2cfd]
+module.web_env.aws_route_table_association.public["b"]: Destroying... [id=rtbassoc-08fab4e0251cc1bd0]
+module.web_env.aws_route_table_association.public["a"]: Destruction complete after 1s
+module.web_env.aws_route_table_association.public["b"]: Destruction complete after 1s
+module.web_env.aws_subnet.public["b"]: Destroying... [id=subnet-0417deb5e3931ec00]
+module.web_env.aws_subnet.public["a"]: Destroying... [id=subnet-0c93ffec16c0877d6]
+module.web_env.aws_route_table.public: Destroying... [id=rtb-0b5ffb59a1ece1f68]
+module.web_env.aws_security_group.web: Destruction complete after 1s
+module.web_env.aws_subnet.public["a"]: Destruction complete after 0s
+module.web_env.aws_route_table.public: Destruction complete after 0s
+module.web_env.aws_internet_gateway.main: Destroying... [id=igw-010e2285c44da3fa8]
+module.web_env.aws_subnet.public["b"]: Destruction complete after 0s
+module.web_env.aws_internet_gateway.main: Destruction complete after 1s
+module.web_env.aws_vpc.main: Destroying... [id=vpc-0423392a767fd12e4]
+module.web_env.aws_vpc.main: Destruction complete after 0s
+
+Destroy complete! Resources: 10 destroyed.
+
+=== 4. The SSM parameter (after the destroy, which still reads it) and the transfer bucket
+deleted /acs730/assign1/final-staging/db_password
+remove_bucket: acs730-final-ssm-572751986246
+deleted bucket acs730-final-ssm-572751986246
+
+=== 5. The frontend images on the workstation
+Untagged: acs730-final-web:35e856b36b1d
+Untagged: acs730-final-web:8d368586b551
+Untagged: acs730-final-web:bootstrap
+Untagged: acs730-final-web:local
+Deleted: sha256:66b3051ec8e51048d4dde60b5b2c879e701562cb2f64e5f8bb47593655d590de
+
+=== 6. Proof that nothing is left
+instances tagged Project=final (not terminated): []
+VPCs tagged Project=final: []
+CloudWatch alarms named acs730-assign1-staging*: []
+SSM parameters under /acs730/assign1/final-: []
+bucket acs730-final-ssm-572751986246: gone
+resources in the staging state: 0
+namespace acs730-final: Error from server (NotFound): namespaces "acs730-final" not found
+runners registered in GitHub: 0
+Lab 7 back on NodePort 30080: ACS730 Lab 4 -- version lab7
