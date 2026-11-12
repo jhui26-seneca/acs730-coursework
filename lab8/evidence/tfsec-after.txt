@@ -1,0 +1,41 @@
+Thu Nov 12 07:03:38 UTC 2026
+$ tfsec lab8 --minimum-severity HIGH --no-color
+
+======================================================
+tfsec is joining the Trivy family
+
+tfsec will continue to remain available 
+for the time being, although our engineering 
+attention will be directed at Trivy going forward.
+
+You can read more here: 
+https://github.com/aquasecurity/tfsec/discussions/1994
+======================================================
+  timings
+  ──────────────────────────────────────────
+  disk i/o             30.758µs
+  parsing              888.504µs
+  adaptation           151.381µs
+  checks               8.35704ms
+  total                9.427683ms
+
+  counts
+  ──────────────────────────────────────────
+  modules downloaded   0
+  modules processed    1
+  blocks processed     9
+  files read           1
+
+  results
+  ──────────────────────────────────────────
+  passed               4
+  ignored              4
+  critical             0
+  high                 0
+  medium               0
+  low                  0
+
+
+No problems detected!
+
+exit code: 0

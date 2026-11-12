@@ -1,0 +1,7 @@
+# gitleaks false positives, recorded rather than hidden (Lab 8, jhui26-seneca, 2026-11-12).
+# generic-api-key matches KEY_NAME="acs730-lab2-key" in three Lab 2 scripts. That value is the
+# name of an EC2 key pair, not a credential; the private key itself was never committed.
+# Lab 2 is already graded, so the scripts stay as they are and the findings are listed here.
+86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/create-instance.sh:generic-api-key:6
+86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/delete-key-pair.sh:generic-api-key:5
+86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/create-key-pair.sh:generic-api-key:5
