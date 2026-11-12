@@ -1,0 +1,94 @@
+Thu Nov 12 17:45:00 UTC 2026
+--- the page before Ansible (written by the Assignment 1 module user_data at first boot)
+$ curl -s http://<vm-public-ip>/
+<h1>ACS730 assign1 - staging</h1>
+<p>Host: ip-10-40-1-100.ec2.internal</p>
+<p>Database password: loaded from /acs730/assign1/final-staging/db_password (version 1) into /etc/acs730/app.env - never shown here.</p>
+
+$ ansible-inventory --graph
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+@all:
+  |--@ungrouped:
+  |--@aws_ec2:
+  |  |--i-07fd9bc5fec936f1b
+  |--@role_web:
+  |  |--i-07fd9bc5fec936f1b
+
+$ ansible-playbook site.yml   (run 1)
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+[WARNING]: Found variable using reserved name 'tags'.
+Origin: <unknown>
+
+tags
+
+
+PLAY [Configure the final project backend (Apache on the VM)] ******************
+
+TASK [Gathering Facts] *********************************************************
+ok: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Install the web server package] ******************************
+ok: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Apply the server settings from the template] *****************
+changed: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Render the home page from the template] **********************
+changed: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Start the web server now and at every boot] ******************
+ok: [i-07fd9bc5fec936f1b]
+
+RUNNING HANDLER [webserver : Restart web server] *******************************
+changed: [i-07fd9bc5fec936f1b]
+
+PLAY RECAP *********************************************************************
+i-07fd9bc5fec936f1b        : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+Thu Nov 12 17:45:25 UTC 2026
+$ ansible-playbook site.yml   (run 2, nothing edited in between)
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+[WARNING]: Found variable using reserved name 'tags'.
+Origin: <unknown>
+
+tags
+
+
+PLAY [Configure the final project backend (Apache on the VM)] ******************
+
+TASK [Gathering Facts] *********************************************************
+ok: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Install the web server package] ******************************
+ok: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Apply the server settings from the template] *****************
+ok: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Render the home page from the template] **********************
+ok: [i-07fd9bc5fec936f1b]
+
+TASK [webserver : Start the web server now and at every boot] ******************
+ok: [i-07fd9bc5fec936f1b]
+
+PLAY RECAP *********************************************************************
+i-07fd9bc5fec936f1b        : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+--- the page after Ansible (the Assignment 2 role template, final-project values)
+$ curl -s http://<vm-public-ip>/
+<!DOCTYPE html>
+<html>
+<head><title>ACS730 final project - backend</title></head>
+<body>
+<h1>ACS730 final project - backend</h1>
+<p>Served by Apache on an EC2 VM: provisioned by the Assignment 1 Terraform module, configured by the Assignment 2 Ansible role over SSM.</p>
+<p>Built by the Ansible role: webserver</p>
+</body>
+</html>
+$ curl -sI http://<vm-public-ip>/ | grep Server
+Server: Apache

@@ -1,0 +1,55 @@
+# Final project: the frontend (final-project/app) as 2 Pods. The image tag here is the one-time
+# bootstrap build; the deploy pipeline changes it with kubectl set image AFTER kubectl apply.
+# BACKEND_URL and APP_VERSION come from ConfigMap acs730-final-config, which is generated from the
+# Terraform output (the VM's address is never committed).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acs730-final-web
+  namespace: acs730-final
+  labels:
+    app: acs730-final-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: acs730-final-web
+  template:
+    metadata:
+      labels:
+        app: acs730-final-web
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001            # appuser's uid from the Dockerfile
+      containers:
+        - name: web
+          image: acs730-final-web:bootstrap
+          imagePullPolicy: IfNotPresent   # use the copy kind load put on the node; never pull
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: acs730-final-config
+          readinessProbe:           # this process only: a VM outage must not empty the Service
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false

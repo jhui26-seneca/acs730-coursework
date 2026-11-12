@@ -1,0 +1,18 @@
+# Final project: NodePort 30080, the one port lab7/kind-cluster.yaml maps to 127.0.0.1 on the
+# workstation. Lab 7's Service is removed by scripts/bootstrap-k8s.sh to free it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: acs730-final-svc
+  namespace: acs730-final
+  labels:
+    app: acs730-final-web
+spec:
+  type: NodePort
+  selector:
+    app: acs730-final-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      nodePort: 30080

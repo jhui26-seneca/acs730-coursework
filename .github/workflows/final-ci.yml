@@ -1,0 +1,79 @@
+# Final project: checks on every pull request that touches the final project. GitHub-hosted only,
+# no AWS credentials, nothing deployed. Not a required check, so its paths: filter can't leave other
+# pull requests waiting (the required checks are Lab 4's summary and Lab 8's tfsec).
+name: final-ci
+
+on:
+  pull_request:
+    paths:
+      - "final-project/**"
+      - ".github/workflows/final-ci.yml"
+      - ".github/workflows/final-deploy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+          terraform_wrapper: false
+      - name: fmt, then validate both callers of the Assignment 1 module (no backend, no AWS)
+        run: |
+          terraform fmt -check -recursive final-project/terraform
+          for env in staging prod; do
+            terraform -chdir=final-project/terraform/$env init -backend=false -input=false -no-color
+            terraform -chdir=final-project/terraform/$env validate -no-color
+          done
+
+  ansible:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax-check the play against the Assignment 2 role (no inventory lookup, no AWS)
+        working-directory: final-project/ansible
+        env:
+          ANSIBLE_INVENTORY_ENABLED: host_list
+        run: |
+          python -m pip install "ansible-core>=2.19,<2.20"
+          ansible-playbook -i localhost, site.yml --syntax-check
+
+  kubeconform:
+    runs-on: ubuntu-24.04
+    env:
+      KUBECONFORM_VERSION: v0.6.7
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install kubeconform (checksum verified)
+        run: |
+          base="https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}"
+          curl -fsSLO "$base/kubeconform-linux-amd64.tar.gz"
+          curl -fsSLO "$base/CHECKSUMS"
+          grep ' kubeconform-linux-amd64.tar.gz$' CHECKSUMS | sha256sum -c -
+          tar -xzf kubeconform-linux-amd64.tar.gz kubeconform
+          sudo install -m 0755 kubeconform /usr/local/bin/kubeconform
+      - name: Validate final-project/k8s against the Kubernetes v1.31.0 schemas
+        run: kubeconform -strict -summary -output text -kubernetes-version 1.31.0 final-project/k8s/
+
+  app:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: final-project/app
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests (the backend call is faked, no network) and lint
+        run: |
+          python -m pip install -r requirements.txt -r requirements-dev.txt flake8
+          python -m pytest
+          python -m flake8 . --max-line-length 100
