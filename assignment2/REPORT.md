@@ -100,6 +100,21 @@ My numbers say where the time goes, not that one approach is free. Baking cost 7
 
 `scripts/teardown.sh` removed everything in dependency order and recorded it in `evidence/teardown.txt`: no timing instance was left; it deregistered `ami-09aa9cd6223cb2891` and then deleted `snap-09ec6c758beface48` - deregistering alone would have left the snapshot billing; `terraform destroy` removed both servers and both security groups (`4 destroyed`); and it deleted the SSM bucket and its contents. It ends with proof that nothing is left - no instance, AMI, snapshot, security group, Packer key pair or bucket for the assignment, and both Terraform states empty - and `cleanup-check.sh` found nothing unexpected. Only my workstation and the term-long state bucket remain.
 
+## Security review
+
+After the Week 12 lecture I ran tfsec v1.28.14, the scanner my Lab 8 gate uses, over this folder (`evidence/tfsec-scan.txt`). It reads `.tf` files only and needs no AWS access. On `terraform/main.tf` it passed 10 checks and reported 4 problems, 2 CRITICAL and 2 HIGH, with exit code 1. It treated `terraform/` as the root module and didn't read the `timing/` subfolder, so I scanned that separately and appended the result to the same file: one more HIGH, for the same reason.
+
+| Finding | Severity | Where | My decision |
+|---|---|---|---|
+| `aws-ec2-no-public-egress-sgr` | CRITICAL, twice | The outbound rule of `acs730-assign2-sg` (`main.tf` line 89) and of `acs730-assign2-packer-sg` (line 106) | Accept for this lab; narrow it first in production |
+| `aws-ec2-enable-at-rest-encryption` | HIGH, three times | `aws_instance.web[0]` and `web[1]` in `main.tf`, and `aws_instance.b2r` in `timing/main.tf` | A real gap; fix with one line per instance |
+
+The two problems the brief treats as security findings don't appear. There is no port 22 rule anywhere for `aws-ec2-no-public-ingress-sgr` to report, and no SSH key exists to be stored. IMDSv2 (`aws-ec2-enforce-http-token-imds`) passes on every instance, and every security group rule has a description.
+
+The egress finding is the same rule I suppressed in Lab 8, with the same reason. The servers have to start connections outward: the SSM agent to the Systems Manager endpoints, `dnf` to the Amazon Linux repositories, and Ansible's module copies to the S3 transfer bucket. None of those has a fixed address range I could list instead, and nothing on the internet can open a connection in through an outbound rule. There is one difference from Lab 8, though. Here both groups allow every port and protocol out, while in Lab 8 I narrowed the rule to HTTPS on 443. All three destinations above use HTTPS, so narrowing to 443 is the first change I'd make; in production I'd add VPC endpoints for SSM and S3 so the servers wouldn't need the internet at all. I didn't add a `tfsec:ignore` here. This folder isn't behind the gate (the required check scans `lab8/` only), and recording the finding with its reason is more honest than suppressing it after the servers were built.
+
+Unencrypted root volumes are a real gap, and the one I'd fix: `root_block_device { encrypted = true }` on each instance costs nothing extra, uses the AWS-managed EBS key, and worked in Lab 8. The golden AMI has the same gap, which tfsec can't see because it doesn't read Packer templates: its snapshot `snap-09ec6c758beface48` was unencrypted. Packer's `encrypt_boot = true` would fix that, though I haven't tested whether the Academy allows the image copy it makes. I chose not to change the code after the fact. Every file in `evidence/` (the plans, the pipeline run, the AMI and both timings) was produced by the Terraform as it stands, and editing it now would make the repository describe servers that were never built. Doing it properly means rebuilding the AMI and taking both timings again. I'd expect encryption to change them very little, but that's a guess until it's measured.
+
 ## Conclusion
 
 The comparison came out as expected - 92 seconds against 30 - but the more useful result is where the time went. The golden AMI did not make configuration faster; it moved 66 seconds of work from every launch to a 7-minute build, and in exchange made the fleet as old as its last build. Converging keeps everything current and correctable at the price of work, and a dependency, at every boot.

@@ -84,6 +84,7 @@ Runner `ubuntu-24.04`; `shell: bash` so every step runs with `pipefail`; concurr
 | `evidence/boot-to-ready-ansible.txt` | 92 s from `terraform apply` to the first HTTP 200, with both clock positions |
 | `evidence/boot-to-ready-golden.txt` | 30 s, same clock positions |
 | `evidence/teardown.txt` | AMI deregistered, snapshot deleted, `4 destroyed`, bucket deleted, every proof list empty |
+| `evidence/tfsec-scan.txt` | tfsec v1.28.14 over `terraform/` (10 passed; 2 CRITICAL for open egress, 2 HIGH for unencrypted root volumes) and over `terraform/timing/` (1 HIGH, same reason); discussed under "Security review" in REPORT.md |
 
 ## Run order
 
