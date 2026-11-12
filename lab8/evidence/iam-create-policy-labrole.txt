@@ -1,0 +1,41 @@
+Thu Nov 12 07:09:01 UTC 2026
+$ aws sts get-caller-identity
+{
+    "UserId": "AROAYKWVNXZDFIT7HYSPL:i-0dd1c590059340240",
+    "Account": "572751986246",
+    "Arn": "arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240"
+}
+$ aws iam create-policy --policy-name acs730-lab8-deploy-policy --policy-document file://lab8/policies/lab8-deploy-policy.json
+{
+    "Policy": {
+        "PolicyName": "acs730-lab8-deploy-policy",
+        "PolicyId": "ANPAYKWVNXZDG2255GKKV",
+        "Arn": "arn:aws:iam::572751986246:policy/acs730-lab8-deploy-policy",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        "AttachmentCount": 0,
+        "PermissionsBoundaryUsageCount": 0,
+        "IsAttachable": true,
+        "CreateDate": "2026-11-12T07:09:03+00:00",
+        "UpdateDate": "2026-11-12T07:09:03+00:00"
+    }
+}
+exit code: 0
+
+Thu Nov 12 07:10:28 UTC 2026
+--- LabRole was allowed to create it, so delete it straight away (it was never attached)
+$ aws iam delete-policy --policy-arn arn:aws:iam::572751986246:policy/acs730-lab8-deploy-policy
+exit code: 0
+$ aws iam get-policy --policy-arn arn:aws:iam::572751986246:policy/acs730-lab8-deploy-policy
+
+An error occurred (NoSuchEntity) when calling the GetPolicy operation: Policy arn:aws:iam::572751986246:policy/acs730-lab8-deploy-policy was not found.
+exit code: 254
+$ aws iam list-policies --scope Local --query "Policies[].PolicyName"
+[
+    "c231109a5813533l16925314t1w572751986246-VocLabPolicy2-SKN9ADPcRsmq",
+    "voc-cancel-cred",
+    "Pvoclabs1",
+    "Pvoclabs2",
+    "c231109a5813533l16925314t1w572751986246-VocLabPolicy3-fUXSy3z3hH1d",
+    "c231109a5813533l16925314t1w572751986246-VocLabPolicy1-yZ4H6yj6XFUF"
+]

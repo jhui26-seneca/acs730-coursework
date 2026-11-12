@@ -1,0 +1,28 @@
+Thu Nov 12 07:18:10 UTC 2026
+Note: in this AWS Academy account iam:CreatePolicy is ALLOWED for both LabRole and voclabs
+(see iam-create-policy-labrole.txt, where it was created and deleted again, and labrole-vs-voclabs.txt).
+The scoped policy can be written but not used: creating the deploy role it would attach to is denied.
+
+=== as voclabs
+$ aws sts get-caller-identity
+{
+    "UserId": "AROAYKWVNXZDBCBEB6MEH:<session>",
+    "Account": "572751986246",
+    "Arn": "arn:aws:sts::572751986246:assumed-role/voclabs/<session>"
+}
+$ aws iam create-role --role-name acs730-lab8-deploy-role --assume-role-policy-document '<ec2 trust policy>'
+
+An error occurred (AccessDenied) when calling the CreateRole operation: User: arn:aws:sts::572751986246:assumed-role/voclabs/<session> is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::572751986246:role/acs730-lab8-deploy-role because no identity-based policy allows the iam:CreateRole action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/7sb1eqehcv85fzrhcfiq05f7e for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 7sb1eqehcv85fzrhcfiq05f7e
+exit code: 254
+
+=== as LabRole
+$ aws sts get-caller-identity
+{
+    "UserId": "AROAYKWVNXZDFIT7HYSPL:i-0dd1c590059340240",
+    "Account": "572751986246",
+    "Arn": "arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240"
+}
+$ aws iam create-role --role-name acs730-lab8-deploy-role --assume-role-policy-document '<ec2 trust policy>'
+
+An error occurred (AccessDenied) when calling the CreateRole operation: User: arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240 is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::572751986246:role/acs730-lab8-deploy-role because no identity-based policy allows the iam:CreateRole action. Go to https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/authorization-details/6vy3xngs388voqrabocnjs18s for complete details, or call the GetRequestAuthorizationDetails API with the following authorization id: 6vy3xngs388voqrabocnjs18s
+exit code: 254

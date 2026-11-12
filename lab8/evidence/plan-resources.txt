@@ -1,0 +1,13 @@
+Thu Nov 12 07:08:27 UTC 2026
+$ terraform -chdir=lab8 plan -out=tfplan   (plan only, never applied)
+  # aws_instance.web will be created
+  # aws_security_group.web will be created
+  # aws_security_group_rule.https_out will be created
+  # aws_security_group_rule.ssh_in will be created
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+--- resource types and actions, from terraform show -json tfplan
+  create   aws_instance                 aws_instance.web
+  create   aws_security_group           aws_security_group.web
+  create   aws_security_group_rule      aws_security_group_rule.https_out
+  create   aws_security_group_rule      aws_security_group_rule.ssh_in

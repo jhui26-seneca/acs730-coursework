@@ -1,0 +1,21 @@
+=== LabRole vs voclabs - Thu Nov 12 07:15:41 UTC 2026 ===
+LabRole: arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240
+voclabs: arn:aws:sts::572751986246:assumed-role/voclabs/<session>
+
+Call                                           LabRole (workstation)          voclabs (Vocareum CLI / CI)
+----                                           ---------------------          ---------------------------
+ec2 describe-vpcs                              ALLOWED                        ALLOWED
+ec2 run-instances t3.micro (--dry-run)         ALLOWED (dry run)              ALLOWED (dry run)
+ssm describe-parameters                        ALLOWED                        ALLOWED
+s3api list-buckets                             ALLOWED                        ALLOWED
+cloudtrail lookup-events                       ALLOWED                        ALLOWED
+iam get-role LabRole                           ALLOWED                        ALLOWED
+iam list-attached-role-policies LabRole        ALLOWED                        ALLOWED
+iam list-attached-role-policies voclabs        ALLOWED                        ALLOWED
+iam create-policy (empty document)             ALLOWED (reached validation)   ALLOWED (reached validation)
+iam create-role (empty trust policy)           DENIED (no policy allows it)   DENIED (no policy allows it)
+access-analyzer validate-policy                DENIED (no policy allows it)   DENIED (no policy allows it)
+
+--- managed policies attached to each role (read as LabRole)
+LabRole: c231109a5813533l16925314t1w572751986246-VocLabPolicy2-SKN9ADPcRsmq c231109a5813533l16925314t1w572751986246-VocLabPolicy3-fUXSy3z3hH1d c231109a5813533l16925314t1w572751986246-VocLabPolicy1-yZ4H6yj6XFUF AmazonSSMManagedInstanceCore AmazonEKSClusterPolicy AmazonEC2ContainerRegistryReadOnly AmazonEKSWorkerNodePolicy
+voclabs: voc-cancel-cred Pvoclabs2 Pvoclabs1

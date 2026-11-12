@@ -1,0 +1,64 @@
+Thu Nov 12 07:19:51 UTC 2026
+$ gitleaks git --redact --no-banner -v --log-opts="--all" .
+Finding:     KEY_NAME="[1;3;mREDACTED[0m"
+Secret:      [1;3;mREDACTED[0m
+RuleID:      generic-api-key
+Entropy:     3.640224
+File:        lab2/scripts/create-instance.sh
+Line:        6
+Commit:      86d1144bc99f7c83bdae112a292cbcff65bf0f53
+Author:      John Hui
+Email:       <author-email>
+Date:        2026-09-27T20:06:01Z
+Fingerprint: 86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/create-instance.sh:generic-api-key:6
+
+Finding:     KEY_NAME="[1;3;mREDACTED[0m"
+Secret:      [1;3;mREDACTED[0m
+RuleID:      generic-api-key
+Entropy:     3.640224
+File:        lab2/scripts/delete-key-pair.sh
+Line:        5
+Commit:      86d1144bc99f7c83bdae112a292cbcff65bf0f53
+Author:      John Hui
+Email:       <author-email>
+Date:        2026-09-27T20:06:01Z
+Fingerprint: 86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/delete-key-pair.sh:generic-api-key:5
+
+Finding:     KEY_NAME="[1;3;mREDACTED[0m"
+Secret:      [1;3;mREDACTED[0m
+RuleID:      generic-api-key
+Entropy:     3.640224
+File:        lab2/scripts/create-key-pair.sh
+Line:        5
+Commit:      86d1144bc99f7c83bdae112a292cbcff65bf0f53
+Author:      John Hui
+Email:       <author-email>
+Date:        2026-09-27T20:06:01Z
+Fingerprint: 86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/create-key-pair.sh:generic-api-key:5
+
+[90m7:19AM[0m [32mINF[0m 75 commits scanned.
+[90m7:19AM[0m [32mINF[0m scan completed in 528ms
+[90m7:19AM[0m [31mWRN[0m leaks found: 3
+exit code: 1
+
+$ git log --all --name-only --format= | grep -E "\.(tfstate|pem)$" | sort -u   (what the grading pipeline reads)
+midterm-practice/terraform/terraform.tfstate
+
+--- and where they are now (HEAD)
+none tracked at HEAD
+
+Thu Nov 12 07:23:50 UTC 2026
+--- with .gitleaksignore (the three false positives above, each recorded with its reason)
+$ gitleaks git --redact --no-banner --log-opts="--all" .
+[90m7:23AM[0m [32mINF[0m 75 commits scanned.
+[90m7:23AM[0m [32mINF[0m scan completed in 479ms
+[90m7:23AM[0m [32mINF[0m no leaks found
+exit code: 0
+
+Thu Nov 12 07:37:41 UTC 2026
+--- with .gitleaksignore (the three false positives above, each recorded with its reason)
+$ gitleaks git --redact --no-banner --log-opts="--all" .
+[90m7:37AM[0m [32mINF[0m 75 commits scanned.
+[90m7:37AM[0m [32mINF[0m scan completed in 490ms
+[90m7:37AM[0m [32mINF[0m no leaks found
+exit code: 0
