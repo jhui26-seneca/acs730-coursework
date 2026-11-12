@@ -112,6 +112,20 @@ Three-quarters of that is the workstation. I turned everything off the same day:
 
 **What would you do differently with a real AWS account?** The IAM-denied constraints shaped the identity half of this design, and almost none of the rest. With IAM I'd use OIDC with one role per environment and no stored keys. The runner wouldn't need an iptables rule to stop it borrowing an unscoped instance role; it would get no role at all, or a narrow one like the policy I wrote in Lab 8. The budget shaped the other half. I'd run the frontend on EKS or another managed cluster, with an ephemeral runner inside the VPC. The VM would sit in a private subnet that accepts port 80 only from the cluster's nodes, instead of from the internet. The image would be built once and pushed to ECR, not built on the runner and side-loaded into kind. And the module would take its name prefix and parameter path as inputs.
 
+## 8. Security review
+
+The required tfsec check scans `lab8/` only, so I ran tfsec v1.28.14 over both callers once by hand (`evidence/tfsec-scan.txt`). It follows the `source` line into the Assignment 1 module, so it's really a scan of that module with the final project's values. Each caller passed 6 checks and reported 7 findings, the same 7 for staging and prod:
+
+| Finding | Severity | Where | My decision |
+|---|---|---|---|
+| `aws-ec2-no-public-ingress-sgr` (2 results) | CRITICAL | The security group's HTTP rule, port 80 from `0.0.0.0/0` | Accepted here, by design. The frontend runs on a kind cluster on my workstation, in a different VPC, so it reaches the VM over the internet. In a real account the VM would sit in a private subnet, with port 80 open only to the cluster nodes' security group |
+| `aws-ec2-no-public-egress-sgr` | CRITICAL | All outbound traffic to `0.0.0.0/0` | Accepted with the reason I gave in Lab 8: the SSM agent, `dnf` and Ansible's S3 transfers need outbound HTTPS to addresses with no fixed range, and nothing on the internet can open a connection in through an outbound rule. First fix: narrow it to 443. Then VPC endpoints for SSM and S3 |
+| `aws-ec2-enable-at-rest-encryption` | HIGH | The VM's root volume | A real gap, and the one I'd fix first. `root_block_device { encrypted = true }` costs nothing and worked in Lab 8 |
+| `aws-ec2-no-public-ip-subnet` (2 results) | HIGH | Both subnets set `map_public_ip_on_launch = true` | Follows from the first row. The VM needs a public address to be reached from the workstation, and the module has no NAT gateway (about $33 a month) for private subnets to use. In a real account: private subnets, plus a NAT gateway or VPC endpoints |
+| `aws-ec2-require-vpc-flow-logs-for-all-vpcs` | MEDIUM | The VPC | I'd turn flow logs on in a real account, to have something to investigate with. Here it would add CloudWatch Logs cost for traffic nobody reviews |
+
+I didn't fix or suppress any of them in this project. All seven are in `assignment1/`, which stays as I submitted it, and a `tfsec:ignore` would have to go in that module too. Pointing the required gate at `final-project/` would also block every merge on findings I've already decided to accept. Recording each one with a reason, as in my Assignment 2 security review, is more honest than switching the gate off or hiding the findings. The fixes belong in the module itself: an encrypted root volume by default, and inputs for subnet type and egress, so the next caller can choose.
+
 ## Conclusion
 
 The four requirements came together with very little new code. Terraform is my Assignment 1 module behind a two-line caller. The VM is configured by my Assignment 2 role without a single file copied. The deploy is my Lab 7 pipeline pointed at a new namespace. And the credentials are the session model I've used since Week 3, with the OIDC design from Assignment 1 as the real-world answer. The new parts are the glue: a backend address that flows from a Terraform output to a generated ConfigMap, a smoke test that checks the dependency and not just the frontend, and a deploy job that refuses to run if it can see AWS credentials.

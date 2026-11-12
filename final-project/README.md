@@ -92,6 +92,7 @@ Both use `contents: read`; `final-deploy` has concurrency group `final-deploy`, 
 | `evidence/credential-model.txt` | Where the AWS secrets live (Environment `final` only), its rules (no reviewer, `main` only), the identity each job used in that run, how long the AWS and Kubernetes credentials live, gitleaks over all history (exit 0), and the OIDC design for a real account |
 | `evidence/kubectl-get-all.txt` | After that run: Deployment 2/2 on `acs730-final-web:8d368586b551` (the merge commit), the Pods, Service, endpoints and rollout history |
 | `evidence/app-response.txt` | The frontend through the NodePort: `HTTP/1.1 200 OK` and `backend: HTTP 200 from the VM: ACS730 final project - backend`, `/healthz`, the VM called directly, and the ConfigMap that links them |
+| `evidence/tfsec-scan.txt` | tfsec v1.28.14 over both callers (and through them the Assignment 1 module): 6 passed, 7 findings each, discussed under "Security review" in REPORT.md. The required gate scans `lab8/` only |
 | `evidence/teardown.txt` | Namespace deleted, runner deregistered, `Destroy complete! Resources: 10 destroyed`, parameter and bucket deleted, every proof line empty |
 
 The VM's public IP is replaced by `<vm-public-ip>` in every file.
