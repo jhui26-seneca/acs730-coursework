@@ -1,0 +1,77 @@
+Thu Nov 12 05:34:44 UTC 2026
+Subject: system:serviceaccount:acs730-lab7:acs730-lab7-deployer
+
+--- kubectl auth can-i (namespace acs730-lab7 unless stated)
+can-i get deployments                      yes
+can-i list deployments                     yes
+can-i watch deployments                    yes
+can-i patch deployments                    yes
+can-i patch configmaps                     yes
+can-i patch services                       yes
+can-i update deployments                   no
+can-i create deployments                   no
+can-i delete deployments                   no
+can-i delete pods                          no
+can-i create pods/exec                     no
+can-i get secrets                          no
+can-i create rolebindings                  no
+can-i get deployments -n kube-system       no
+can-i get deployments -n default           no
+
+--- kubectl auth can-i --list (everything the deployer may do here)
+Resources                                       Non-Resource URLs                      Resource Names   Verbs
+selfsubjectreviews.authentication.k8s.io        []                                     []               [create]
+selfsubjectaccessreviews.authorization.k8s.io   []                                     []               [create]
+selfsubjectrulesreviews.authorization.k8s.io    []                                     []               [create]
+deployments.apps                                []                                     []               [get list watch patch]
+configmaps                                      []                                     []               [get patch]
+services                                        []                                     []               [get patch]
+                                                [/.well-known/openid-configuration/]   []               [get]
+                                                [/.well-known/openid-configuration]    []               [get]
+                                                [/api/*]                               []               [get]
+                                                [/api]                                 []               [get]
+                                                [/apis/*]                              []               [get]
+                                                [/apis]                                []               [get]
+                                                [/healthz]                             []               [get]
+                                                [/healthz]                             []               [get]
+                                                [/livez]                               []               [get]
+                                                [/livez]                               []               [get]
+                                                [/openapi/*]                           []               [get]
+                                                [/openapi]                             []               [get]
+                                                [/openid/v1/jwks/]                     []               [get]
+                                                [/openid/v1/jwks]                      []               [get]
+                                                [/readyz]                              []               [get]
+                                                [/readyz]                              []               [get]
+                                                [/version/]                            []               [get]
+                                                [/version/]                            []               [get]
+                                                [/version]                             []               [get]
+                                                [/version]                             []               [get]
+
+--- the pipeline steps, run as the deployer
+$ kubectl apply -f configmap.yaml -f deployment.yaml -f service.yaml
+configmap/acs730-lab7-config unchanged
+deployment.apps/acs730-lab7-web unchanged
+service/acs730-lab7-svc unchanged
+$ kubectl set image deployment/acs730-lab7-web web=acs730-lab4:week9
+(allowed)
+$ kubectl rollout status deployment/acs730-lab7-web --timeout=60s
+deployment "acs730-lab7-web" successfully rolled out
+
+--- things a compromised runner would try, as the deployer
+$ kubectl get secrets
+Error from server (Forbidden): secrets is forbidden: User "system:serviceaccount:acs730-lab7:acs730-lab7-deployer" cannot list resource "secrets" in API group "" in the namespace "acs730-lab7"
+$ kubectl delete pod <one of ours>
+Error from server (Forbidden): pods "acs730-lab7-web-5d87fd5488-fpbnz" is forbidden: User "system:serviceaccount:acs730-lab7:acs730-lab7-deployer" cannot delete resource "pods" in API group "" in the namespace "acs730-lab7"
+$ kubectl apply -f rbac.yaml
+Error from server (Forbidden): error when retrieving current configuration of:
+Resource: "/v1, Resource=serviceaccounts", GroupVersionKind: "/v1, Kind=ServiceAccount"
+Name: "acs730-lab7-deployer", Namespace: "acs730-lab7"
+from server for: "lab7/k8s/rbac.yaml": serviceaccounts "acs730-lab7-deployer" is forbidden: User "system:serviceaccount:acs730-lab7:acs730-lab7-deployer" cannot get resource "serviceaccounts" in API group "" in the namespace "acs730-lab7"
+Error from server (Forbidden): error when retrieving current configuration of:
+Resource: "rbac.authorization.k8s.io/v1, Resource=roles", GroupVersionKind: "rbac.authorization.k8s.io/v1, Kind=Role"
+Name: "acs730-lab7-deployer-role", Namespace: "acs730-lab7"
+from server for: "lab7/k8s/rbac.yaml": roles.rbac.authorization.k8s.io "acs730-lab7-deployer-role" is forbidden: User "system:serviceaccount:acs730-lab7:acs730-lab7-deployer" cannot get resource "roles" in API group "rbac.authorization.k8s.io" in the namespace "acs730-lab7"
+Error from server (Forbidden): error when retrieving current configuration of:
+Resource: "rbac.authorization.k8s.io/v1, Resource=rolebindings", GroupVersionKind: "rbac.authorization.k8s.io/v1, Kind=RoleBinding"
+Name: "acs730-lab7-deployer-binding", Namespace: "acs730-lab7"
+from server for: "lab7/k8s/rbac.yaml": rolebindings.rbac.authorization.k8s.io "acs730-lab7-deployer-binding" is forbidden: User "system:serviceaccount:acs730-lab7:acs730-lab7-deployer" cannot get resource "rolebindings" in API group "rbac.authorization.k8s.io" in the namespace "acs730-lab7"

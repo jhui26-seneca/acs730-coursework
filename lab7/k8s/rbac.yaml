@@ -1,0 +1,49 @@
+# Lab 7 Week 10: the deployment identity the self-hosted runner uses inside the cluster.
+# WHO:  ServiceAccount acs730-lab7-deployer
+# WHAT: Role acs730-lab7-deployer-role, in namespace acs730-lab7 only
+# JOIN: RoleBinding acs730-lab7-deployer-binding
+# Nothing is granted until all three exist. RBAC has no deny rules: anything not listed is refused.
+# Applied once by a person with the admin context; the pipeline never applies this file.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: acs730-lab7-deployer
+  namespace: acs730-lab7
+  labels:
+    app.kubernetes.io/part-of: acs730-lab7
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: acs730-lab7-deployer-role
+  namespace: acs730-lab7
+  labels:
+    app.kubernetes.io/part-of: acs730-lab7
+rules:
+  # kubectl apply and set image read then patch the Deployment; rollout status lists and watches it.
+  # No create, update or delete: a person creates the Deployment once, the pipeline only changes it.
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "patch"]
+  # kubectl apply of configmap.yaml and service.yaml (they already exist, so get and patch are enough)
+  - apiGroups: [""]
+    resources: ["configmaps", "services"]
+    verbs: ["get", "patch"]
+  # Deliberately absent: secrets, pods, pods/exec, roles and rolebindings, and anything in
+  # another namespace. Those are what a compromised runner would want most.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: acs730-lab7-deployer-binding
+  namespace: acs730-lab7
+  labels:
+    app.kubernetes.io/part-of: acs730-lab7
+subjects:
+  - kind: ServiceAccount
+    name: acs730-lab7-deployer
+    namespace: acs730-lab7
+roleRef:
+  kind: Role
+  name: acs730-lab7-deployer-role
+  apiGroup: rbac.authorization.k8s.io
