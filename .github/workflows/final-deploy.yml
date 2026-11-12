@@ -145,3 +145,30 @@ jobs:
             --from-literal=APP_VERSION="${GITHUB_SHA::12}" --from-literal=BACKEND_URL="$BACKEND_URL" \
             --dry-run=client -o yaml | kubectl apply -f -
           kubectl -n "$NAMESPACE" apply -f final-project/k8s/deployment.yaml -f final-project/k8s/service.yaml
+          kubectl -n "$NAMESPACE" set image "deployment/$DEPLOYMENT" web="$IMAGE:${GITHUB_SHA::12}"
+          kubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT"
+
+      - name: Wait for the rollout to finish (the gate)
+        run: kubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=120s
+
+      # The integration test: "/" must return 200 AND quote the VM's page. The frontend returns 502 if
+      # it can't reach the VM, so a broken dependency fails the run instead of hiding.
+      - name: Smoke test - the frontend answers and the VM answered it
+        run: |
+          for i in $(seq 1 10); do
+            if body=$(curl -fsS http://localhost:30080/) && grep -q "HTTP 200 from the VM" <<<"$body"; then
+              echo "$body"; exit 0
+            fi
+            sleep 3
+          done
+          echo "the frontend never returned the VM's answer" >&2
+          curl -si http://localhost:30080/ >&2 || true
+          exit 1
+
+      - name: Never leave the Deployment paused
+        if: always()
+        run: kubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT" 2>/dev/null || true
+
+      - name: Record what is running
+        if: always()
+        run: kubectl -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o wide
