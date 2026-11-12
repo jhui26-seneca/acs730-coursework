@@ -1,0 +1,63 @@
+Thu Nov 12 06:02:18 UTC 2026
+$ gh run view 43165026748
+
+X main lab7-deploy · 43165026748
+Triggered via push about 2 minutes ago
+
+JOBS
+X deploy in 2m6s (ID 131004801128)
+  ✓ Set up job
+  ✓ Run actions/checkout@v5
+  ✓ Show the cluster identity this job runs as
+  ✓ Build the Week 4 image from lab4/, tagged with the commit SHA
+  ✓ Load it into the kind node (its containerd is not the workstation's Docker)
+  ✓ Apply the manifests the pipeline owns, then point the Deployment at this build
+  X Wait for the rollout to finish
+  - Smoke test through the Service
+  ✓ Never leave the Deployment paused
+  ✓ Record what is running
+  ✓ Post Run actions/checkout@v5
+  ✓ Complete job
+
+ANNOTATIONS
+X Process completed with exit code 1.
+deploy: .github#12
+
+
+To see what failed, try: gh run view 43165026748 --log-failed
+View this run on GitHub: https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43165026748
+
+$ gh run view --log-failed (last 25 lines)
+deploy	Wait for the rollout to finish	﻿2026-11-12T05:59:49.6431244Z ##[group]Run kubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=120s
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6432942Z ^[[36;1mkubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=120s^[[0m
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6437327Z shell: /usr/bin/bash -e {0}
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6437891Z env:
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6438301Z   CLUSTER: acs730-lab7
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6438803Z   NAMESPACE: acs730-lab7
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6439326Z   DEPLOYMENT: acs730-lab7-web
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6439836Z   IMAGE: acs730-lab4
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.6440334Z ##[endgroup]
+deploy	Wait for the rollout to finish	2026-11-12T05:59:49.7786503Z Waiting for deployment "acs730-lab7-web" rollout to finish: 1 out of 2 new replicas have been updated...
+deploy	Wait for the rollout to finish	2026-11-12T06:01:49.7667231Z error: timed out waiting for the condition
+deploy	Wait for the rollout to finish	2026-11-12T06:01:49.7704637Z ##[error]Process completed with exit code 1.
+
+--- the cluster after the failed run (admin context)
+NAME                              READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                     SELECTOR
+deployment.apps/acs730-lab7-web   2/2     1            2           33m   web          acs730-lab4:5dcf1bfcb37b   app=acs730-lab7-web
+
+NAME                                         DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES                     SELECTOR
+replicaset.apps/acs730-lab7-web-57b94dd575   2         2         2       9m4s    web          acs730-lab4:0b043e1eea35   app=acs730-lab7-web,pod-template-hash=57b94dd575
+replicaset.apps/acs730-lab7-web-5d87fd5488   0         0         0       33m     web          acs730-lab4:week9          app=acs730-lab7-web,pod-template-hash=5d87fd5488
+replicaset.apps/acs730-lab7-web-79c6c78db5   1         1         0       2m32s   web          acs730-lab4:5dcf1bfcb37b   app=acs730-lab7-web,pod-template-hash=79c6c78db5
+replicaset.apps/acs730-lab7-web-84fc58ccd5   0         0         0       13m     web          acs730-lab4:97b961ced06f   app=acs730-lab7-web,pod-template-hash=84fc58ccd5
+
+NAME                                   READY   STATUS    RESTARTS   AGE     IP            NODE                        NOMINATED NODE   READINESS GATES
+pod/acs730-lab7-web-57b94dd575-2xb5p   1/1     Running   0          9m      10.244.0.14   acs730-lab7-control-plane   <none>           <none>
+pod/acs730-lab7-web-57b94dd575-dkwcm   1/1     Running   0          9m4s    10.244.0.13   acs730-lab7-control-plane   <none>           <none>
+pod/acs730-lab7-web-79c6c78db5-4fdwr   0/1     Running   0          2m32s   10.244.0.15   acs730-lab7-control-plane   <none>           <none>
+
+--- why the new Pod is not Ready
+  Warning  Unhealthy  56s (x22 over 2m29s)  kubelet            Readiness probe failed: HTTP probe failed with statuscode: 404
+
+--- the old Pods are still serving through the Service
+HTTP/1.1 200 OK

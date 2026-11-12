@@ -1,0 +1,50 @@
+Thu Nov 12 06:07:11 UTC 2026
+--- before the undo: revision -> ReplicaSet -> image
+deployment.apps/acs730-lab7-web 
+REVISION  CHANGE-CAUSE
+2         <none>
+3         <none>
+4         <none>
+5         <none>
+
+2     acs730-lab7-web-84fc58ccd5   acs730-lab4:97b961ced06f   <none>
+3     acs730-lab7-web-5d87fd5488   acs730-lab4:week9          <none>
+4     acs730-lab7-web-57b94dd575   acs730-lab4:0b043e1eea35   2
+5     acs730-lab7-web-79c6c78db5   acs730-lab4:5dcf1bfcb37b   <none>
+
+$ kubectl rollout undo deployment/acs730-lab7-web
+deployment.apps/acs730-lab7-web rolled back
+Waiting for deployment "acs730-lab7-web" rollout to finish: 1 old replicas are pending termination...
+deployment "acs730-lab7-web" successfully rolled out
+
+--- after the undo
+2     acs730-lab7-web-84fc58ccd5   acs730-lab4:97b961ced06f   <none>
+3     acs730-lab7-web-5d87fd5488   acs730-lab4:week9          <none>
+5     acs730-lab7-web-79c6c78db5   acs730-lab4:5dcf1bfcb37b   <none>
+6     acs730-lab7-web-57b94dd575   acs730-lab4:0b043e1eea35   2
+NAME                               READY   STATUS        RESTARTS   AGE
+acs730-lab7-web-57b94dd575-2xb5p   1/1     Running       0          13m
+acs730-lab7-web-57b94dd575-dkwcm   1/1     Running       0          13m
+acs730-lab7-web-79c6c78db5-4fdwr   0/1     Terminating   0          7m23s
+image now:          acs730-lab4:0b043e1eea35
+readiness path now: /healthz
+HTTP/1.1 200 OK
+
+--- but the repository still has the bad change on main:
+          readinessProbe:           # only send traffic once /healthz answers
+            httpGet:
+              path: /healthz-broken
+rollout undo changed the cluster only. main still says /healthz-broken, so the next deploy
+(any merge touching lab7/k8s or lab4) would apply it and break again. The fix has to go
+through Git: revert the commit on main, and let the pipeline deploy that.
+
+Thu Nov 12 06:10:05 UTC 2026
+--- after the revert merged: the pipeline redeployed from a fixed main
+✓ main lab7-deploy · 43166182440
+Triggered via push less than a minute ago
+
+NAME              READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                     SELECTOR
+acs730-lab7-web   2/2     2            2           41m   web          acs730-lab4:b32b65cad3cb   app=acs730-lab7-web
+repo readiness path:    /healthz
+cluster readiness path: /healthz
+ACS730 Lab 4 -- version lab7
