@@ -1,0 +1,27 @@
+Thu Nov 12 07:03:39 UTC 2026
+--- tfsec:ignore lines in lab8 (must be exactly 1): 1
+
+--- the suppression and the reason above it (lab8/main.tf)
+75-
+76-# Accepted risk - author: jhui26-seneca, date: 2026-11-12, review by: 2026-12-31.
+77-# Rule aws-ec2-no-public-egress-sgr (CRITICAL). The host must reach the Amazon Linux package
+78-# repositories and the SSM endpoints, which have no fixed address range, so HTTPS (443) out to
+79-# 0.0.0.0/0 stays. Only 443 is open, and only outbound: nothing on the internet can start a
+80-# connection to the host through this rule. Production would use VPC endpoints or an egress proxy.
+81:#tfsec:ignore:aws-ec2-no-public-egress-sgr
+82-resource "aws_security_group_rule" "https_out" {
+
+--- every severity, so the ignored count is only the suppression
+$ tfsec lab8 --no-color
+  results
+  ──────────────────────────────────────────
+  passed               7
+  ignored              1
+  critical             0
+  high                 0
+  medium               0
+  low                  0
+
+
+No problems detected!
+

@@ -1,0 +1,13 @@
+Thu Nov 12 07:01:54 UTC 2026
+$ gh pr checks
+tfsec (HIGH and above)	fail	7s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959239/job/131027147098	
+build	pass	12s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959138/job/131027193922	
+build	pass	24s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027214408	
+image / build	pass	23s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027214391	
+lint	pass	6s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959138/job/131027146931	
+report	pass	4s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027360769	
+smoke	pass	9s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027372378	
+summary	pass	4s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027443900	
+test (3.11)	pass	8s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027147305	
+test (3.12)	pass	10s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43171959191/job/131027146987	
+exit code: 1

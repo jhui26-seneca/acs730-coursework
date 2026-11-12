@@ -1,0 +1,17 @@
+Thu Nov 12 07:03:40 UTC 2026
+$ checkov -d lab8 --framework terraform --compact --quiet --skip-download
+terraform scan results:
+
+Passed checks: 20, Failed checks: 3, Skipped checks: 0
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.web
+	File: /main.tf:92-109
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.web
+	File: /main.tf:92-109
+Check: CKV2_AWS_41: "Ensure an IAM role is attached to EC2 instance"
+	FAILED for resource: aws_instance.web
+	File: /main.tf:92-109
+
+exit code: 1
