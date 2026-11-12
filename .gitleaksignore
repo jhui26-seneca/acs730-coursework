@@ -5,3 +5,8 @@
 86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/create-instance.sh:generic-api-key:6
 86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/delete-key-pair.sh:generic-api-key:5
 86d1144bc99f7c83bdae112a292cbcff65bf0f53:lab2/scripts/create-key-pair.sh:generic-api-key:5
+# Added for the final project (2026-11-12): the two lines that document the findings above also match
+# generic-api-key, because they quote the Lab 2 key pair's name to explain it. Documentation, not a
+# secret: the comment on line 2 of this file and the "Secrets in git history" paragraph of lab8/README.md.
+8413e02c9370b5eed6eefa5dc13807e7352c4e67:.gitleaksignore:generic-api-key:2
+8413e02c9370b5eed6eefa5dc13807e7352c4e67:lab8/README.md:generic-api-key:25

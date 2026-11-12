@@ -35,7 +35,7 @@ STEPS='Run aws-actions/configure-aws-credentials@v4|Show the AWS identity this j
 } 2>&1 | mask > "$EV/pipeline-merge-deploy.txt"
 
 # 2. The credential model, inside that same run
-GL_RC=0; gitleaks git --redact --no-banner --log-opts=--all . > /tmp/final-gitleaks.txt 2>&1 || GL_RC=$?
+GL_RC=0; gitleaks git --redact --no-banner --no-color --log-opts=--all . > /tmp/final-gitleaks.txt 2>&1 || GL_RC=$?
 { date -u
   echo "=== 1. Where the AWS credentials live: only in GitHub Environment 'final' (names, never values)"
   echo '$ gh secret list --env final'; gh secret list --env final

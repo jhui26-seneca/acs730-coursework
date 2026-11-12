@@ -1,4 +1,4 @@
-Thu Nov 12 18:16:46 UTC 2026
+Thu Nov 12 18:23:03 UTC 2026
 main is at 8d368586b551f24486699f96df236c70804a2bc0; run 43277666062 built image tag acs730-final-web:8d368586b551
 
 $ kubectl get nodes -o wide
@@ -6,27 +6,27 @@ NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP
 acs730-lab7-control-plane   Ready    control-plane   12h   v1.31.0   172.18.0.2    <none>        Debian GNU/Linux 12 (bookworm)   6.18.48-107.148.amzn2023.x86_64   containerd://1.7.18
 
 $ kubectl -n acs730-final get all -o wide
-NAME                                   READY   STATUS    RESTARTS   AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
-pod/acs730-final-web-67466d45b-fwvlt   1/1     Running   0          31s   10.244.0.9    acs730-lab7-control-plane   <none>           <none>
-pod/acs730-final-web-67466d45b-mcg5s   1/1     Running   0          26s   10.244.0.10   acs730-lab7-control-plane   <none>           <none>
+NAME                                   READY   STATUS    RESTARTS   AGE     IP            NODE                        NOMINATED NODE   READINESS GATES
+pod/acs730-final-web-67466d45b-fwvlt   1/1     Running   0          6m49s   10.244.0.9    acs730-lab7-control-plane   <none>           <none>
+pod/acs730-final-web-67466d45b-mcg5s   1/1     Running   0          6m44s   10.244.0.10   acs730-lab7-control-plane   <none>           <none>
 
 NAME                       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE   SELECTOR
-service/acs730-final-svc   NodePort   10.96.79.213   <none>        80:30080/TCP   18m   app=acs730-final-web
+service/acs730-final-svc   NodePort   10.96.79.213   <none>        80:30080/TCP   24m   app=acs730-final-web
 
 NAME                               READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
-deployment.apps/acs730-final-web   2/2     2            2           18m   web          acs730-final-web:8d368586b551   app=acs730-final-web
+deployment.apps/acs730-final-web   2/2     2            2           24m   web          acs730-final-web:8d368586b551   app=acs730-final-web
 
-NAME                                          DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES                          SELECTOR
-replicaset.apps/acs730-final-web-67466d45b    2         2         2       31s   web          acs730-final-web:8d368586b551   app=acs730-final-web,pod-template-hash=67466d45b
-replicaset.apps/acs730-final-web-78b8794897   0         0         0       18m   web          acs730-final-web:bootstrap      app=acs730-final-web,pod-template-hash=78b8794897
+NAME                                          DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES                          SELECTOR
+replicaset.apps/acs730-final-web-67466d45b    2         2         2       6m49s   web          acs730-final-web:8d368586b551   app=acs730-final-web,pod-template-hash=67466d45b
+replicaset.apps/acs730-final-web-78b8794897   0         0         0       24m     web          acs730-final-web:bootstrap      app=acs730-final-web,pod-template-hash=78b8794897
 
 $ kubectl -n acs730-final get endpoints,configmap
 NAME                         ENDPOINTS                          AGE
-endpoints/acs730-final-svc   10.244.0.10:8000,10.244.0.9:8000   18m
+endpoints/acs730-final-svc   10.244.0.10:8000,10.244.0.9:8000   24m
 
 NAME                            DATA   AGE
-configmap/acs730-final-config   2      18m
-configmap/kube-root-ca.crt      1      18m
+configmap/acs730-final-config   2      24m
+configmap/kube-root-ca.crt      1      24m
 
 image running now: acs730-final-web:8d368586b551
 

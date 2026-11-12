@@ -1,9 +1,9 @@
-Thu Nov 12 18:16:46 UTC 2026
+Thu Nov 12 18:23:04 UTC 2026
 --- the frontend (Flask on Kubernetes), through Service acs730-final-svc on NodePort 30080
 $ curl -i http://localhost:30080/
 HTTP/1.1 200 OK
 Server: gunicorn
-Date: Thu, 12 Nov 2026 18:16:46 GMT
+Date: Thu, 12 Nov 2026 18:23:04 GMT
 Connection: close
 Content-Type: text/html; charset=utf-8
 Content-Length: 138
@@ -14,7 +14,7 @@ backend: HTTP 200 from the VM: ACS730 final project - backend
 $ curl -i http://localhost:30080/healthz
 HTTP/1.1 200 OK
 Server: gunicorn
-Date: Thu, 12 Nov 2026 18:16:46 GMT
+Date: Thu, 12 Nov 2026 18:23:04 GMT
 Connection: close
 Content-Type: application/json
 Content-Length: 41
