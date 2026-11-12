@@ -1,0 +1,31 @@
+Thu Nov 12 18:23:04 UTC 2026
+--- the frontend (Flask on Kubernetes), through Service acs730-final-svc on NodePort 30080
+$ curl -i http://localhost:30080/
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Thu, 12 Nov 2026 18:23:04 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Length: 138
+
+ACS730 final project frontend (Flask on Kubernetes) -- version 8d368586b551
+backend: HTTP 200 from the VM: ACS730 final project - backend
+
+$ curl -i http://localhost:30080/healthz
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Thu, 12 Nov 2026 18:23:04 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"status":"ok","version":"8d368586b551"}
+
+
+--- the backend it depends on (Apache on the VM), called directly
+$ curl -s http://<vm-public-ip>/ | grep h1
+<h1>ACS730 final project - backend</h1>
+
+--- where the frontend gets that address: its ConfigMap, generated in run 43277666062 from the Terraform output
+BACKEND_URL = http://<vm-public-ip>
+APP_VERSION = 8d368586b551

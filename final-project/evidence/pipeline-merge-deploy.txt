@@ -1,0 +1,1003 @@
+Thu Nov 12 18:22:57 UTC 2026
+=== The pull request that was merged
+PR #45: Final project: restore the deploy gate and smoke test
+state MERGED, final-project-fix merged into main at 2026-11-12T18:13:55Z
+merge commit 8d368586b551f24486699f96df236c70804a2bc0
+
+=== The run that merge started (event push on main, at the merge commit)
+event: push  branch: main
+head sha: 8d368586b551f24486699f96df236c70804a2bc0
+title: Merge pull request #45 from jhui26-seneca/final-project-fix
+result: completed / success, 2026-11-12T18:13:58Z to 2026-11-12T18:16:31Z
+https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43277666062
+
+$ gh run view 43277666062
+
+✓ main final-deploy · 43277666062
+Triggered via push about 9 minutes ago
+
+JOBS
+✓ infra in 23s (ID 131390297750)
+✓ configure in 1m36s (ID 131390572859)
+✓ deploy in 22s (ID 131391606205)
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: aws-actions/configure-aws-credentials@v4, hashicorp/setup-terraform@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+infra: .github#4
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/setup-python@v5, aws-actions/configure-aws-credentials@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+configure: .github#2
+
+
+For more information about a job, try: gh run view --job=<job-id>
+View this run on GitHub: https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43277666062
+
+$ gh run view 43277666062 --log   (every job, every step)
+infra	Set up job	﻿2026-11-12T18:14:04.3547201Z Current runner version: '2.338.2'
+infra	Set up job	2026-11-12T18:14:04.3576953Z ##[group]Runner Image Provisioner
+infra	Set up job	2026-11-12T18:14:04.3578310Z Hosted Compute Agent
+infra	Set up job	2026-11-12T18:14:04.3579075Z Version: 20261103.629
+infra	Set up job	2026-11-12T18:14:04.3579774Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+infra	Set up job	2026-11-12T18:14:04.3580615Z Build Date: 2026-11-03T17:26:59Z
+infra	Set up job	2026-11-12T18:14:04.3581334Z Worker ID: {e6852d8b-25f8-496b-9cbc-5d1f45094756}
+infra	Set up job	2026-11-12T18:14:04.3582171Z Region: eastus
+infra	Set up job	2026-11-12T18:14:04.3582791Z Cloud: Azure
+infra	Set up job	2026-11-12T18:14:04.3583350Z ##[endgroup]
+infra	Set up job	2026-11-12T18:14:04.3585577Z ##[group]Operating System
+infra	Set up job	2026-11-12T18:14:04.3586291Z Ubuntu
+infra	Set up job	2026-11-12T18:14:04.3587471Z 24.04.5
+infra	Set up job	2026-11-12T18:14:04.3588105Z LTS
+infra	Set up job	2026-11-12T18:14:04.3588831Z ##[endgroup]
+infra	Set up job	2026-11-12T18:14:04.3589463Z ##[group]Runner Image
+infra	Set up job	2026-11-12T18:14:04.3590162Z Image: ubuntu-24.04
+infra	Set up job	2026-11-12T18:14:04.3590901Z Version: 20261111.370.1
+infra	Set up job	2026-11-12T18:14:04.3592039Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261111.370/images/ubuntu/Ubuntu2404-Readme.md
+infra	Set up job	2026-11-12T18:14:04.3593946Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261111.370
+infra	Set up job	2026-11-12T18:14:04.3595035Z ##[endgroup]
+infra	Set up job	2026-11-12T18:14:04.3596350Z ##[group]GITHUB_TOKEN Permissions
+infra	Set up job	2026-11-12T18:14:04.3599198Z Contents: read
+infra	Set up job	2026-11-12T18:14:04.3599929Z Metadata: read
+infra	Set up job	2026-11-12T18:14:04.3600496Z ##[endgroup]
+infra	Set up job	2026-11-12T18:14:04.3602856Z Secret source: Actions
+infra	Set up job	2026-11-12T18:14:04.3603873Z Cache mode: write
+infra	Set up job	2026-11-12T18:14:04.3605001Z Prepare workflow directory
+infra	Set up job	2026-11-12T18:14:04.4026386Z Prepare all required actions
+infra	Set up job	2026-11-12T18:14:04.4075596Z Getting action download info
+infra	Set up job	2026-11-12T18:14:04.6139175Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+infra	Set up job	2026-11-12T18:14:04.7564311Z Download action repository 'aws-actions/configure-aws-credentials@v4' (SHA:7474bc4690e29a8392af63c5b98e7449536d5c3a)
+infra	Set up job	2026-11-12T18:14:04.9161232Z Download action repository 'hashicorp/setup-terraform@v3' (SHA:b9cd54a3c349d3f38e8881555d616ced269862dd)
+infra	Set up job	2026-11-12T18:14:05.1524240Z Complete job name: infra
+infra	Run actions/checkout@v5	﻿2026-11-12T18:14:05.2421727Z ##[group]Run actions/checkout@v5
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2422775Z with:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2423310Z   repository: jhui26-seneca/acs730-coursework
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2427492Z   token: ***
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2427976Z   ssh-strict: true
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2428482Z   ssh-user: git
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2428965Z   persist-credentials: true
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2429491Z   clean: true
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2429980Z   sparse-checkout-cone-mode: true
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2430551Z   fetch-depth: 1
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2431019Z   fetch-tags: false
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2431504Z   show-progress: true
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2432010Z   lfs: false
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2432455Z   submodules: false
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2432942Z   set-safe-directory: true
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2433489Z   allow-unsafe-pr-checkout: false
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2434337Z env:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2434793Z   CLUSTER: acs730-lab7
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2435357Z   NAMESPACE: acs730-final
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2435893Z   DEPLOYMENT: acs730-final-web
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2436473Z   IMAGE: acs730-final-web
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.2437172Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5645959Z Syncing repository: jhui26-seneca/acs730-coursework
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5648379Z ##[group]Getting Git version info
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5649270Z Working directory is '/home/runner/work/acs730-coursework/acs730-coursework'
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5650482Z [command]/usr/bin/git version
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5770939Z git version 2.56.1
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5808155Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5817007Z Temporarily overriding HOME='/home/runner/work/_temp/bd14289b-5390-4619-985c-098cd3ca275e' before making global git config changes
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5824868Z Adding repository directory to the temporary git global config as a safe directory
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5827503Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/acs730-coursework/acs730-coursework
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5885521Z Deleting the contents of '/home/runner/work/acs730-coursework/acs730-coursework'
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5890403Z ##[group]Initializing the repository
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.5922474Z [command]/usr/bin/git init /home/runner/work/acs730-coursework/acs730-coursework
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6072123Z hint: Using 'master' as the name for the initial branch. This default branch name
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6074030Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6075362Z hint: to use in all of your new repositories, which will suppress this warning,
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6076400Z hint: call:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6077310Z hint:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6078053Z hint: 	git config --global init.defaultBranch <name>
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6078919Z hint:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6079863Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6082048Z hint: 'development'. The just-created branch can be renamed via this command:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6083537Z hint:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6084442Z hint: 	git branch -m <name>
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6085451Z hint:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6087003Z hint: Disable this message with "git config set advice.defaultBranchName false"
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6089111Z Initialized empty Git repository in /home/runner/work/acs730-coursework/acs730-coursework/.git/
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6108476Z [command]/usr/bin/git remote add origin https://github.com/jhui26-seneca/acs730-coursework
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6174500Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6176114Z ##[group]Disabling automatic garbage collection
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6177811Z [command]/usr/bin/git config --local gc.auto 0
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6236063Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6237958Z ##[group]Setting up auth
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6239440Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6271761Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6730992Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.6777507Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.7071255Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.7094924Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.7372681Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.7424873Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.7426920Z ##[group]Fetching the repository
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.7440286Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +8d368586b551f24486699f96df236c70804a2bc0:refs/remotes/origin/main
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9732141Z From https://github.com/jhui26-seneca/acs730-coursework
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9733668Z  * [new ref]         8d368586b551f24486699f96df236c70804a2bc0 -> origin/main
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9738253Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9739104Z ##[group]Determining the checkout info
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9740936Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9747276Z [command]/usr/bin/git sparse-checkout disable
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9827223Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9871989Z ##[group]Checking out the ref
+infra	Run actions/checkout@v5	2026-11-12T18:14:05.9875816Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+infra	Run actions/checkout@v5	2026-11-12T18:14:06.0239687Z Switched to a new branch 'main'
+infra	Run actions/checkout@v5	2026-11-12T18:14:06.0244247Z branch 'main' set up to track 'origin/main'.
+infra	Run actions/checkout@v5	2026-11-12T18:14:06.0252504Z ##[endgroup]
+infra	Run actions/checkout@v5	2026-11-12T18:14:06.0309315Z [command]/usr/bin/git log -1 --format=%H
+infra	Run actions/checkout@v5	2026-11-12T18:14:06.0344054Z 8d368586b551f24486699f96df236c70804a2bc0
+infra	Run aws-actions/configure-aws-credentials@v4	﻿2026-11-12T18:14:06.0743826Z ##[group]Run aws-actions/configure-aws-credentials@v4
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0744455Z with:
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0745075Z   aws-access-key-id: ***
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0745649Z   aws-secret-access-key: ***
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0749776Z   aws-session-token: ***
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0750226Z   aws-region: us-east-1
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0750634Z   audience: sts.amazonaws.com
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0751065Z   output-env-credentials: true
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0751497Z env:
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0751879Z   CLUSTER: acs730-lab7
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0752291Z   NAMESPACE: acs730-final
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0752709Z   DEPLOYMENT: acs730-final-web
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0753143Z   IMAGE: acs730-final-web
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.0753538Z ##[endgroup]
+infra	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:06.2757308Z Proceeding with IAM user credentials
+infra	Show the AWS identity this job runs as (session name masked)	﻿2026-11-12T18:14:06.2924787Z ##[group]Run aws sts get-caller-identity --query Arn --output text | sed -E 's#(assumed-role/[^/]+/).*#\1<session>#'
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2925951Z ^[[36;1maws sts get-caller-identity --query Arn --output text | sed -E 's#(assumed-role/[^/]+/).*#\1<session>#'^[[0m
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2951893Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2952464Z env:
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2952829Z   CLUSTER: acs730-lab7
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2953234Z   NAMESPACE: acs730-final
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2953653Z   DEPLOYMENT: acs730-final-web
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2954064Z   IMAGE: acs730-final-web
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2954480Z   AWS_DEFAULT_REGION: us-east-1
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2954893Z   AWS_REGION: us-east-1
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2955487Z   AWS_ACCESS_KEY_ID: ***
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2956007Z   AWS_SECRET_ACCESS_KEY: ***
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2960236Z   AWS_SESSION_TOKEN: ***
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:06.2960663Z ##[endgroup]
+infra	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:09.6560425Z arn:aws:sts::572751986246:assumed-role/voclabs/<session>
+infra	Run hashicorp/setup-terraform@v3	﻿2026-11-12T18:14:09.6636055Z ##[group]Run hashicorp/setup-terraform@v3
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6636495Z with:
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6637087Z   terraform_version: 1.16.4
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6637426Z   terraform_wrapper: false
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6637782Z   cli_config_credentials_hostname: app.terraform.io
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6638150Z env:
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6638397Z   CLUSTER: acs730-lab7
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6638686Z   NAMESPACE: acs730-final
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6638990Z   DEPLOYMENT: acs730-final-web
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6639299Z   IMAGE: acs730-final-web
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6639602Z   AWS_DEFAULT_REGION: us-east-1
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6639918Z   AWS_REGION: us-east-1
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6640372Z   AWS_ACCESS_KEY_ID: ***
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6640776Z   AWS_SECRET_ACCESS_KEY: ***
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6644424Z   AWS_SESSION_TOKEN: ***
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.6644711Z ##[endgroup]
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.8093980Z (node:2379) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:09.8095829Z (Use `node --trace-deprecation ...` to show where the warning was created)
+infra	Run hashicorp/setup-terraform@v3	2026-11-12T18:14:10.0920307Z [command]/usr/bin/unzip -o -q /home/runner/work/_temp/117b973a-cfd0-46c5-8f92-c08f4e460ca3
+infra	Terraform apply (the Assignment 1 module, staging)	﻿2026-11-12T18:14:10.8870406Z ##[group]Run terraform init -input=false -no-color
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8870923Z ^[[36;1mterraform init -input=false -no-color^[[0m
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8871360Z ^[[36;1mterraform apply -input=false -no-color -auto-approve^[[0m
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8895090Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8895508Z env:
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8895732Z   CLUSTER: acs730-lab7
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8896008Z   NAMESPACE: acs730-final
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8896305Z   DEPLOYMENT: acs730-final-web
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8896885Z   IMAGE: acs730-final-web
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8897205Z   AWS_DEFAULT_REGION: us-east-1
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8897538Z   AWS_REGION: us-east-1
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8897921Z   AWS_ACCESS_KEY_ID: ***
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8898569Z   AWS_SECRET_ACCESS_KEY: ***
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8902761Z   AWS_SESSION_TOKEN: ***
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.8903014Z ##[endgroup]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:10.9214245Z Initializing the backend...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.0503485Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.0504384Z Successfully configured the backend "s3"! Terraform will automatically
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.0505205Z use this backend unless the backend configuration changes.
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.0510187Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.1311461Z Initializing modules...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.1359631Z - web_env in ../../../assignment1/terraform/modules/web-env
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.1363264Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.1374766Z Initializing provider plugins...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.1375499Z - Reusing previous version of hashicorp/aws from the dependency lock file
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:11.3134193Z - Installing hashicorp/aws v5.100.0...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8574613Z - Installed hashicorp/aws v5.100.0 (signed by HashiCorp)
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8575545Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8575956Z Terraform has been successfully initialized!
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8577063Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8577778Z You may now begin working with Terraform. Try running "terraform plan" to see
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8579452Z any changes that are required for your infrastructure. All Terraform commands
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8580717Z should now work.
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8581069Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8581625Z If you ever set or change modules or backend configuration for Terraform,
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8583009Z rerun this command to reinitialize your working directory. If you forget, other
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:17.8584245Z commands will detect it and remind you to do so if necessary.
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:20.5843878Z module.web_env.data.aws_ami.web: Reading...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:20.5851494Z module.web_env.data.aws_ssm_parameter.db_password: Reading...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:20.5852454Z module.web_env.data.aws_availability_zones.available: Reading...
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:20.5853184Z module.web_env.aws_vpc.main: Refreshing state... [id=vpc-0423392a767fd12e4]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:20.6684466Z module.web_env.data.aws_ssm_parameter.db_password: Read complete after 0s [id=/acs730/assign1/final-staging/db_password]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:20.6785991Z module.web_env.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.0249837Z module.web_env.data.aws_ami.web: Read complete after 0s [id=ami-0355052079a448ed4]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.1309203Z module.web_env.aws_internet_gateway.main: Refreshing state... [id=igw-010e2285c44da3fa8]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.1311532Z module.web_env.aws_subnet.public["b"]: Refreshing state... [id=subnet-0417deb5e3931ec00]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.1313080Z module.web_env.aws_subnet.public["a"]: Refreshing state... [id=subnet-0c93ffec16c0877d6]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.1314977Z module.web_env.aws_security_group.web: Refreshing state... [id=sg-0123e8959381b2cfd]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.1988556Z module.web_env.aws_route_table.public: Refreshing state... [id=rtb-0b5ffb59a1ece1f68]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.2958534Z module.web_env.aws_route_table_association.public["a"]: Refreshing state... [id=rtbassoc-0d389a79ceda3d2da]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.2960090Z module.web_env.aws_route_table_association.public["b"]: Refreshing state... [id=rtbassoc-08fab4e0251cc1bd0]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:21.6271713Z module.web_env.aws_instance.web: Refreshing state... [id=i-07fd9bc5fec936f1b]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:22.7920656Z module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Refreshing state... [id=acs730-assign1-staging-cpu-alarm]
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.0576949Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.0578122Z No changes. Your infrastructure matches the configuration.
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.0578657Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.0579008Z Terraform has compared your real infrastructure against your configuration
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.0579782Z and found no differences, so no changes are needed.
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4944273Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4945282Z Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4946198Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4946474Z Outputs:
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4947101Z 
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4947549Z cpu_alarm_name = "acs730-assign1-staging-cpu-alarm"
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4949202Z db_password_parameter_version = 1
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4950061Z environment = "staging"
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4950779Z instance_id = "i-07fd9bc5fec936f1b"
+infra	Terraform apply (the Assignment 1 module, staging)	2026-11-12T18:14:23.4951370Z web_url = "http://<vm-public-ip>"
+infra	Hand the VM's address to the deploy job	﻿2026-11-12T18:14:23.5132343Z ##[group]Run echo "web_url=$(terraform output -raw web_url)" >> "$GITHUB_OUTPUT"
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5133041Z ^[[36;1mecho "web_url=$(terraform output -raw web_url)" >> "$GITHUB_OUTPUT"^[[0m
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5153509Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5153929Z env:
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5154167Z   CLUSTER: acs730-lab7
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5154439Z   NAMESPACE: acs730-final
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5154729Z   DEPLOYMENT: acs730-final-web
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5155028Z   IMAGE: acs730-final-web
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5155309Z   AWS_DEFAULT_REGION: us-east-1
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5155602Z   AWS_REGION: us-east-1
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5156034Z   AWS_ACCESS_KEY_ID: ***
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5156439Z   AWS_SECRET_ACCESS_KEY: ***
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5161245Z   AWS_SESSION_TOKEN: ***
+infra	Hand the VM's address to the deploy job	2026-11-12T18:14:23.5161513Z ##[endgroup]
+infra	Post Run aws-actions/configure-aws-credentials@v4	﻿2026-11-12T18:14:24.2291859Z Post job cleanup.
+infra	Post Run actions/checkout@v5	﻿2026-11-12T18:14:24.3570461Z Post job cleanup.
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4631733Z [command]/usr/bin/git version
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4687757Z git version 2.56.1
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4730202Z Temporarily overriding HOME='/home/runner/work/_temp/409ea6b8-abfb-4044-9be8-f1cdb6a30bdf' before making global git config changes
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4731744Z Adding repository directory to the temporary git global config as a safe directory
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4737873Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/acs730-coursework/acs730-coursework
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4787419Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.4830447Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.5150100Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.5184378Z http.https://github.com/.extraheader
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.5198261Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.5251833Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.5528135Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+infra	Post Run actions/checkout@v5	2026-11-12T18:14:24.5582242Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+infra	Complete job	﻿2026-11-12T18:14:24.6040696Z Evaluate and set job outputs
+infra	Complete job	2026-11-12T18:14:24.6046219Z Set output 'web_url'
+infra	Complete job	2026-11-12T18:14:24.6049036Z Cleaning up orphan processes
+infra	Complete job	2026-11-12T18:14:24.6431783Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: aws-actions/configure-aws-credentials@v4, hashicorp/setup-terraform@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+configure	Set up job	﻿2026-11-12T18:14:32.0781465Z Current runner version: '2.338.2'
+configure	Set up job	2026-11-12T18:14:32.0804637Z ##[group]Runner Image Provisioner
+configure	Set up job	2026-11-12T18:14:32.0805669Z Hosted Compute Agent
+configure	Set up job	2026-11-12T18:14:32.0806228Z Version: 20261028.624
+configure	Set up job	2026-11-12T18:14:32.0806890Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+configure	Set up job	2026-11-12T18:14:32.0807512Z Build Date: 2026-10-28T21:51:42Z
+configure	Set up job	2026-11-12T18:14:32.0808179Z Worker ID: {f51f9d04-164c-4d30-a9c0-6ccf06993ff0}
+configure	Set up job	2026-11-12T18:14:32.0808809Z Region: westus2
+configure	Set up job	2026-11-12T18:14:32.0809295Z Cloud: Azure
+configure	Set up job	2026-11-12T18:14:32.0809870Z ##[endgroup]
+configure	Set up job	2026-11-12T18:14:32.0811377Z ##[group]Operating System
+configure	Set up job	2026-11-12T18:14:32.0811995Z Ubuntu
+configure	Set up job	2026-11-12T18:14:32.0812482Z 24.04.5
+configure	Set up job	2026-11-12T18:14:32.0813039Z LTS
+configure	Set up job	2026-11-12T18:14:32.0813522Z ##[endgroup]
+configure	Set up job	2026-11-12T18:14:32.0814033Z ##[group]Runner Image
+configure	Set up job	2026-11-12T18:14:32.0814663Z Image: ubuntu-24.04
+configure	Set up job	2026-11-12T18:14:32.0815179Z Version: 20261101.360.1
+configure	Set up job	2026-11-12T18:14:32.0816371Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+configure	Set up job	2026-11-12T18:14:32.0817848Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+configure	Set up job	2026-11-12T18:14:32.0818762Z ##[endgroup]
+configure	Set up job	2026-11-12T18:14:32.0819791Z ##[group]GITHUB_TOKEN Permissions
+configure	Set up job	2026-11-12T18:14:32.0821582Z Contents: read
+configure	Set up job	2026-11-12T18:14:32.0822141Z Metadata: read
+configure	Set up job	2026-11-12T18:14:32.0822711Z ##[endgroup]
+configure	Set up job	2026-11-12T18:14:32.0824443Z Secret source: Actions
+configure	Set up job	2026-11-12T18:14:32.0825568Z Cache mode: write
+configure	Set up job	2026-11-12T18:14:32.0826236Z Prepare workflow directory
+configure	Set up job	2026-11-12T18:14:32.1146448Z Prepare all required actions
+configure	Set up job	2026-11-12T18:14:32.1189145Z Getting action download info
+configure	Set up job	2026-11-12T18:14:32.4508806Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+configure	Set up job	2026-11-12T18:14:32.5733129Z Download action repository 'aws-actions/configure-aws-credentials@v4' (SHA:7474bc4690e29a8392af63c5b98e7449536d5c3a)
+configure	Set up job	2026-11-12T18:14:32.7814907Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+configure	Set up job	2026-11-12T18:14:33.1539256Z Complete job name: configure
+configure	Run actions/checkout@v5	﻿2026-11-12T18:14:33.2319370Z ##[group]Run actions/checkout@v5
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2320137Z with:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2320590Z   repository: jhui26-seneca/acs730-coursework
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2323970Z   token: ***
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2324391Z   ssh-strict: true
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2324810Z   ssh-user: git
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2325447Z   persist-credentials: true
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2325927Z   clean: true
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2326348Z   sparse-checkout-cone-mode: true
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2326834Z   fetch-depth: 1
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2327244Z   fetch-tags: false
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2327663Z   show-progress: true
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2328082Z   lfs: false
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2328480Z   submodules: false
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2328923Z   set-safe-directory: true
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2329401Z   allow-unsafe-pr-checkout: false
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2330166Z env:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2330571Z   CLUSTER: acs730-lab7
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2331037Z   NAMESPACE: acs730-final
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2331503Z   DEPLOYMENT: acs730-final-web
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2332032Z   IMAGE: acs730-final-web
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.2332464Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4578486Z Syncing repository: jhui26-seneca/acs730-coursework
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4580876Z ##[group]Getting Git version info
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4581983Z Working directory is '/home/runner/work/acs730-coursework/acs730-coursework'
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4583566Z [command]/usr/bin/git version
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4678413Z git version 2.56.0
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4687922Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4728671Z Temporarily overriding HOME='/home/runner/work/_temp/81b88f36-c1b7-49fb-ab99-7e00124d8598' before making global git config changes
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4731082Z Adding repository directory to the temporary git global config as a safe directory
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4749892Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/acs730-coursework/acs730-coursework
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4835224Z Deleting the contents of '/home/runner/work/acs730-coursework/acs730-coursework'
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4850218Z ##[group]Initializing the repository
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4851790Z [command]/usr/bin/git init /home/runner/work/acs730-coursework/acs730-coursework
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4923065Z hint: Using 'master' as the name for the initial branch. This default branch name
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4927800Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4929494Z hint: to use in all of your new repositories, which will suppress this warning,
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4930917Z hint: call:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4931722Z hint:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4933650Z hint: 	git config --global init.defaultBranch <name>
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4936244Z hint:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4937602Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4939252Z hint: 'development'. The just-created branch can be renamed via this command:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4940609Z hint:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4941663Z hint: 	git branch -m <name>
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4942780Z hint:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4944218Z hint: Disable this message with "git config set advice.defaultBranchName false"
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4946521Z Initialized empty Git repository in /home/runner/work/acs730-coursework/acs730-coursework/.git/
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4950503Z [command]/usr/bin/git remote add origin https://github.com/jhui26-seneca/acs730-coursework
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4995774Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4997206Z ##[group]Disabling automatic garbage collection
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.4999478Z [command]/usr/bin/git config --local gc.auto 0
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5057681Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5059092Z ##[group]Setting up auth
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5062656Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5083946Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5439422Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5480290Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5696347Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5734170Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5941769Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5985505Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5986390Z ##[group]Fetching the repository
+configure	Run actions/checkout@v5	2026-11-12T18:14:33.5995574Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +8d368586b551f24486699f96df236c70804a2bc0:refs/remotes/origin/main
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0669398Z From https://github.com/jhui26-seneca/acs730-coursework
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0670991Z  * [new ref]         8d368586b551f24486699f96df236c70804a2bc0 -> origin/main
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0673985Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0675060Z ##[group]Determining the checkout info
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0676552Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0681504Z [command]/usr/bin/git sparse-checkout disable
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0733500Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0767950Z ##[group]Checking out the ref
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.0778149Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.1068214Z Switched to a new branch 'main'
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.1070143Z branch 'main' set up to track 'origin/main'.
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.1078088Z ##[endgroup]
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.1123166Z [command]/usr/bin/git log -1 --format=%H
+configure	Run actions/checkout@v5	2026-11-12T18:14:34.1153394Z 8d368586b551f24486699f96df236c70804a2bc0
+configure	Run aws-actions/configure-aws-credentials@v4	﻿2026-11-12T18:14:34.1571022Z ##[group]Run aws-actions/configure-aws-credentials@v4
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1572254Z with:
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1573311Z   aws-access-key-id: ***
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1574574Z   aws-secret-access-key: ***
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1586963Z   aws-session-token: ***
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1587875Z   aws-region: us-east-1
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1588770Z   audience: sts.amazonaws.com
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1589738Z   output-env-credentials: true
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1590653Z env:
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1591390Z   CLUSTER: acs730-lab7
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1592247Z   NAMESPACE: acs730-final
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1593157Z   DEPLOYMENT: acs730-final-web
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1594114Z   IMAGE: acs730-final-web
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.1594977Z ##[endgroup]
+configure	Run aws-actions/configure-aws-credentials@v4	2026-11-12T18:14:34.5125868Z Proceeding with IAM user credentials
+configure	Show the AWS identity this job runs as (session name masked)	﻿2026-11-12T18:14:34.5279781Z ##[group]Run aws sts get-caller-identity --query Arn --output text | sed -E 's#(assumed-role/[^/]+/).*#\1<session>#'
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5282464Z ^[[36;1maws sts get-caller-identity --query Arn --output text | sed -E 's#(assumed-role/[^/]+/).*#\1<session>#'^[[0m
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5306158Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5307388Z env:
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5308116Z   CLUSTER: acs730-lab7
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5308973Z   NAMESPACE: acs730-final
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5309900Z   DEPLOYMENT: acs730-final-web
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5310815Z   IMAGE: acs730-final-web
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5311695Z   AWS_DEFAULT_REGION: us-east-1
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5312612Z   AWS_REGION: us-east-1
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5313606Z   AWS_ACCESS_KEY_ID: ***
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5314748Z   AWS_SECRET_ACCESS_KEY: ***
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5326015Z   AWS_SESSION_TOKEN: ***
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:34.5326873Z ##[endgroup]
+configure	Show the AWS identity this job runs as (session name masked)	2026-11-12T18:14:35.7442153Z arn:aws:sts::572751986246:assumed-role/voclabs/<session>
+configure	Run actions/setup-python@v5	﻿2026-11-12T18:14:35.7521358Z ##[group]Run actions/setup-python@v5
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7521656Z with:
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7521845Z   python-version: 3.12
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7522051Z   check-latest: false
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7523970Z   token: ***
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7524174Z   update-environment: true
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7524401Z   allow-prereleases: false
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7524827Z   freethreaded: false
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7525054Z env:
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7525380Z   CLUSTER: acs730-lab7
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7525654Z   NAMESPACE: acs730-final
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7525864Z   DEPLOYMENT: acs730-final-web
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7526157Z   IMAGE: acs730-final-web
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7526430Z   AWS_DEFAULT_REGION: us-east-1
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7526748Z   AWS_REGION: us-east-1
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7527083Z   AWS_ACCESS_KEY_ID: ***
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7527488Z   AWS_SECRET_ACCESS_KEY: ***
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7532448Z   AWS_SESSION_TOKEN: ***
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.7532771Z ##[endgroup]
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.8637473Z ##[group]Installed versions
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.8717276Z (node:2142) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.8718450Z (Use `node --trace-deprecation ...` to show where the warning was created)
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.8719032Z Successfully set up CPython (3.12.16)
+configure	Run actions/setup-python@v5	2026-11-12T18:14:35.8719803Z ##[endgroup]
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	﻿2026-11-12T18:14:35.8862779Z ##[group]Run python -m pip install --upgrade pip
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8863315Z ^[[36;1mpython -m pip install --upgrade pip^[[0m
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8863817Z ^[[36;1mpython -m pip install "ansible>=12,<13" boto3 botocore^[[0m
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8864303Z ^[[36;1mansible --version | head -1^[[0m
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8892931Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8893298Z env:
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8893482Z   CLUSTER: acs730-lab7
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8893690Z   NAMESPACE: acs730-final
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8893903Z   DEPLOYMENT: acs730-final-web
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8894117Z   IMAGE: acs730-final-web
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8894326Z   AWS_DEFAULT_REGION: us-east-1
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8894761Z   AWS_REGION: us-east-1
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8895111Z   AWS_ACCESS_KEY_ID: ***
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8895609Z   AWS_SECRET_ACCESS_KEY: ***
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8898417Z   AWS_SESSION_TOKEN: ***
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8898685Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8899085Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8899450Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8899763Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8900073Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8900389Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:35.8900653Z ##[endgroup]
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:36.8329504Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages (26.2.2)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:36.9163247Z Collecting pip
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:36.9700066Z   Downloading pip-26.3-py3-none-any.whl.metadata (4.6 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:36.9829349Z Downloading pip-26.3-py3-none-any.whl (2.0 MB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:37.1953218Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 9.1 MB/s  0:00:00
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:37.2354635Z Installing collected packages: pip
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:37.2355708Z   Attempting uninstall: pip
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:37.2377572Z     Found existing installation: pip 26.2.2
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:37.2710877Z     Uninstalling pip-26.2.2:
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:37.2760585Z       Successfully uninstalled pip-26.2.2
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:38.1764994Z Successfully installed pip-26.3
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:38.5626367Z Collecting ansible<13,>=12
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:38.6107756Z   Downloading ansible-12.3.0-py3-none-any.whl.metadata (8.1 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.2983055Z Collecting boto3
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.3063389Z   Downloading boto3-1.44.1-py3-none-any.whl.metadata (6.6 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.6503460Z Collecting botocore
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.6598801Z   Downloading botocore-1.44.1-py3-none-any.whl.metadata (5.6 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.9140394Z Collecting ansible-core~=2.19.5 (from ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.9214955Z   Downloading ansible_core-2.19.15-py3-none-any.whl.metadata (7.7 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.9458896Z Collecting jinja2>=3.1.0 (from ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:39.9546826Z   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.0136983Z Collecting PyYAML>=5.1 (from ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.0212169Z   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.2116896Z Collecting cryptography (from ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.2193292Z   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.2368012Z Collecting packaging (from ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.2440239Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.2820730Z Collecting resolvelib<2.0.0,>=0.5.3 (from ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.2894750Z   Downloading resolvelib-1.2.1-py3-none-any.whl.metadata (3.7 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3228598Z Collecting jmespath<2.0.0,>=0.7.1 (from boto3)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3297723Z   Downloading jmespath-1.1.0-py3-none-any.whl.metadata (7.6 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3457971Z Collecting s3transfer<0.20.0,>=0.19.0 (from boto3)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3529055Z   Downloading s3transfer-0.19.3-py3-none-any.whl.metadata (1.7 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3674088Z Collecting python-dateutil<3.0.0,>=2.1 (from botocore)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3742341Z   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.3959286Z Collecting urllib3!=2.2.0,<3,>=1.25.4 (from botocore)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.4029404Z   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.4277257Z Collecting six>=1.5 (from python-dateutil<3.0.0,>=2.1->botocore)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.4348065Z   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.5005084Z Collecting MarkupSafe>=2.0 (from jinja2>=3.1.0->ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.5079129Z   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.6709420Z Collecting cffi>=2.0.0 (from cryptography->ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.6779794Z   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.7041429Z Collecting pycparser (from cffi>=2.0.0->cryptography->ansible-core~=2.19.5->ansible<13,>=12)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.7110286Z   Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:40.7214648Z Downloading ansible-12.3.0-py3-none-any.whl (54.4 MB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.1918489Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.4/54.4 MB 119.2 MB/s  0:00:00
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.1991736Z Downloading ansible_core-2.19.15-py3-none-any.whl (2.4 MB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.2213627Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.4/2.4 MB 108.9 MB/s  0:00:00
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.2290092Z Downloading resolvelib-1.2.1-py3-none-any.whl (18 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.2373989Z Downloading boto3-1.44.1-py3-none-any.whl (140 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.2461383Z Downloading botocore-1.44.1-py3-none-any.whl (16.3 MB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.3614279Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.3/16.3 MB 141.8 MB/s  0:00:00
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.3686481Z Downloading jmespath-1.1.0-py3-none-any.whl (20 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.3878970Z Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.3978588Z Downloading s3transfer-0.19.3-py3-none-any.whl (90 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.4062981Z Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.4636960Z Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.4728127Z Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.4814140Z Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.4891546Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 94.1 MB/s  0:00:00
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.4963297Z Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:41.5053020Z Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:42.0119821Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 8.9 MB/s  0:00:00
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:42.0190708Z Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:42.2773055Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:42.2859283Z Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:14:43.2003836Z Installing collected packages: urllib3, six, resolvelib, PyYAML, pycparser, packaging, MarkupSafe, jmespath, python-dateutil, jinja2, cffi, cryptography, botocore, s3transfer, ansible-core, boto3, ansible
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:15:04.9474397Z 
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:15:04.9491984Z Successfully installed MarkupSafe-3.0.4 PyYAML-6.0.3 ansible-12.3.0 ansible-core-2.19.15 boto3-1.44.1 botocore-1.44.1 cffi-2.1.1 cryptography-50.0.2 jinja2-3.1.6 jmespath-1.1.0 packaging-26.3 pycparser-3.12 python-dateutil-2.9.0.post0 resolvelib-1.2.1 s3transfer-0.19.3 six-1.17.0 urllib3-2.8.0
+configure	Install Ansible (pinned, same line as the workstation), boto3 and botocore	2026-11-12T18:15:05.5116765Z ansible [core 2.19.15]
+configure	Install session-manager-plugin (pip does not provide it)	﻿2026-11-12T18:15:05.5490137Z ##[group]Run curl -sSfo /tmp/session-manager-plugin.deb \
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5490538Z ^[[36;1mcurl -sSfo /tmp/session-manager-plugin.deb \^[[0m
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5491029Z ^[[36;1m  https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb^[[0m
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5491506Z ^[[36;1msudo dpkg -i /tmp/session-manager-plugin.deb^[[0m
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5491795Z ^[[36;1msession-manager-plugin --version^[[0m
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5510029Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5510303Z env:
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5510473Z   CLUSTER: acs730-lab7
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5510675Z   NAMESPACE: acs730-final
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5510876Z   DEPLOYMENT: acs730-final-web
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5511076Z   IMAGE: acs730-final-web
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5511272Z   AWS_DEFAULT_REGION: us-east-1
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5511475Z   AWS_REGION: us-east-1
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5511884Z   AWS_ACCESS_KEY_ID: ***
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5512162Z   AWS_SECRET_ACCESS_KEY: ***
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5514977Z   AWS_SESSION_TOKEN: ***
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5515221Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5516005Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5516346Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5516651Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5516961Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5517281Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:05.5517551Z ##[endgroup]
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.5357663Z (Reading database ... 215960 files and directories currently installed.)
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.5403865Z Preparing to unpack .../tmp/session-manager-plugin.deb ...
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.5770122Z Start removing session-manager-plugin
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.6290409Z Preparing for install
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.6291205Z Unpacking session-manager-plugin (1.2.896.0-1) over (1.2.896.0-1) ...
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.7729764Z Session-manager-plugin removed
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.7827967Z Setting up session-manager-plugin (1.2.896.0-1) ...
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:07.8209384Z Creating symbolic link for session-manager-plugin
+configure	Install session-manager-plugin (pip does not provide it)	2026-11-12T18:15:08.1802066Z 1.2.896.0
+configure	Ansible converge (the Assignment 2 role, over SSM)	﻿2026-11-12T18:15:08.1919819Z ##[group]Run bash ../scripts/wait-for-ssm.sh
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1920151Z ^[[36;1mbash ../scripts/wait-for-ssm.sh^[[0m
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1920397Z ^[[36;1mansible-inventory --graph^[[0m
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1920644Z ^[[36;1mansible-playbook site.yml^[[0m
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1940060Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1940476Z env:
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1940721Z   CLUSTER: acs730-lab7
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1941012Z   NAMESPACE: acs730-final
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1941304Z   DEPLOYMENT: acs730-final-web
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1941605Z   IMAGE: acs730-final-web
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1941899Z   AWS_DEFAULT_REGION: us-east-1
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1942208Z   AWS_REGION: us-east-1
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1942589Z   AWS_ACCESS_KEY_ID: ***
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1942991Z   AWS_SECRET_ACCESS_KEY: ***
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1947963Z   AWS_SESSION_TOKEN: ***
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1948344Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1948877Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1949453Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1949940Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1950427Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1950909Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:08.1951318Z ##[endgroup]
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:10.4553244Z i-07fd9bc5fec936f1b: PingStatus Online
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.0191724Z [WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.0193154Z [DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.5368286Z @all:
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.5368678Z   |--@ungrouped:
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.5370911Z   |--@aws_ec2:
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.5371575Z   |  |--i-07fd9bc5fec936f1b
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.5371950Z   |--@role_web:
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:11.5372271Z   |  |--i-07fd9bc5fec936f1b
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.0630593Z [WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.0632148Z [DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7161527Z [WARNING]: Found variable using reserved name 'tags'.
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7161981Z Origin: <unknown>
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7162095Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7162169Z tags
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7162253Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7185608Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7185942Z PLAY [Configure the final project backend (Apache on the VM)] ******************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7186369Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:12.7186612Z TASK [Gathering Facts] *********************************************************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:17.9631537Z ok: [i-07fd9bc5fec936f1b]
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:17.9631853Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:17.9632145Z TASK [webserver : Install the web server package] ******************************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:23.1364910Z ok: [i-07fd9bc5fec936f1b]
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:23.1365163Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:23.1365561Z TASK [webserver : Apply the server settings from the template] *****************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:28.4850917Z ok: [i-07fd9bc5fec936f1b]
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:28.4851179Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:28.4851374Z TASK [webserver : Render the home page from the template] **********************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:33.4534026Z ok: [i-07fd9bc5fec936f1b]
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:33.4534347Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:33.4534542Z TASK [webserver : Start the web server now and at every boot] ******************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:38.1481026Z ok: [i-07fd9bc5fec936f1b]
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:38.1481374Z 
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:38.1481578Z PLAY RECAP *********************************************************************
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:38.1482295Z i-07fd9bc5fec936f1b        : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+configure	Ansible converge (the Assignment 2 role, over SSM)	2026-11-12T18:15:38.1482811Z 
+configure	Second run must report changed=0	﻿2026-11-12T18:15:38.2690305Z ##[group]Run ansible-playbook site.yml | tee /tmp/run2.txt
+configure	Second run must report changed=0	2026-11-12T18:15:38.2690701Z ^[[36;1mansible-playbook site.yml | tee /tmp/run2.txt^[[0m
+configure	Second run must report changed=0	2026-11-12T18:15:38.2691133Z ^[[36;1mif grep -Eq 'changed=[1-9]|failed=[1-9]' /tmp/run2.txt; then echo "Not idempotent"; exit 1; fi^[[0m
+configure	Second run must report changed=0	2026-11-12T18:15:38.2708837Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+configure	Second run must report changed=0	2026-11-12T18:15:38.2709109Z env:
+configure	Second run must report changed=0	2026-11-12T18:15:38.2709277Z   CLUSTER: acs730-lab7
+configure	Second run must report changed=0	2026-11-12T18:15:38.2709473Z   NAMESPACE: acs730-final
+configure	Second run must report changed=0	2026-11-12T18:15:38.2709679Z   DEPLOYMENT: acs730-final-web
+configure	Second run must report changed=0	2026-11-12T18:15:38.2709881Z   IMAGE: acs730-final-web
+configure	Second run must report changed=0	2026-11-12T18:15:38.2710071Z   AWS_DEFAULT_REGION: us-east-1
+configure	Second run must report changed=0	2026-11-12T18:15:38.2710270Z   AWS_REGION: us-east-1
+configure	Second run must report changed=0	2026-11-12T18:15:38.2710538Z   AWS_ACCESS_KEY_ID: ***
+configure	Second run must report changed=0	2026-11-12T18:15:38.2710802Z   AWS_SECRET_ACCESS_KEY: ***
+configure	Second run must report changed=0	2026-11-12T18:15:38.2713622Z   AWS_SESSION_TOKEN: ***
+configure	Second run must report changed=0	2026-11-12T18:15:38.2713869Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Second run must report changed=0	2026-11-12T18:15:38.2714209Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+configure	Second run must report changed=0	2026-11-12T18:15:38.2714574Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Second run must report changed=0	2026-11-12T18:15:38.2714887Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Second run must report changed=0	2026-11-12T18:15:38.2715189Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+configure	Second run must report changed=0	2026-11-12T18:15:38.2715574Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+configure	Second run must report changed=0	2026-11-12T18:15:38.2715841Z ##[endgroup]
+configure	Second run must report changed=0	2026-11-12T18:15:38.7236157Z [WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+configure	Second run must report changed=0	2026-11-12T18:15:38.7237578Z [DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
+configure	Second run must report changed=0	2026-11-12T18:15:39.2947043Z [WARNING]: Found variable using reserved name 'tags'.
+configure	Second run must report changed=0	2026-11-12T18:15:39.2947536Z Origin: <unknown>
+configure	Second run must report changed=0	2026-11-12T18:15:39.2947688Z 
+configure	Second run must report changed=0	2026-11-12T18:15:39.2947791Z tags
+configure	Second run must report changed=0	2026-11-12T18:15:39.2947886Z 
+configure	Second run must report changed=0	2026-11-12T18:15:39.2959274Z 
+configure	Second run must report changed=0	2026-11-12T18:15:39.2959643Z PLAY [Configure the final project backend (Apache on the VM)] ******************
+configure	Second run must report changed=0	2026-11-12T18:15:39.2960064Z 
+configure	Second run must report changed=0	2026-11-12T18:15:39.2960470Z TASK [Gathering Facts] *********************************************************
+configure	Second run must report changed=0	2026-11-12T18:15:44.0939525Z ok: [i-07fd9bc5fec936f1b]
+configure	Second run must report changed=0	2026-11-12T18:15:44.0939844Z 
+configure	Second run must report changed=0	2026-11-12T18:15:44.0940060Z TASK [webserver : Install the web server package] ******************************
+configure	Second run must report changed=0	2026-11-12T18:15:49.2290431Z ok: [i-07fd9bc5fec936f1b]
+configure	Second run must report changed=0	2026-11-12T18:15:49.2290768Z 
+configure	Second run must report changed=0	2026-11-12T18:15:49.2291010Z TASK [webserver : Apply the server settings from the template] *****************
+configure	Second run must report changed=0	2026-11-12T18:15:54.4331773Z ok: [i-07fd9bc5fec936f1b]
+configure	Second run must report changed=0	2026-11-12T18:15:54.4332086Z 
+configure	Second run must report changed=0	2026-11-12T18:15:54.4332374Z TASK [webserver : Render the home page from the template] **********************
+configure	Second run must report changed=0	2026-11-12T18:15:59.6426470Z ok: [i-07fd9bc5fec936f1b]
+configure	Second run must report changed=0	2026-11-12T18:15:59.6426713Z 
+configure	Second run must report changed=0	2026-11-12T18:15:59.6426910Z TASK [webserver : Start the web server now and at every boot] ******************
+configure	Second run must report changed=0	2026-11-12T18:16:04.2252600Z ok: [i-07fd9bc5fec936f1b]
+configure	Second run must report changed=0	2026-11-12T18:16:04.2252970Z 
+configure	Second run must report changed=0	2026-11-12T18:16:04.2253450Z PLAY RECAP *********************************************************************
+configure	Second run must report changed=0	2026-11-12T18:16:04.2254256Z i-07fd9bc5fec936f1b        : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+configure	Second run must report changed=0	2026-11-12T18:16:04.2254591Z 
+configure	Post Run actions/setup-python@v5	﻿2026-11-12T18:16:04.3724140Z Post job cleanup.
+configure	Post Run actions/setup-python@v5	2026-11-12T18:16:04.4741363Z (node:2503) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+configure	Post Run actions/setup-python@v5	2026-11-12T18:16:04.4742006Z (Use `node --trace-deprecation ...` to show where the warning was created)
+configure	Post Run aws-actions/configure-aws-credentials@v4	﻿2026-11-12T18:16:04.4874350Z Post job cleanup.
+configure	Post Run actions/checkout@v5	﻿2026-11-12T18:16:04.5876412Z Post job cleanup.
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6605685Z [command]/usr/bin/git version
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6676528Z git version 2.56.0
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6710990Z Temporarily overriding HOME='/home/runner/work/_temp/92c824f4-22ef-45b1-8781-c046f668156e' before making global git config changes
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6712117Z Adding repository directory to the temporary git global config as a safe directory
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6715026Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/acs730-coursework/acs730-coursework
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6756075Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.6783507Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.7019529Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.7039253Z http.https://github.com/.extraheader
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.7049971Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.7082427Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.7304802Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+configure	Post Run actions/checkout@v5	2026-11-12T18:16:04.7349554Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+configure	Complete job	﻿2026-11-12T18:16:04.7704103Z Cleaning up orphan processes
+configure	Complete job	2026-11-12T18:16:04.8009046Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/setup-python@v5, aws-actions/configure-aws-credentials@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+deploy	Set up job	﻿2026-11-12T18:16:09.7348634Z Current runner version: '2.338.2'
+deploy	Set up job	2026-11-12T18:16:09.7364322Z Runner name: 'acs730-lab7-runner'
+deploy	Set up job	2026-11-12T18:16:09.7366518Z Runner group name: 'Default'
+deploy	Set up job	2026-11-12T18:16:09.7368493Z Machine name: 'ip-172-31-17-152'
+deploy	Set up job	2026-11-12T18:16:09.7376353Z ##[group]GITHUB_TOKEN Permissions
+deploy	Set up job	2026-11-12T18:16:09.7381448Z Contents: read
+deploy	Set up job	2026-11-12T18:16:09.7382687Z Metadata: read
+deploy	Set up job	2026-11-12T18:16:09.7383989Z ##[endgroup]
+deploy	Set up job	2026-11-12T18:16:09.7388461Z Secret source: Actions
+deploy	Set up job	2026-11-12T18:16:09.7390423Z Cache mode: write
+deploy	Set up job	2026-11-12T18:16:09.7391839Z Prepare workflow directory
+deploy	Set up job	2026-11-12T18:16:09.8344002Z Prepare all required actions
+deploy	Set up job	2026-11-12T18:16:09.8441877Z Getting action download info
+deploy	Set up job	2026-11-12T18:16:10.0494803Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+deploy	Set up job	2026-11-12T18:16:10.5957694Z Complete job name: deploy
+deploy	Run actions/checkout@v5	﻿2026-11-12T18:16:10.8062179Z ##[group]Run actions/checkout@v5
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8063861Z with:
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8064644Z   repository: jhui26-seneca/acs730-coursework
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8073300Z   token: ***
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8074061Z   ssh-strict: true
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8076310Z   ssh-user: git
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8078021Z   persist-credentials: true
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8078830Z   clean: true
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8079493Z   sparse-checkout-cone-mode: true
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8080378Z   fetch-depth: 1
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8081025Z   fetch-tags: false
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8082402Z   show-progress: true
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8083117Z   lfs: false
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8083752Z   submodules: false
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8084465Z   set-safe-directory: true
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8085220Z   allow-unsafe-pr-checkout: false
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8086918Z env:
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8089259Z   CLUSTER: acs730-lab7
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8090141Z   NAMESPACE: acs730-final
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8090936Z   DEPLOYMENT: acs730-final-web
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8091891Z   IMAGE: acs730-final-web
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8092795Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Run actions/checkout@v5	2026-11-12T18:16:10.8093624Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0266933Z Syncing repository: jhui26-seneca/acs730-coursework
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0271802Z ##[group]Getting Git version info
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0274746Z Working directory is '/home/acs730-lab7-runner/actions-runner/_work/acs730-coursework/acs730-coursework'
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0281259Z [command]/usr/bin/git version
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0282803Z git version 2.50.1
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0287736Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0318720Z Temporarily overriding HOME='/home/acs730-lab7-runner/actions-runner/_work/_temp/13e99654-02a6-446a-b74a-9f7f0cd7db05' before making global git config changes
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0322854Z Adding repository directory to the temporary git global config as a safe directory
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0328225Z [command]/usr/bin/git config --global --add safe.directory /home/acs730-lab7-runner/actions-runner/_work/acs730-coursework/acs730-coursework
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0387876Z [command]/usr/bin/git config --local --get remote.origin.url
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0447815Z https://github.com/jhui26-seneca/acs730-coursework
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0485046Z ##[group]Removing previously created refs, to avoid conflicts
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0487221Z [command]/usr/bin/git rev-parse --symbolic-full-name --verify --quiet HEAD
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0507927Z refs/heads/main
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0535878Z [command]/usr/bin/git checkout --detach
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0638450Z HEAD is now at 35e856b Merge pull request #44 from jhui26-seneca/final-project
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0690138Z [command]/usr/bin/git branch --delete --force main
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0740084Z Deleted branch main (was 35e856b).
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0818712Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.0823965Z [command]/usr/bin/git submodule status
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1243563Z ##[group]Cleaning the repository
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1244783Z [command]/usr/bin/git clean -ffdx
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1322692Z [command]/usr/bin/git reset --hard HEAD
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1416133Z HEAD is now at 35e856b Merge pull request #44 from jhui26-seneca/final-project
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1456067Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1458399Z ##[group]Disabling automatic garbage collection
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1462285Z [command]/usr/bin/git config --local gc.auto 0
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1465395Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1466909Z ##[group]Setting up auth
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1498935Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.1537465Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.2012582Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.2056208Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.2618394Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.2658879Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.3191303Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.3306735Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.3308997Z ##[group]Fetching the repository
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.3313269Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +8d368586b551f24486699f96df236c70804a2bc0:refs/remotes/origin/main
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5558829Z From https://github.com/jhui26-seneca/acs730-coursework
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5587022Z  + 35e856b...8d36858 8d368586b551f24486699f96df236c70804a2bc0 -> origin/main  (forced update)
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5600770Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5609057Z ##[group]Determining the checkout info
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5616544Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5618535Z [command]/usr/bin/git sparse-checkout disable
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5659152Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5703775Z ##[group]Checking out the ref
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5714714Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5845540Z Warning: you are leaving 1 commit behind, not connected to
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5849627Z any of your branches:
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5851605Z 
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5853284Z   35e856b Merge pull request #44 from jhui26-seneca/final-project
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5855977Z 
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5857955Z If you want to keep it by creating a new branch, this may be a good time
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5861721Z to do so with:
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5863015Z 
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5864474Z  git branch <new-branch-name> 35e856b
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5866458Z 
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5868227Z Switched to a new branch 'main'
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5871136Z branch 'main' set up to track 'origin/main'.
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5879794Z ##[endgroup]
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5915067Z [command]/usr/bin/git log -1 --format=%H
+deploy	Run actions/checkout@v5	2026-11-12T18:16:11.5953760Z 8d368586b551f24486699f96df236c70804a2bc0
+deploy	Prove this job has no AWS credentials	﻿2026-11-12T18:16:11.6441076Z ##[group]Run if aws sts get-caller-identity > /dev/null 2>&1; then
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6446083Z ^[[36;1mif aws sts get-caller-identity > /dev/null 2>&1; then^[[0m
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6450590Z ^[[36;1m  echo "Unexpected: this runner can reach AWS credentials" >&2; exit 1^[[0m
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6454489Z ^[[36;1mfi^[[0m
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6458643Z ^[[36;1mecho "No AWS credentials on the self-hosted runner (instance metadata service blocked for its user)"^[[0m
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6494588Z shell: /usr/bin/bash -e {0}
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6498002Z env:
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6499666Z   CLUSTER: acs730-lab7
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6501421Z   NAMESPACE: acs730-final
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6503465Z   DEPLOYMENT: acs730-final-web
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6505536Z   IMAGE: acs730-final-web
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6508253Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:11.6511191Z ##[endgroup]
+deploy	Prove this job has no AWS credentials	2026-11-12T18:16:12.8118362Z No AWS credentials on the self-hosted runner (instance metadata service blocked for its user)
+deploy	Show the cluster identity this job runs as	﻿2026-11-12T18:16:12.8246153Z ##[group]Run kubectl auth whoami
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8247902Z ^[[36;1mkubectl auth whoami^[[0m
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8252928Z shell: /usr/bin/bash -e {0}
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8254185Z env:
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8255230Z   CLUSTER: acs730-lab7
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8256424Z   NAMESPACE: acs730-final
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8257694Z   DEPLOYMENT: acs730-final-web
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8259009Z   IMAGE: acs730-final-web
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8260288Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8261641Z ##[endgroup]
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8978282Z ATTRIBUTE                                           VALUE
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8982614Z Username                                            system:serviceaccount:acs730-final:acs730-final-deployer
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8986713Z UID                                                 fc2aec5b-582f-4053-ae76-96746ef17882
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.8991987Z Groups                                              [system:serviceaccounts system:serviceaccounts:acs730-final system:authenticated]
+deploy	Show the cluster identity this job runs as	2026-11-12T18:16:12.9000492Z Extra: authentication.kubernetes.io/credential-id   [JTI=1b67f424-fee2-403f-a379-06bd7fabdddf]
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	﻿2026-11-12T18:16:12.9118508Z ##[group]Run docker build -t "$IMAGE:${GITHUB_SHA::12}" final-project/app
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9123140Z ^[[36;1mdocker build -t "$IMAGE:${GITHUB_SHA::12}" final-project/app^[[0m
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9128523Z shell: /usr/bin/bash -e {0}
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9129760Z env:
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9131473Z   CLUSTER: acs730-lab7
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9134484Z   NAMESPACE: acs730-final
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9136771Z   DEPLOYMENT: acs730-final-web
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9138139Z   IMAGE: acs730-final-web
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9139394Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:12.9141770Z ##[endgroup]
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3860067Z #0 building with "default" instance using docker driver
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3861605Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3862392Z #1 [internal] load build definition from Dockerfile
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3864504Z #1 transferring dockerfile: 636B done
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3866081Z #1 DONE 0.0s
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3866816Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.3868841Z #2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.4355476Z #2 DONE 0.2s
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5332447Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5382148Z #3 [internal] load .dockerignore
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5413544Z #3 transferring context: 184B done
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5462083Z #3 DONE 0.0s
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5507295Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5548953Z #4 [1/6] FROM docker.io/library/python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5550952Z #4 DONE 0.0s
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5576597Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5585319Z #5 [internal] load build context
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5599642Z #5 transferring context: 173B done
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5613947Z #5 DONE 0.0s
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5631790Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5634769Z #6 [3/6] COPY requirements.txt ./
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5653202Z #6 CACHED
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5676819Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5695762Z #7 [2/6] WORKDIR /app
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5717490Z #7 CACHED
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5738743Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5762907Z #8 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5783617Z #8 CACHED
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5810939Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5837040Z #9 [5/6] COPY app.py ./
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5860199Z #9 CACHED
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5888305Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5916999Z #10 [6/6] RUN useradd --system --no-create-home --uid 10001 appuser     && chown -R appuser:appuser /app
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5954232Z #10 CACHED
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5977729Z 
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.5984778Z #11 exporting to image
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.6014248Z #11 exporting layers done
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.6062562Z #11 writing image sha256:66b3051ec8e51048d4dde60b5b2c879e701562cb2f64e5f8bb47593655d590de done
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.6073884Z #11 naming to docker.io/library/acs730-final-web:8d368586b551 done
+deploy	Build the frontend from final-project/app, tagged with the commit SHA	2026-11-12T18:16:13.6076983Z #11 DONE 0.0s
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	﻿2026-11-12T18:16:13.6151231Z ##[group]Run kind load docker-image "$IMAGE:${GITHUB_SHA::12}" --name "$CLUSTER"
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6152329Z ^[[36;1mkind load docker-image "$IMAGE:${GITHUB_SHA::12}" --name "$CLUSTER"^[[0m
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6160774Z shell: /usr/bin/bash -e {0}
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6162192Z env:
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6162584Z   CLUSTER: acs730-lab7
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6162993Z   NAMESPACE: acs730-final
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6163404Z   DEPLOYMENT: acs730-final-web
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6163823Z   IMAGE: acs730-final-web
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6164468Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.6164911Z ##[endgroup]
+deploy	Load it into the kind node (its containerd is not the workstation's Docker)	2026-11-12T18:16:13.8212374Z Image with ID: sha256:66b3051ec8e51048d4dde60b5b2c879e701562cb2f64e5f8bb47593655d590de already present on the node acs730-lab7-control-plane but is missing the tag docker.io/library/acs730-final-web:8d368586b551. re-tagging...
+deploy	Point the frontend at the VM, apply the manifests, then set this build	﻿2026-11-12T18:16:13.9949236Z ##[group]Run kubectl -n "$NAMESPACE" rollout pause "deployment/$DEPLOYMENT"
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9951216Z ^[[36;1mkubectl -n "$NAMESPACE" rollout pause "deployment/$DEPLOYMENT"^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9952357Z ^[[36;1mkubectl -n "$NAMESPACE" create configmap acs730-final-config \^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9953568Z ^[[36;1m  --from-literal=APP_VERSION="${GITHUB_SHA::12}" --from-literal=BACKEND_URL="$BACKEND_URL" \^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9954829Z ^[[36;1m  --dry-run=client -o yaml | kubectl apply -f -^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9956164Z ^[[36;1mkubectl -n "$NAMESPACE" apply -f final-project/k8s/deployment.yaml -f final-project/k8s/service.yaml^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9958218Z ^[[36;1mkubectl -n "$NAMESPACE" set image "deployment/$DEPLOYMENT" web="$IMAGE:${GITHUB_SHA::12}"^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9959479Z ^[[36;1mkubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT"^[[0m
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9962831Z shell: /usr/bin/bash -e {0}
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9963274Z env:
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9963612Z   CLUSTER: acs730-lab7
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9964078Z   NAMESPACE: acs730-final
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9964489Z   DEPLOYMENT: acs730-final-web
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9964909Z   IMAGE: acs730-final-web
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9965341Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:13.9965843Z ##[endgroup]
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:14.1123965Z deployment.apps/acs730-final-web paused
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:14.4764974Z configmap/acs730-final-config configured
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:14.8100079Z deployment.apps/acs730-final-web unchanged
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:14.9104789Z service/acs730-final-svc unchanged
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:15.0401443Z deployment.apps/acs730-final-web image updated
+deploy	Point the frontend at the VM, apply the manifests, then set this build	2026-11-12T18:16:15.2201873Z deployment.apps/acs730-final-web resumed
+deploy	Wait for the rollout to finish (the gate)	﻿2026-11-12T18:16:15.2354245Z ##[group]Run kubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=120s
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2355744Z ^[[36;1mkubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=120s^[[0m
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2359527Z shell: /usr/bin/bash -e {0}
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2360227Z env:
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2360637Z   CLUSTER: acs730-lab7
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2361119Z   NAMESPACE: acs730-final
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2361601Z   DEPLOYMENT: acs730-final-web
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2362147Z   IMAGE: acs730-final-web
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2362677Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.2363241Z ##[endgroup]
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:15.4192907Z Waiting for deployment "acs730-final-web" rollout to finish: 1 out of 2 new replicas have been updated...
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:20.7177900Z Waiting for deployment "acs730-final-web" rollout to finish: 1 out of 2 new replicas have been updated...
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:20.8130455Z Waiting for deployment "acs730-final-web" rollout to finish: 1 out of 2 new replicas have been updated...
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:20.8322727Z Waiting for deployment "acs730-final-web" rollout to finish: 1 old replicas are pending termination...
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:26.1859988Z Waiting for deployment "acs730-final-web" rollout to finish: 1 old replicas are pending termination...
+deploy	Wait for the rollout to finish (the gate)	2026-11-12T18:16:26.2355814Z deployment "acs730-final-web" successfully rolled out
+deploy	Smoke test - the frontend answers and the VM answered it	﻿2026-11-12T18:16:26.2606295Z ##[group]Run for i in $(seq 1 10); do
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2607071Z ^[[36;1mfor i in $(seq 1 10); do^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2607918Z ^[[36;1m  if body=$(curl -fsS http://localhost:30080/) && grep -q "HTTP 200 from the VM" <<<"$body"; then^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2608795Z ^[[36;1m    echo "$body"; exit 0^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2609327Z ^[[36;1m  fi^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2609611Z ^[[36;1m  sleep 3^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2610024Z ^[[36;1mdone^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2610453Z ^[[36;1mecho "the frontend never returned the VM's answer" >&2^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2611189Z ^[[36;1mcurl -si http://localhost:30080/ >&2 || true^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2611793Z ^[[36;1mexit 1^[[0m
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2615924Z shell: /usr/bin/bash -e {0}
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2616355Z env:
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2616643Z   CLUSTER: acs730-lab7
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2617079Z   NAMESPACE: acs730-final
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2617464Z   DEPLOYMENT: acs730-final-web
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2617930Z   IMAGE: acs730-final-web
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2618308Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.2618836Z ##[endgroup]
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:26.3378044Z curl: (52) Empty reply from server
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:29.3966489Z ACS730 final project frontend (Flask on Kubernetes) -- version 8d368586b551
+deploy	Smoke test - the frontend answers and the VM answered it	2026-11-12T18:16:29.3968704Z backend: HTTP 200 from the VM: ACS730 final project - backend
+deploy	Never leave the Deployment paused	﻿2026-11-12T18:16:29.4022767Z ##[group]Run kubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT" 2>/dev/null || true
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4023783Z ^[[36;1mkubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT" 2>/dev/null || true^[[0m
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4026646Z shell: /usr/bin/bash -e {0}
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4027320Z env:
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4027674Z   CLUSTER: acs730-lab7
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4028145Z   NAMESPACE: acs730-final
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4028499Z   DEPLOYMENT: acs730-final-web
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4028974Z   IMAGE: acs730-final-web
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4029359Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Never leave the Deployment paused	2026-11-12T18:16:29.4029866Z ##[endgroup]
+deploy	Record what is running	﻿2026-11-12T18:16:29.4884623Z ##[group]Run kubectl -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o wide
+deploy	Record what is running	2026-11-12T18:16:29.4885415Z ^[[36;1mkubectl -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o wide^[[0m
+deploy	Record what is running	2026-11-12T18:16:29.4888723Z shell: /usr/bin/bash -e {0}
+deploy	Record what is running	2026-11-12T18:16:29.4889102Z env:
+deploy	Record what is running	2026-11-12T18:16:29.4889370Z   CLUSTER: acs730-lab7
+deploy	Record what is running	2026-11-12T18:16:29.4889691Z   NAMESPACE: acs730-final
+deploy	Record what is running	2026-11-12T18:16:29.4890032Z   DEPLOYMENT: acs730-final-web
+deploy	Record what is running	2026-11-12T18:16:29.4890440Z   IMAGE: acs730-final-web
+deploy	Record what is running	2026-11-12T18:16:29.4890800Z   BACKEND_URL: http://<vm-public-ip>
+deploy	Record what is running	2026-11-12T18:16:29.4891169Z ##[endgroup]
+deploy	Record what is running	2026-11-12T18:16:29.5668111Z NAME               READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
+deploy	Record what is running	2026-11-12T18:16:29.5669980Z acs730-final-web   2/2     2            2           17m   web          acs730-final-web:8d368586b551   app=acs730-final-web
+deploy	Post Run actions/checkout@v5	﻿2026-11-12T18:16:29.5833812Z Post job cleanup.
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7332958Z [command]/usr/bin/git version
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7358006Z git version 2.50.1
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7397542Z Temporarily overriding HOME='/home/acs730-lab7-runner/actions-runner/_work/_temp/b24077d8-e741-4d8e-bfac-29e191249629' before making global git config changes
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7401046Z Adding repository directory to the temporary git global config as a safe directory
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7403403Z [command]/usr/bin/git config --global --add safe.directory /home/acs730-lab7-runner/actions-runner/_work/acs730-coursework/acs730-coursework
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7467376Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7540193Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.7956247Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.8006207Z http.https://github.com/.extraheader
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.8010743Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.8059197Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.8429354Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+deploy	Post Run actions/checkout@v5	2026-11-12T18:16:29.8477449Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+deploy	Complete job	﻿2026-11-12T18:16:29.9050277Z Cleaning up orphan processes
