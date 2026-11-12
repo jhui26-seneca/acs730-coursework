@@ -1,0 +1,7 @@
+# Final project: the namespace everything on the Kubernetes side lives in. Apply it first.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: acs730-final
+  labels:
+    app.kubernetes.io/part-of: acs730-final

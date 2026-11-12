@@ -1,0 +1,47 @@
+# Final project: the identity the self-hosted runner deploys as (the Lab 7 pattern, own namespace).
+# WHO:  ServiceAccount acs730-final-deployer
+# WHAT: Role acs730-final-deployer-role, in namespace acs730-final only
+# JOIN: RoleBinding acs730-final-deployer-binding
+# Applied once by a person with the admin context; the pipeline never applies this file.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: acs730-final-deployer
+  namespace: acs730-final
+  labels:
+    app.kubernetes.io/part-of: acs730-final
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: acs730-final-deployer-role
+  namespace: acs730-final
+  labels:
+    app.kubernetes.io/part-of: acs730-final
+rules:
+  # apply and set image read then patch the Deployment; rollout status lists and watches it.
+  # No create, update or delete: a person creates the objects once, the pipeline only changes them.
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "patch"]
+  # apply of the generated ConfigMap (new backend address and version) and of service.yaml
+  - apiGroups: [""]
+    resources: ["configmaps", "services"]
+    verbs: ["get", "patch"]
+  # Deliberately absent: secrets, pods, pods/exec, roles and rolebindings, other namespaces.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: acs730-final-deployer-binding
+  namespace: acs730-final
+  labels:
+    app.kubernetes.io/part-of: acs730-final
+subjects:
+  - kind: ServiceAccount
+    name: acs730-final-deployer
+    namespace: acs730-final
+roleRef:
+  kind: Role
+  name: acs730-final-deployer-role
+  apiGroup: rbac.authorization.k8s.io

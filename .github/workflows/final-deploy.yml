@@ -1,0 +1,147 @@
+# Final project: one run per merge to main, three jobs, end to end.
+#   infra     GitHub-hosted, Environment final: terraform apply of final-project/terraform/staging
+#   configure GitHub-hosted, Environment final: Ansible converge over SSM; a second run must be changed=0
+#   deploy    self-hosted, no AWS credentials: build, kind load, roll out, rollout gate, smoke test
+# Trigger: push to main only. On this repository that is a merged pull request, because branch
+# protection requires the summary and tfsec checks. No pull_request trigger (a fork's code must never
+# reach the self-hosted runner) and no workflow_dispatch (the deploy has to come from a merge).
+# AWS: session-scoped Academy credentials, held only by Environment "final" (main only, no reviewer),
+# refreshed each session with scripts/refresh-gha-creds.sh; they stop working when the session ends.
+# Kubernetes: the runner logs in as ServiceAccount acs730-final-deployer (final-project/k8s/rbac.yaml).
+name: final-deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "final-project/terraform/**"
+      - "final-project/ansible/**"
+      - "final-project/app/**"
+      - "final-project/k8s/**"
+      - "final-project/scripts/wait-for-ssm.sh"
+      - ".github/workflows/final-deploy.yml"
+
+permissions:
+  contents: read
+
+concurrency:              # two merges in a row deploy one after the other; never kill a running apply
+  group: final-deploy
+  cancel-in-progress: false
+
+env:
+  CLUSTER: acs730-lab7
+  NAMESPACE: acs730-final
+  DEPLOYMENT: acs730-final-web
+  IMAGE: acs730-final-web
+
+jobs:
+  infra:
+    runs-on: ubuntu-24.04
+    environment: final
+    timeout-minutes: 15
+    outputs:
+      web_url: ${{ steps.out.outputs.web_url }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: final-project/terraform/staging
+    steps:
+      - uses: actions/checkout@v5
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Show the AWS identity this job runs as (session name masked)
+        run: aws sts get-caller-identity --query Arn --output text | sed -E 's#(assumed-role/[^/]+/).*#\1<session>#'
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.4"
+          terraform_wrapper: false
+      - name: Terraform apply (the Assignment 1 module, staging)
+        run: |
+          terraform init -input=false -no-color
+          terraform apply -input=false -no-color -auto-approve
+      - name: Hand the VM's address to the deploy job
+        id: out
+        run: echo "web_url=$(terraform output -raw web_url)" >> "$GITHUB_OUTPUT"
+
+  configure:
+    needs: infra
+    runs-on: ubuntu-24.04
+    environment: final
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+        working-directory: final-project/ansible
+    steps:
+      - uses: actions/checkout@v5
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Show the AWS identity this job runs as (session name masked)
+        run: aws sts get-caller-identity --query Arn --output text | sed -E 's#(assumed-role/[^/]+/).*#\1<session>#'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Ansible (pinned, same line as the workstation), boto3 and botocore
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "ansible>=12,<13" boto3 botocore
+          ansible --version | head -1
+      - name: Install session-manager-plugin (pip does not provide it)
+        run: |
+          curl -sSfo /tmp/session-manager-plugin.deb \
+            https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb
+          sudo dpkg -i /tmp/session-manager-plugin.deb
+          session-manager-plugin --version
+      - name: Ansible converge (the Assignment 2 role, over SSM)
+        run: |
+          bash ../scripts/wait-for-ssm.sh
+          ansible-inventory --graph
+          ansible-playbook site.yml
+      - name: Second run must report changed=0
+        run: |
+          ansible-playbook site.yml | tee /tmp/run2.txt
+          if grep -Eq 'changed=[1-9]|failed=[1-9]' /tmp/run2.txt; then echo "Not idempotent"; exit 1; fi
+
+  deploy:
+    needs: [infra, configure]
+    runs-on: [self-hosted, acs730-lab7]
+    timeout-minutes: 15
+    env:
+      BACKEND_URL: ${{ needs.infra.outputs.web_url }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Prove this job has no AWS credentials
+        run: |
+          if aws sts get-caller-identity > /dev/null 2>&1; then
+            echo "Unexpected: this runner can reach AWS credentials" >&2; exit 1
+          fi
+          echo "No AWS credentials on the self-hosted runner (instance metadata service blocked for its user)"
+
+      - name: Show the cluster identity this job runs as
+        run: kubectl auth whoami
+
+      - name: Build the frontend from final-project/app, tagged with the commit SHA
+        run: docker build -t "$IMAGE:${GITHUB_SHA::12}" final-project/app
+
+      - name: Load it into the kind node (its containerd is not the workstation's Docker)
+        run: kind load docker-image "$IMAGE:${GITHUB_SHA::12}" --name "$CLUSTER"
+
+      # Paused, the ConfigMap, the manifests and the new image become ONE revision, so rollout undo
+      # goes back to the last good build. apply comes BEFORE set image, or apply would reset the image
+      # to the bootstrap tag in deployment.yaml and the run would "succeed" with the wrong build.
+      - name: Point the frontend at the VM, apply the manifests, then set this build
+        run: |
+          kubectl -n "$NAMESPACE" rollout pause "deployment/$DEPLOYMENT"
+          kubectl -n "$NAMESPACE" create configmap acs730-final-config \
+            --from-literal=APP_VERSION="${GITHUB_SHA::12}" --from-literal=BACKEND_URL="$BACKEND_URL" \
+            --dry-run=client -o yaml | kubectl apply -f -
+          kubectl -n "$NAMESPACE" apply -f final-project/k8s/deployment.yaml -f final-project/k8s/service.yaml
