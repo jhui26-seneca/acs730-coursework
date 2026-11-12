@@ -1,0 +1,15 @@
+# Lab 7: a one-node kind cluster called acs730-lab7.
+# kind v0.24.0 runs Kubernetes v1.31.0 in a Docker container named acs730-lab7-control-plane.
+# extraPortMappings publishes NodePort 30080 on the workstation's own port 30080, bound to
+# 127.0.0.1 only: curl http://localhost:30080 works on the workstation, and nothing new is
+# reachable from the network (no security group change).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: acs730-lab7
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 30080
+        listenAddress: "127.0.0.1"
+        protocol: TCP

@@ -1,0 +1,21 @@
+# Lab 7: a stable address in front of the Pods, chosen by label (never by Pod name).
+# port 80 is the Service's own port; targetPort http is the container's 8000; nodePort 30080 is
+# opened on the kind node, and kind-cluster.yaml maps it to 127.0.0.1:30080 on the workstation.
+# If this selector doesn't match the Pods' label, everything looks healthy, kubectl get endpoints
+# shows <none>, and curl hangs.
+apiVersion: v1
+kind: Service
+metadata:
+  name: acs730-lab7-svc
+  namespace: acs730-lab7
+  labels:
+    app: acs730-lab7-web
+spec:
+  type: NodePort
+  selector:
+    app: acs730-lab7-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      nodePort: 30080

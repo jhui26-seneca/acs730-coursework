@@ -1,0 +1,11 @@
+# Lab 7: plain, non-sensitive settings, handed to the container as environment variables.
+# The Week 4 app prints APP_VERSION in its response, so the curl shows this value.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: acs730-lab7-config
+  namespace: acs730-lab7
+  labels:
+    app: acs730-lab7-web
+data:
+  APP_VERSION: "lab7"
