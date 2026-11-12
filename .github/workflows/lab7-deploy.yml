@@ -34,7 +34,7 @@ jobs:
     runs-on: [self-hosted, acs730-lab7]
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Show the cluster identity this job runs as
         run: kubectl auth whoami
@@ -74,6 +74,7 @@ jobs:
         if: always()
         run: kubectl -n "$NAMESPACE" rollout resume "deployment/$DEPLOYMENT" 2>/dev/null || true
 
+      # Only the Deployment: the deployer Role may read it, but not list ReplicaSets or Pods (by design)
       - name: Record what is running
         if: always()
-        run: kubectl -n "$NAMESPACE" get deployment,replicaset,pods -o wide
+        run: kubectl -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o wide
