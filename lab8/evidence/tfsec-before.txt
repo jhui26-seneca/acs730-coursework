@@ -1,0 +1,134 @@
+Thu Nov 12 06:57:18 UTC 2026
+$ tfsec lab8 --minimum-severity HIGH --no-color
+
+======================================================
+tfsec is joining the Trivy family
+
+tfsec will continue to remain available 
+for the time being, although our engineering 
+attention will be directed at Trivy going forward.
+
+You can read more here: 
+https://github.com/aquasecurity/tfsec/discussions/1994
+======================================================
+
+Result #1 CRITICAL Security group rule allows ingress from public internet. 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+  main.tf:57
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+   51    resource "aws_security_group_rule" "ssh_in" {
+   52      type              = "ingress"
+   53      description       = "SSH for administration"
+   54      from_port         = 22
+   55      to_port           = 22
+   56      protocol          = "tcp"
+   57  [   cidr_blocks       = ["0.0.0.0/0"]
+   58      security_group_id = aws_security_group.web.id
+   59    }
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-no-public-ingress-sgr
+      Impact Your port exposed to the internet
+  Resolution Set a more restrictive cidr range
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-ingress-sgr/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule#cidr_blocks
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+Result #2 CRITICAL Security group rule allows egress to multiple public internet addresses. 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+  main.tf:67
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+   61    resource "aws_security_group_rule" "https_out" {
+   62      type              = "egress"
+   63      description       = "HTTPS out for dnf package updates and the SSM agent"
+   64      from_port         = 443
+   65      to_port           = 443
+   66      protocol          = "tcp"
+   67  [   cidr_blocks       = ["0.0.0.0/0"]
+   68      security_group_id = aws_security_group.web.id
+   69    }
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-no-public-egress-sgr
+      Impact Your port is egressing data to the internet
+  Resolution Set a more restrictive cidr range
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-egress-sgr/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+Result #3 HIGH Instance does not require IMDS access to require a token 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+  main.tf:71-82
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+   71  ┌ resource "aws_instance" "web" {
+   72  │   ami                    = data.aws_ami.al2023.id
+   73  │   instance_type          = "t3.micro"
+   74  │   vpc_security_group_ids = [aws_security_group.web.id]
+   75  │ 
+   76  │   # BROKEN: root volume not encrypted, and no metadata_options (IMDSv1 allowed)
+   77  │   root_block_device {
+   78  │     encrypted = false
+   79  └   }
+   ..  
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-enforce-http-token-imds
+      Impact Instance metadata service can be interacted with freely
+  Resolution Enable HTTP token requirement for IMDS
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/enforce-http-token-imds/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#metadata-options
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+Result #4 HIGH Root block device is not encrypted. 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+  main.tf:78
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+   71    resource "aws_instance" "web" {
+   ..  
+   78  [     encrypted = false (false)
+   ..  
+   82    }
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-enable-at-rest-encryption
+      Impact The block device could be compromised and read from
+  Resolution Turn on encryption for all block devices
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/enable-at-rest-encryption/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#ebs-ephemeral-and-root-block-devices
+──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  timings
+  ──────────────────────────────────────────
+  disk i/o             29.473µs
+  parsing              1.874954ms
+  adaptation           248.039µs
+  checks               24.783635ms
+  total                26.936101ms
+
+  counts
+  ──────────────────────────────────────────
+  modules downloaded   0
+  modules processed    1
+  blocks processed     8
+  files read           1
+
+  results
+  ──────────────────────────────────────────
+  passed               1
+  ignored              3
+  critical             2
+  high                 2
+  medium               0
+  low                  0
+
+  1 passed, 3 ignored, 4 potential problem(s) detected.
+
+exit code: 1

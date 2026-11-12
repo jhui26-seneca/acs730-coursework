@@ -1,0 +1,40 @@
+# Lab 8: tfsec as a gate, not a report. tfsec exits 1 when it finds anything at HIGH or above, and
+# that exit code fails the job; the job is a required status check on main, so a red run blocks
+# the merge. There is deliberately no "|| true", no continue-on-error and no soft_fail anywhere,
+# and no marketplace tfsec action (it defaults to soft_fail).
+# No paths: filter, on purpose: a required check must report on EVERY pull request, or pull
+# requests that don't touch lab8/ would wait for it forever. It scans only lab8/, needs no AWS
+# credentials, and stays enabled for the Final Project.
+name: lab8-policy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tfsec:
+    name: tfsec (HIGH and above)        # the name branch protection requires
+    runs-on: ubuntu-latest
+    env:
+      TFSEC_VERSION: "1.28.14"          # the course pin; tfsec is in maintenance, Trivy is its successor
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install tfsec from its release (checksum verified)
+        run: |
+          base="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}"
+          tgz="tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz"
+          curl -fsSLO "$base/$tgz"
+          curl -fsSLO "$base/tfsec_${TFSEC_VERSION}_checksums.txt"
+          grep " ${tgz}\$" "tfsec_${TFSEC_VERSION}_checksums.txt" | sha256sum -c -
+          tar -xzf "$tgz" tfsec
+          sudo install -m 0755 tfsec /usr/local/bin/tfsec
+          tfsec --version
+
+      - name: Gate - tfsec lab8, HIGH and above (any finding fails the job)
+        run: tfsec lab8 --minimum-severity HIGH --no-color
