@@ -57,4 +57,33 @@ print(f(c["iat"]), "to", f(c["exp"]))'
   echo; echo "=== 5. Nothing long-lived in the repository: gitleaks over every commit on every branch"
   tail -3 /tmp/final-gitleaks.txt; echo "gitleaks exit code: $GL_RC"
   echo; echo "=== 6. In a real account"
-  echo "No stored keys at all: OIDC, with the trust policy designed in assignment1/REPORT.md
+  echo "No stored keys at all: OIDC, with the trust policy designed in assignment1/REPORT.md (Task 4),"
+  echo "scoped with sub = repo:${REPO}:environment:final, so only a job running in this environment"
+  echo "(which GitHub starts only from main) could assume the deploy role."
+} 2>&1 | mask > "$EV/credential-model.txt"
+
+# 3. What the pipeline rolled out (admin context, so ReplicaSets and Pods are visible)
+{ date -u
+  echo "main is at $(git rev-parse origin/main); run $RUN built image tag acs730-final-web:${SHA:0:12}"
+  echo; echo '$ kubectl get nodes -o wide'; kubectl --context kind-acs730-lab7 get nodes -o wide
+  echo; echo '$ kubectl -n acs730-final get all -o wide'; $K get all -o wide
+  echo; echo '$ kubectl -n acs730-final get endpoints,configmap'; $K get endpoints,configmap
+  echo; echo "image running now: $($K get $D -o jsonpath='{.spec.template.spec.containers[0].image}')"
+  echo; echo '$ kubectl -n acs730-final rollout history deployment/acs730-final-web'; $K rollout history $D
+} 2>&1 | mask > "$EV/kubectl-get-all.txt"
+
+# 4. The two services answering, and the dependency between them
+{ date -u
+  echo '--- the frontend (Flask on Kubernetes), through Service acs730-final-svc on NodePort 30080'
+  echo '$ curl -i http://localhost:30080/'; curl -si http://localhost:30080/
+  echo; echo '$ curl -i http://localhost:30080/healthz'; curl -si http://localhost:30080/healthz; echo
+  echo; echo '--- the backend it depends on (Apache on the VM), called directly'
+  echo '$ curl -s http://<vm-public-ip>/ | grep h1'; curl -s "$VM_URL/" | grep '<h1>'
+  echo; echo "--- where the frontend gets that address: its ConfigMap, generated in run $RUN from the Terraform output"
+  echo "BACKEND_URL = $($K get configmap acs730-final-config -o jsonpath='{.data.BACKEND_URL}')"
+  echo "APP_VERSION = $($K get configmap acs730-final-config -o jsonpath='{.data.APP_VERSION}')"
+} 2>&1 | mask > "$EV/app-response.txt"
+
+echo "--- written:"; ls -l "$EV"
+echo "--- empty files (none expected):"; find "$EV" -size 0
+echo "--- files still containing the VM's IP (none expected):"; grep -l "$VM_IP" "$EV"/* || echo "none"
