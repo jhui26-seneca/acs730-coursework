@@ -8,7 +8,7 @@ The brief asks for one end state - an Apache web server serving a known page - r
 
 I made one design decision early, because it shapes everything after it: there is exactly one definition of the server. The `webserver` role configures the live servers over SSM, and Packer bakes the golden AMI by running the same role against its build instance. A change to the page, the package or the Apache settings is made once and reaches both paths.
 
-The work ran in an AWS Academy Learner Lab account, which set three constraints. IAM writes are denied, so GitHub Actions reaches AWS with session-scoped credentials held in a GitHub Environment rather than through OIDC. The account's service control policy denies some calls the tools make by default - one of them stopped my first Packer build at its last step (Task 5). And the budget is fixed, so everything was built and destroyed in one session. The work was delivered in two pull requests: #31 (targets, inventory, role, pipeline) and #32 (golden AMI, timings, teardown and this report).
+The work ran in an AWS Academy Learner Lab account, which set three constraints. IAM writes are denied, so GitHub Actions reaches AWS with session-scoped credentials held in a GitHub Environment rather than through OIDC. The account's service control policy denies some calls the tools make by default - one of them stopped my first Packer build at its last step (Task 5). And the budget is fixed, so everything was built and destroyed in one session. The work was delivered in three pull requests: #31 (targets, inventory, role, pipeline), #32 (golden AMI, timings, teardown and this report) and #42, which added the security review after the Week 12 lecture.
 
 ## Task 1 - Dynamic inventory
 
