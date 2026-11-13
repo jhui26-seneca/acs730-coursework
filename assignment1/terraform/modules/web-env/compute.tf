@@ -21,6 +21,12 @@ resource "aws_instance" "web" {
     http_tokens   = "required" # IMDSv2 only
   }
 
+  # Encrypted at rest with the account's default EBS key (aws/ebs): free, and any snapshot or copy
+  # of the disk stays encrypted too.
+  root_block_device {
+    encrypted = true
+  }
+
   # The database password comes from the SSM data source (secrets.tf), so this
   # whole value is sensitive: Terraform never prints it in a plan or a CI log.
   # The password goes into a root-only file for the application; the web page

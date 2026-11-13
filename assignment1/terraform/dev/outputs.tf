@@ -14,6 +14,10 @@ output "cpu_alarm_name" {
   value = module.web_env.cpu_alarm_name
 }
 
+output "status_alarm_name" {
+  value = module.web_env.status_alarm_name
+}
+
 output "db_password_parameter_name" {
   value = module.web_env.db_password_parameter_name
 }

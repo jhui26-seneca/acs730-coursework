@@ -38,6 +38,11 @@ output "cpu_alarm_name" {
   value       = aws_cloudwatch_metric_alarm.cpu_high.alarm_name
 }
 
+output "status_alarm_name" {
+  description = "Name of the CloudWatch status-check alarm."
+  value       = aws_cloudwatch_metric_alarm.status_check_failed.alarm_name
+}
+
 output "db_password_parameter_name" {
   description = "SSM parameter the data source read."
   value       = data.aws_ssm_parameter.db_password.name

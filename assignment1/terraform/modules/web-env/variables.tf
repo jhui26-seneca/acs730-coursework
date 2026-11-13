@@ -30,15 +30,13 @@ variable "instance_type" {
 }
 
 variable "ingress_rules" {
-  description = "Inbound rules for the web security group; one dynamic ingress block per entry. Port 22 is refused."
+  description = "EXTRA inbound rules on top of HTTP 80 from anywhere (which the module always adds); one rule each. Port 22 is refused."
   type = list(object({
     description = string
     port        = number
     cidr_blocks = list(string)
   }))
-  default = [
-    { description = "HTTP from anywhere", port = 80, cidr_blocks = ["0.0.0.0/0"] },
-  ]
+  default = []
 
   validation {
     condition     = alltrue([for r in var.ingress_rules : r.port != 22])
