@@ -22,9 +22,11 @@ resource "aws_instance" "web" {
   }
 
   # Encrypted at rest with the account's default EBS key (aws/ebs): free, and any snapshot or copy
-  # of the disk stays encrypted too.
+  # of the disk stays encrypted too. The size is the Amazon Linux 2023 image's own 8 GiB, stated
+  # explicitly because LocalStack (the pull-request check) refuses a root_block_device without one.
   root_block_device {
-    encrypted = true
+    encrypted   = true
+    volume_size = 8
   }
 
   # The database password comes from the SSM data source (secrets.tf), so this
