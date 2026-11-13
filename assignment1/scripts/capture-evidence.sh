@@ -9,7 +9,7 @@ set -uo pipefail
 #   prod-apply <run-id>       -> evidence/prod-apply.txt         (Task 5, approval shown first)
 #   backend-state-keys        -> evidence/backend-state-keys.txt (Tasks 1-2)
 #   ssm-parameter [env]       -> evidence/ssm-parameter.txt      (Task 6, default prod)
-#   cloudwatch-alarm [env]    -> evidence/cloudwatch-alarm.json  (Task 7, default prod; waits for real data)
+#   cloudwatch-alarm [env]    -> evidence/cloudwatch-alarm.json  (Task 7, default prod; both alarms; waits for real data)
 REPO="${1:?usage: capture-evidence.sh <owner>/<repo> <item> [run-id|env]}"
 ITEM="${2:?usage: capture-evidence.sh <owner>/<repo> <item> [run-id|env]}"
 ARG3="${3:-}"
@@ -110,19 +110,20 @@ case "$ITEM" in
 
   cloudwatch-alarm)
     ENV="${ARG3:-prod}"
-    ALARM="acs730-assign1-${ENV}-cpu-alarm"
-    # Wait for real datapoints: INSUFFICIENT_DATA is not an accepted state.
+    PREFIX="acs730-assign1-${ENV}-"
+    # Both alarms: the CPU alarm (load) and the status-check alarm (health).
+    # Wait for real datapoints: INSUFFICIENT_DATA is not an accepted state for either.
     for i in $(seq 1 60); do
-      STATE=$(aws cloudwatch describe-alarms --region "$REGION" --alarm-names "$ALARM" \
-        --query 'MetricAlarms[0].StateValue' --output text)
-      echo "$(date -u +%H:%M:%S) $ALARM: $STATE"
-      [ "$STATE" != "INSUFFICIENT_DATA" ] && break
+      STATES=$(aws cloudwatch describe-alarms --region "$REGION" --alarm-name-prefix "$PREFIX" \
+        --query 'MetricAlarms[].[AlarmName,StateValue]' --output text)
+      echo "$(date -u +%H:%M:%S)"; echo "$STATES"
+      if [ "$(wc -l <<<"$STATES")" -ge 2 ] && ! grep -q INSUFFICIENT_DATA <<<"$STATES"; then break; fi
       sleep 30
     done
     # Pure JSON (no date line), because check-lab.sh parses every .json file in evidence/.
-    aws cloudwatch describe-alarms --region "$REGION" --alarm-names "$ALARM" --output json \
+    aws cloudwatch describe-alarms --region "$REGION" --alarm-name-prefix "$PREFIX" --output json \
       > "$EVIDENCE_DIR/cloudwatch-alarm.json"
-    jq -r '.MetricAlarms[0] | "saved: \(.AlarmName)  \(.Namespace)/\(.MetricName)  \(.Statistic) > \(.Threshold)  period \(.Period)s  x\(.EvaluationPeriods)  state \(.StateValue) since \(.StateUpdatedTimestamp)"' \
+    jq -r '.MetricAlarms[] | "saved: \(.AlarmName)  \(.Namespace)/\(.MetricName)  \(.Statistic) > \(.Threshold)  period \(.Period)s  x\(.EvaluationPeriods)  state \(.StateValue) since \(.StateUpdatedTimestamp)"' \
       "$EVIDENCE_DIR/cloudwatch-alarm.json"
     ;;
 
