@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Final project: capture the four deployment evidence files from ONE merge-triggered run of
+# Final project: capture the five deployment evidence files from ONE merge-triggered run of
 # final-deploy, in one sitting, so they all describe the same deployment.
 # Creates:   evidence/pipeline-merge-deploy.txt, evidence/credential-model.txt,
-#            evidence/kubectl-get-all.txt, evidence/app-response.txt (the VM's public IP is replaced
-#            by <vm-public-ip> in all four: evidence never carries an IP address)
-# Deletes:   nothing (overwrites those four files)
+#            evidence/kubectl-get-all.txt, evidence/app-response.txt, evidence/monitoring.txt (the
+#            VM's public IP is replaced by <vm-public-ip> in all five: evidence never carries an IP)
+# Deletes:   nothing (overwrites those five files)
 # Arguments: <run-id> <pr-number>   the final-deploy run, and the pull request whose merge started it
 # Run on:    the workstation, as ec2-user, from the repository root, straight after the run is green
 set -euo pipefail
@@ -83,6 +83,32 @@ print(f(c["iat"]), "to", f(c["exp"]))'
   echo "BACKEND_URL = $($K get configmap acs730-final-config -o jsonpath='{.data.BACKEND_URL}')"
   echo "APP_VERSION = $($K get configmap acs730-final-config -o jsonpath='{.data.APP_VERSION}')"
 } 2>&1 | mask > "$EV/app-response.txt"
+
+# 5. The monitoring signal on the live system: both alarms on the backend VM and their latest
+#    datapoints. Waits (up to 20 minutes) until neither alarm is INSUFFICIENT_DATA.
+ALARMS="acs730-assign1-staging-"   # the module's fixed name prefix, with the final project's values
+IID=$(terraform -chdir=final-project/terraform/staging output -raw instance_id)
+for i in $(seq 1 40); do
+  STATES=$(aws cloudwatch describe-alarms --alarm-name-prefix "$ALARMS" --query 'MetricAlarms[].StateValue' --output text)
+  if [ -n "$STATES" ] && ! grep -q INSUFFICIENT_DATA <<<"$STATES"; then break; fi
+  echo "waiting for both alarms to have data: $STATES"; sleep 30
+done
+{ date -u
+  echo "=== The two CloudWatch alarms on the backend VM (the Assignment 1 module, via final-project/terraform/staging)"
+  aws cloudwatch describe-alarms --alarm-name-prefix "$ALARMS" \
+    --query 'MetricAlarms[].{Alarm:AlarmName,Metric:MetricName,Statistic:Statistic,Threshold:Threshold,Period:Period,Periods:EvaluationPeriods,State:StateValue,Since:StateUpdatedTimestamp}' \
+    --output table
+  echo; echo "=== The last 15 minutes of each metric, one datapoint a minute: the live signal the alarms evaluate"
+  for M in CPUUtilization:Average StatusCheckFailed:Maximum; do
+    echo "--- AWS/EC2 ${M%%:*} (${M##*:}), instance $IID"
+    aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name "${M%%:*}" \
+      --dimensions Name=InstanceId,Value="$IID" --statistics "${M##*:}" --period 60 \
+      --start-time "$(date -u -d '-15 min' +%Y-%m-%dT%H:%M:%SZ)" --end-time "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+      --query "sort_by(Datapoints,&Timestamp)[].[Timestamp,${M##*:}]" --output text
+  done
+  echo; echo "=== The application at the same moment, through the frontend"
+  curl -s -o /dev/null -w 'http://localhost:30080/ -> HTTP %{http_code} in %{time_total}s\n' http://localhost:30080/
+} 2>&1 | mask > "$EV/monitoring.txt"
 
 echo "--- written:"; ls -l "$EV"
 echo "--- empty files (none expected):"; find "$EV" -size 0

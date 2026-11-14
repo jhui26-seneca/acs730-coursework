@@ -3,7 +3,7 @@
 # Creates:   evidence/teardown.txt (the VM's public IP masked)
 # Deletes:   namespace acs730-final (Deployment, Service, ConfigMap, deployer ServiceAccount and RBAC);
 #            the runner's service and GitHub registration (lab7/scripts/teardown-runner.sh); the staging
-#            stack (terraform destroy: VM, VPC, subnets, gateway, routes, security group, CPU alarm);
+#            stack (terraform destroy: VM, VPC, subnets, gateway, routes, security group and rules, both alarms);
 #            SSM parameter /acs730/assign1/final-staging/db_password; bucket acs730-final-ssm-<account>;
 #            the frontend images on the workstation. Puts Lab 7's Service back and scales it to 2.
 # Keeps:     the kind cluster, the term-long state bucket (the empty final-project state stays as a

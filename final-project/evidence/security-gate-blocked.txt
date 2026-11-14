@@ -1,0 +1,91 @@
+Sat Nov 14 01:25:13 UTC 2026
+=== A pull request that opens a public port in the final project, and the required check that stops it
+PR #51: DEMO - do not merge: a public port must be blocked by the required tfsec check
+branch final-gate-demo, state OPEN, mergeable MERGEABLE, mergeStateStatus BLOCKED
+
+$ gh pr diff
+diff --git a/final-project/terraform/staging/main.tf b/final-project/terraform/staging/main.tf
+index 8a50979..d8f2bc9 100644
+--- a/final-project/terraform/staging/main.tf
++++ b/final-project/terraform/staging/main.tf
+@@ -11,4 +11,5 @@ module "web_env" {
+   detailed_monitoring        = true
+   cpu_alarm_threshold        = 70
+   db_password_parameter_name = "/acs730/assign1/final-staging/db_password"
++  ingress_rules              = [{ description = "DEMO: port 8080 open to the internet", port = 8080, cidr_blocks = ["0.0.0.0/0"] }]
+ }
+
+$ gh pr checks
+tfsec (HIGH and above)	fail	7s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364404/job/132279253114	
+ansible	pass	9s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364331/job/132279252471	
+app	pass	19s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364331/job/132279252359	
+build	pass	13s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364409/job/132279295463	
+build	pass	24s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279306342	
+image / build	pass	23s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279306563	
+kubeconform	pass	6s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364331/job/132279252122	
+lint	pass	6s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364409/job/132279252420	
+report	pass	3s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279438401	
+smoke	pass	8s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279446260	
+summary	pass	2s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279500283	
+terraform	pass	20s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364331/job/132279252662	
+test (3.11)	pass	8s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279253070	
+test (3.12)	pass	8s	https://github.com/jhui26-seneca/acs730-coursework/actions/runs/43540364583/job/132279253545	
+exit code: 1
+
+=== The failing step of the required check (run 43540364404)
+Result #1 CRITICAL Security group rule allows ingress from public internet. 
+────────────────────────────────────────────────────────────────────────────────
+  ../../assignment1/terraform/modules/web-env/network.tf:99
+   via staging/main.tf:5-15 (module.web_env)
+────────────────────────────────────────────────────────────────────────────────
+   91    resource "aws_security_group_rule" "extra_ingress" {
+   92      for_each = { for i, r in var.ingress_rules : tostring(i) => r }
+   93    
+   94      type              = "ingress"
+   95      description       = each.value.description
+   96      from_port         = each.value.port
+   97      to_port           = each.value.port
+   98      protocol          = "tcp"
+   99  [   cidr_blocks       = each.value.cidr_blocks
+  ...  
+────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-no-public-ingress-sgr
+      Impact Your port exposed to the internet
+  Resolution Set a more restrictive cidr range
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-ingress-sgr/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule#cidr_blocks
+────────────────────────────────────────────────────────────────────────────────
+
+
+  timings
+  ──────────────────────────────────────────
+  disk i/o             212.34µs
+  parsing              11.47363ms
+  adaptation           267.032µs
+  checks               9.760503ms
+  total                21.713505ms
+
+  counts
+  ──────────────────────────────────────────
+  modules downloaded   0
+  modules processed    4
+  blocks processed     98
+  files read           22
+
+  results
+  ──────────────────────────────────────────
+  passed               6
+  ignored              17
+  critical             1
+  high                 0
+  medium               0
+  low                  0
+
+  6 passed, 17 ignored, 1 potential problem(s) detected.
+
+##[error]Process completed with exit code 1.
+
+=== Required status checks on main
+["summary","tfsec (HIGH and above)"]

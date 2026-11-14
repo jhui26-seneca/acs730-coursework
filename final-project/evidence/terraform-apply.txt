@@ -1,6 +1,6 @@
-Thu Nov 12 17:38:17 UTC 2026
+Sat Nov 14 01:33:36 UTC 2026
 $ grep -n source final-project/terraform/staging/main.tf
-6:  source = "../../../assignment1/terraform/modules/web-env"
+7:  source = "../../../assignment1/terraform/modules/web-env"
 
 $ terraform init
 Initializing the backend...
@@ -25,9 +25,9 @@ $ terraform apply -auto-approve
 module.web_env.data.aws_availability_zones.available: Reading...
 module.web_env.data.aws_ssm_parameter.db_password: Reading...
 module.web_env.data.aws_ami.web: Reading...
-module.web_env.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
 module.web_env.data.aws_ssm_parameter.db_password: Read complete after 0s [id=/acs730/assign1/final-staging/db_password]
-module.web_env.data.aws_ami.web: Read complete after 0s [id=ami-0355052079a448ed4]
+module.web_env.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.web_env.data.aws_ami.web: Read complete after 0s [id=ami-0129e28f078083cdf]
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
@@ -65,9 +65,39 @@ Terraform will perform the following actions:
       + treat_missing_data                    = "missing"
     }
 
+  # module.web_env.aws_cloudwatch_metric_alarm.status_check_failed will be created
+  + resource "aws_cloudwatch_metric_alarm" "status_check_failed" {
+      + actions_enabled                       = true
+      + alarm_description                     = "ACS730 assign1 staging: acs730-assign1-staging-web failed an EC2 status check (instance or host) for 3 periods of 60 s"
+      + alarm_name                            = "acs730-assign1-staging-status-alarm"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = (known after apply)
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 3
+      + id                                    = (known after apply)
+      + metric_name                           = "StatusCheckFailed"
+      + namespace                             = "AWS/EC2"
+      + period                                = 60
+      + statistic                             = "Maximum"
+      + tags                                  = {
+          + "Name" = "acs730-assign1-staging-status-alarm"
+        }
+      + tags_all                              = {
+          + "Course"      = "ACS730"
+          + "Environment" = "staging"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "acs730-assign1-staging-status-alarm"
+          + "Project"     = "final"
+          + "Role"        = "web"
+        }
+      + threshold                             = 0
+      + treat_missing_data                    = "missing"
+    }
+
   # module.web_env.aws_instance.web will be created
   + resource "aws_instance" "web" {
-      + ami                                  = "ami-0355052079a448ed4"
+      + ami                                  = "ami-0129e28f078083cdf"
       + arn                                  = (known after apply)
       + associate_public_ip_address          = (known after apply)
       + availability_zone                    = (known after apply)
@@ -147,7 +177,18 @@ Terraform will perform the following actions:
 
       + private_dns_name_options (known after apply)
 
-      + root_block_device (known after apply)
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = true
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 8
+          + volume_type           = (known after apply)
+        }
     }
 
   # module.web_env.aws_internet_gateway.main will be created
@@ -214,37 +255,9 @@ Terraform will perform the following actions:
   + resource "aws_security_group" "web" {
       + arn                    = (known after apply)
       + description            = "ACS730 assign1 staging web server - HTTP only, no SSH"
-      + egress                 = [
-          + {
-              + cidr_blocks      = [
-                  + "0.0.0.0/0",
-                ]
-              + description      = "All outbound (dnf, SSM agent)"
-              + from_port        = 0
-              + ipv6_cidr_blocks = []
-              + prefix_list_ids  = []
-              + protocol         = "-1"
-              + security_groups  = []
-              + self             = false
-              + to_port          = 0
-            },
-        ]
+      + egress                 = (known after apply)
       + id                     = (known after apply)
-      + ingress                = [
-          + {
-              + cidr_blocks      = [
-                  + "0.0.0.0/0",
-                ]
-              + description      = "HTTP from anywhere"
-              + from_port        = 80
-              + ipv6_cidr_blocks = []
-              + prefix_list_ids  = []
-              + protocol         = "tcp"
-              + security_groups  = []
-              + self             = false
-              + to_port          = 80
-            },
-        ]
+      + ingress                = (known after apply)
       + name                   = "acs730-assign1-staging-sg"
       + name_prefix            = (known after apply)
       + owner_id               = (known after apply)
@@ -261,6 +274,40 @@ Terraform will perform the following actions:
           + "Role"        = "web"
         }
       + vpc_id                 = (known after apply)
+    }
+
+  # module.web_env.aws_security_group_rule.all_out will be created
+  + resource "aws_security_group_rule" "all_out" {
+      + cidr_blocks              = [
+          + "0.0.0.0/0",
+        ]
+      + description              = "All outbound (dnf, SSM agent, Ansible over SSM)"
+      + from_port                = 0
+      + id                       = (known after apply)
+      + protocol                 = "-1"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 0
+      + type                     = "egress"
+    }
+
+  # module.web_env.aws_security_group_rule.http_public will be created
+  + resource "aws_security_group_rule" "http_public" {
+      + cidr_blocks              = [
+          + "0.0.0.0/0",
+        ]
+      + description              = "HTTP from anywhere (the web page)"
+      + from_port                = 80
+      + id                       = (known after apply)
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 80
+      + type                     = "ingress"
     }
 
   # module.web_env.aws_subnet.public["a"] will be created
@@ -354,45 +401,53 @@ Terraform will perform the following actions:
         }
     }
 
-Plan: 10 to add, 0 to change, 0 to destroy.
+Plan: 13 to add, 0 to change, 0 to destroy.
 
 Changes to Outputs:
   + cpu_alarm_name                = "acs730-assign1-staging-cpu-alarm"
   + db_password_parameter_version = 1
   + environment                   = "staging"
   + instance_id                   = (known after apply)
+  + status_alarm_name             = "acs730-assign1-staging-status-alarm"
   + web_url                       = (known after apply)
 module.web_env.aws_vpc.main: Creating...
 module.web_env.aws_vpc.main: Still creating... [00m10s elapsed]
-module.web_env.aws_vpc.main: Creation complete after 12s [id=vpc-0423392a767fd12e4]
-module.web_env.aws_security_group.web: Creating...
-module.web_env.aws_subnet.public["a"]: Creating...
-module.web_env.aws_internet_gateway.main: Creating...
+module.web_env.aws_vpc.main: Creation complete after 11s [id=vpc-0e8cf9a3a4610b928]
 module.web_env.aws_subnet.public["b"]: Creating...
-module.web_env.aws_internet_gateway.main: Creation complete after 0s [id=igw-010e2285c44da3fa8]
+module.web_env.aws_internet_gateway.main: Creating...
+module.web_env.aws_subnet.public["a"]: Creating...
+module.web_env.aws_security_group.web: Creating...
+module.web_env.aws_internet_gateway.main: Creation complete after 1s [id=igw-07fe5e5134c5da743]
 module.web_env.aws_route_table.public: Creating...
-module.web_env.aws_route_table.public: Creation complete after 1s [id=rtb-0b5ffb59a1ece1f68]
-module.web_env.aws_security_group.web: Creation complete after 2s [id=sg-0123e8959381b2cfd]
-module.web_env.aws_subnet.public["a"]: Still creating... [00m10s elapsed]
+module.web_env.aws_route_table.public: Creation complete after 1s [id=rtb-0d59456af8cd48815]
+module.web_env.aws_security_group.web: Creation complete after 2s [id=sg-0868062fa146db904]
+module.web_env.aws_security_group_rule.all_out: Creating...
+module.web_env.aws_security_group_rule.http_public: Creating...
+module.web_env.aws_security_group_rule.http_public: Creation complete after 1s [id=sgrule-2178082533]
+module.web_env.aws_security_group_rule.all_out: Creation complete after 1s [id=sgrule-1329947784]
 module.web_env.aws_subnet.public["b"]: Still creating... [00m10s elapsed]
-module.web_env.aws_subnet.public["a"]: Creation complete after 11s [id=subnet-0c93ffec16c0877d6]
-module.web_env.aws_subnet.public["b"]: Creation complete after 11s [id=subnet-0417deb5e3931ec00]
+module.web_env.aws_subnet.public["a"]: Still creating... [00m10s elapsed]
+module.web_env.aws_subnet.public["b"]: Creation complete after 11s [id=subnet-0de671b39f2e5858d]
+module.web_env.aws_subnet.public["a"]: Creation complete after 11s [id=subnet-002cbd7e825cf3064]
 module.web_env.aws_route_table_association.public["b"]: Creating...
 module.web_env.aws_route_table_association.public["a"]: Creating...
-module.web_env.aws_route_table_association.public["a"]: Creation complete after 0s [id=rtbassoc-0d389a79ceda3d2da]
-module.web_env.aws_route_table_association.public["b"]: Creation complete after 0s [id=rtbassoc-08fab4e0251cc1bd0]
+module.web_env.aws_route_table_association.public["a"]: Creation complete after 1s [id=rtbassoc-0cadbc6b1fb3864ba]
+module.web_env.aws_route_table_association.public["b"]: Creation complete after 1s [id=rtbassoc-034af47c573bed0c6]
 module.web_env.aws_instance.web: Creating...
 module.web_env.aws_instance.web: Still creating... [00m10s elapsed]
-module.web_env.aws_instance.web: Creation complete after 13s [id=i-07fd9bc5fec936f1b]
+module.web_env.aws_instance.web: Creation complete after 13s [id=i-01e532dc6242e6b7d]
 module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Creating...
+module.web_env.aws_cloudwatch_metric_alarm.status_check_failed: Creating...
 module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Creation complete after 0s [id=acs730-assign1-staging-cpu-alarm]
+module.web_env.aws_cloudwatch_metric_alarm.status_check_failed: Creation complete after 0s [id=acs730-assign1-staging-status-alarm]
 
-Apply complete! Resources: 10 added, 0 changed, 0 destroyed.
+Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
 
 Outputs:
 
 cpu_alarm_name = "acs730-assign1-staging-cpu-alarm"
 db_password_parameter_version = 1
 environment = "staging"
-instance_id = "i-07fd9bc5fec936f1b"
+instance_id = "i-01e532dc6242e6b7d"
+status_alarm_name = "acs730-assign1-staging-status-alarm"
 web_url = "http://<vm-public-ip>"
