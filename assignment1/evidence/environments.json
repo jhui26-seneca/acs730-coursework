@@ -1,8 +1,41 @@
 {
-  "captured_at_utc": "2026-10-16T03:47:54Z",
+  "captured_at_utc": "2026-11-14T00:01:49Z",
   "environments": {
-    "total_count": 2,
+    "total_count": 4,
     "environments": [
+      {
+        "id": 24899963302,
+        "node_id": "EN_kwDOUfe8DM8AAAAFzCdJpg",
+        "name": "assign2",
+        "url": "https://api.github.com/repos/jhui26-seneca/acs730-coursework/environments/assign2",
+        "html_url": "https://github.com/jhui26-seneca/acs730-coursework/deployments/activity_log?environments_filter=assign2",
+        "created_at": "2026-10-21T08:49:03Z",
+        "updated_at": "2026-10-21T08:49:03Z",
+        "can_admins_bypass": true,
+        "protection_rules": [],
+        "deployment_branch_policy": null
+      },
+      {
+        "id": 27102785085,
+        "node_id": "EN_kwDOUfe8DM8AAAAGT3OuPQ",
+        "name": "final",
+        "url": "https://api.github.com/repos/jhui26-seneca/acs730-coursework/environments/final",
+        "html_url": "https://github.com/jhui26-seneca/acs730-coursework/deployments/activity_log?environments_filter=final",
+        "created_at": "2026-11-12T17:22:07Z",
+        "updated_at": "2026-11-12T17:22:07Z",
+        "can_admins_bypass": true,
+        "protection_rules": [
+          {
+            "id": 72272992,
+            "node_id": "GA_kwDOUfe8DM4ETsxg",
+            "type": "branch_policy"
+          }
+        ],
+        "deployment_branch_policy": {
+          "protected_branches": false,
+          "custom_branch_policies": true
+        }
+      },
       {
         "id": 24456338331,
         "node_id": "EN_kwDOUfe8DM8AAAAFsbYbmw",
