@@ -4,22 +4,22 @@
             "AlarmName": "acs730-assign1-prod-cpu-alarm",
             "AlarmArn": "arn:aws:cloudwatch:us-east-1:572751986246:alarm:acs730-assign1-prod-cpu-alarm",
             "AlarmDescription": "ACS730 assign1 prod: average CPU of acs730-assign1-prod-web above 60% for 3 periods of 60 s",
-            "AlarmConfigurationUpdatedTimestamp": "2026-10-16T05:52:14.488000+00:00",
+            "AlarmConfigurationUpdatedTimestamp": "2026-11-13T23:56:42.695000+00:00",
             "ActionsEnabled": true,
             "OKActions": [],
             "AlarmActions": [],
             "InsufficientDataActions": [],
             "StateValue": "OK",
-            "StateReason": "Threshold Crossed: 1 datapoint [0.0019946081030356 (16/10/26 05:53:00)] was not greater than the threshold (60.0).",
-            "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-16T05:54:42.689+0000\",\"startDate\":\"2026-10-16T05:53:00.000+0000\",\"statistic\":\"Average\",\"period\":60,\"recentDatapoints\":[0.0019946081030356],\"threshold\":60.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-16T05:53:00.000+0000\",\"sampleCount\":1.0,\"value\":0.0019946081030356}]}",
-            "StateUpdatedTimestamp": "2026-10-16T05:54:42.691000+00:00",
+            "StateReason": "Threshold Crossed: 1 datapoint [0.1298296833507587 (13/11/26 23:57:00)] was not greater than the threshold (60.0).",
+            "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-11-13T23:58:23.097+0000\",\"startDate\":\"2026-11-13T23:57:00.000+0000\",\"statistic\":\"Average\",\"period\":60,\"recentDatapoints\":[0.1298296833507587],\"threshold\":60.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-11-13T23:57:00.000+0000\",\"sampleCount\":1.0,\"value\":0.1298296833507587}]}",
+            "StateUpdatedTimestamp": "2026-11-13T23:58:23.099000+00:00",
             "MetricName": "CPUUtilization",
             "Namespace": "AWS/EC2",
             "Statistic": "Average",
             "Dimensions": [
                 {
                     "Name": "InstanceId",
-                    "Value": "i-0ce7f2c934e2e29d2"
+                    "Value": "i-0edfbb26f651e76fb"
                 }
             ],
             "Period": 60,
@@ -27,7 +27,36 @@
             "Threshold": 60.0,
             "ComparisonOperator": "GreaterThanThreshold",
             "TreatMissingData": "missing",
-            "StateTransitionedTimestamp": "2026-10-16T05:54:42.691000+00:00"
+            "StateTransitionedTimestamp": "2026-11-13T23:58:23.099000+00:00"
+        },
+        {
+            "AlarmName": "acs730-assign1-prod-status-alarm",
+            "AlarmArn": "arn:aws:cloudwatch:us-east-1:572751986246:alarm:acs730-assign1-prod-status-alarm",
+            "AlarmDescription": "ACS730 assign1 prod: acs730-assign1-prod-web failed an EC2 status check (instance or host) for 3 periods of 60 s",
+            "AlarmConfigurationUpdatedTimestamp": "2026-11-13T23:56:42.697000+00:00",
+            "ActionsEnabled": true,
+            "OKActions": [],
+            "AlarmActions": [],
+            "InsufficientDataActions": [],
+            "StateValue": "OK",
+            "StateReason": "Threshold Crossed: 1 datapoint [0.0 (14/11/26 00:02:00)] was not greater than the threshold (0.0).",
+            "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-11-14T00:03:46.185+0000\",\"startDate\":\"2026-11-14T00:02:00.000+0000\",\"statistic\":\"Maximum\",\"period\":60,\"recentDatapoints\":[0.0],\"threshold\":0.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-11-14T00:02:00.000+0000\",\"sampleCount\":1.0,\"value\":0.0}]}",
+            "StateUpdatedTimestamp": "2026-11-14T00:03:46.187000+00:00",
+            "MetricName": "StatusCheckFailed",
+            "Namespace": "AWS/EC2",
+            "Statistic": "Maximum",
+            "Dimensions": [
+                {
+                    "Name": "InstanceId",
+                    "Value": "i-0edfbb26f651e76fb"
+                }
+            ],
+            "Period": 60,
+            "EvaluationPeriods": 3,
+            "Threshold": 0.0,
+            "ComparisonOperator": "GreaterThanThreshold",
+            "TreatMissingData": "missing",
+            "StateTransitionedTimestamp": "2026-11-14T00:03:46.187000+00:00"
         }
     ],
     "CompositeAlarms": []
