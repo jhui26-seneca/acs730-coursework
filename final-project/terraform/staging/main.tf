@@ -11,4 +11,5 @@ module "web_env" {
   detailed_monitoring        = true
   cpu_alarm_threshold        = 70
   db_password_parameter_name = "/acs730/assign1/final-staging/db_password"
+  ingress_rules              = [{ description = "DEMO: port 8080 open to the internet", port = 8080, cidr_blocks = ["0.0.0.0/0"] }]
 }
