@@ -1,5 +1,46 @@
-Thu Nov 12 18:33:46 UTC 2026
-$ tfsec final-project/terraform/staging --no-color   (reads the Assignment 1 module through the source line)
+Sat Nov 14 01:47:45 UTC 2026
+$ tfsec final-project/terraform --minimum-severity HIGH --no-color   (the required gate, second step of lab8-policy.yml)
+
+======================================================
+tfsec is joining the Trivy family
+
+tfsec will continue to remain available 
+for the time being, although our engineering 
+attention will be directed at Trivy going forward.
+
+You can read more here: 
+https://github.com/aquasecurity/tfsec/discussions/1994
+======================================================
+  timings
+  ──────────────────────────────────────────
+  disk i/o             656.782µs
+  parsing              51.822939ms
+  adaptation           450.632µs
+  checks               41.502801ms
+  total                94.433154ms
+
+  counts
+  ──────────────────────────────────────────
+  modules downloaded   0
+  modules processed    4
+  blocks processed     100
+  files read           22
+
+  results
+  ──────────────────────────────────────────
+  passed               6
+  ignored              16
+  critical             0
+  high                 0
+  medium               0
+  low                  0
+
+
+No problems detected!
+
+exit code: 0
+
+$ tfsec final-project/terraform/staging --no-color   (every severity; reads the Assignment 1 module through the source line)
 
 ======================================================
 tfsec is joining the Trivy family
@@ -12,111 +53,11 @@ You can read more here:
 https://github.com/aquasecurity/tfsec/discussions/1994
 ======================================================
 
-Results #1-2 CRITICAL Security group rule allows ingress from public internet. (2 similar results)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/network.tf:71
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   59    resource "aws_security_group" "web" {
-   ..  
-   71  [       cidr_blocks = ingress.value.cidr_blocks
-   ..  
-   84    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  Individual Causes
-  - ../../../assignment1/terraform/modules/web-env/network.tf:5-14 (module.web_env) 2 instances
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-no-public-ingress-sgr
-      Impact Your port exposed to the internet
-  Resolution Set a more restrictive cidr range
-
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-ingress-sgr/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule#cidr_blocks
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Result #3 CRITICAL Security group rule allows egress to multiple public internet addresses. 
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/network.tf:80
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   59    resource "aws_security_group" "web" {
-   ..  
-   80  [     cidr_blocks = ["0.0.0.0/0"]
-   ..  
-   84    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-no-public-egress-sgr
-      Impact Your port is egressing data to the internet
-  Resolution Set a more restrictive cidr range
-
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-egress-sgr/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Result #4 HIGH Root block device is not encrypted. 
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/compute.tf:11-51
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   11  ┌ resource "aws_instance" "web" {
-   12  │   ami                    = data.aws_ami.web.id
-   13  │   instance_type          = var.instance_type
-   14  │   subnet_id              = aws_subnet.public["a"].id
-   15  │   vpc_security_group_ids = [aws_security_group.web.id]
-   16  │   iam_instance_profile   = var.instance_profile_name
-   17  │   monitoring             = var.detailed_monitoring
-   18  │ 
-   19  └   metadata_options {
-   ..  
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-enable-at-rest-encryption
-      Impact The block device could be compromised and read from
-  Resolution Turn on encryption for all block devices
-
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/enable-at-rest-encryption/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#ebs-ephemeral-and-root-block-devices
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Results #5-6 HIGH Subnet associates public IP address. (2 similar results)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/network.tf:30
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   24    resource "aws_subnet" "public" {
-   25      for_each = local.public_subnets
-   26    
-   27      vpc_id                  = aws_vpc.main.id
-   28      cidr_block              = each.value.cidr
-   29      availability_zone       = each.value.az
-   30  [   map_public_ip_on_launch = true (true)
-   31    
-   32      tags = { Name = "${local.name_prefix}-subnet-${each.key}" }
-   33    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  Individual Causes
-  - ../../../assignment1/terraform/modules/web-env/network.tf:5-14 (module.web_env) 2 instances
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-no-public-ip-subnet
-      Impact The instance is publicly accessible
-  Resolution Set the instance to not be publicly accessible
-
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-ip-subnet/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet#map_public_ip_on_launch
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Result #7 MEDIUM VPC Flow Logs is not enabled for VPC  
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+Result #1 MEDIUM VPC Flow Logs is not enabled for VPC  
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
   ../../../assignment1/terraform/modules/web-env/network.tf:16-22
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+   via main.tf:6-15 (module.web_env)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
    16    resource "aws_vpc" "main" {
    17      cidr_block           = var.vpc_cidr
    18      enable_dns_support   = true
@@ -124,150 +65,62 @@ Result #7 MEDIUM VPC Flow Logs is not enabled for VPC
    20    
    21      tags = { Name = "${local.name_prefix}-vpc" }
    22    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
           ID aws-ec2-require-vpc-flow-logs-for-all-vpcs
       Impact Without VPC flow logs, you risk not having enough information about network traffic flow to investigate incidents or identify security issues.
   Resolution Enable flow logs for VPC
 
   More Information
   - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/require-vpc-flow-logs-for-all-vpcs/
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 
   timings
   ──────────────────────────────────────────
-  disk i/o             163.158µs
-  parsing              13.256308ms
-  adaptation           280.93µs
-  checks               10.812644ms
-  total                24.51304ms
+  disk i/o             171.63µs
+  parsing              13.55632ms
+  adaptation           223.337µs
+  checks               8.302872ms
+  total                22.254159ms
 
   counts
   ──────────────────────────────────────────
   modules downloaded   0
   modules processed    2
-  blocks processed     44
+  blocks processed     50
   files read           11
 
   results
   ──────────────────────────────────────────
   passed               6
-  ignored              0
-  critical             3
-  high                 3
+  ignored              4
+  critical             0
+  high                 0
   medium               1
   low                  0
 
-  6 passed, 7 potential problem(s) detected.
+  6 passed, 4 ignored, 1 potential problem(s) detected.
 
 exit code: 1
 
-$ tfsec final-project/terraform/prod --no-color
-Results #1-2 CRITICAL Security group rule allows ingress from public internet. (2 similar results)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/network.tf:71
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   59    resource "aws_security_group" "web" {
-   ..  
-   71  [       cidr_blocks = ingress.value.cidr_blocks
-   ..  
-   84    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  Individual Causes
-  - ../../../assignment1/terraform/modules/web-env/network.tf:5-14 (module.web_env) 2 instances
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-no-public-ingress-sgr
-      Impact Your port exposed to the internet
-  Resolution Set a more restrictive cidr range
+$ tfsec final-project/terraform/prod --no-color   (every severity; reads the Assignment 1 module through the source line)
 
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-ingress-sgr/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule#cidr_blocks
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+======================================================
+tfsec is joining the Trivy family
 
+tfsec will continue to remain available 
+for the time being, although our engineering 
+attention will be directed at Trivy going forward.
 
-Result #3 CRITICAL Security group rule allows egress to multiple public internet addresses. 
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/network.tf:80
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   59    resource "aws_security_group" "web" {
-   ..  
-   80  [     cidr_blocks = ["0.0.0.0/0"]
-   ..  
-   84    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-no-public-egress-sgr
-      Impact Your port is egressing data to the internet
-  Resolution Set a more restrictive cidr range
+You can read more here: 
+https://github.com/aquasecurity/tfsec/discussions/1994
+======================================================
 
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-egress-sgr/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Result #4 HIGH Root block device is not encrypted. 
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/compute.tf:11-51
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   11  ┌ resource "aws_instance" "web" {
-   12  │   ami                    = data.aws_ami.web.id
-   13  │   instance_type          = var.instance_type
-   14  │   subnet_id              = aws_subnet.public["a"].id
-   15  │   vpc_security_group_ids = [aws_security_group.web.id]
-   16  │   iam_instance_profile   = var.instance_profile_name
-   17  │   monitoring             = var.detailed_monitoring
-   18  │ 
-   19  └   metadata_options {
-   ..  
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-enable-at-rest-encryption
-      Impact The block device could be compromised and read from
-  Resolution Turn on encryption for all block devices
-
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/enable-at-rest-encryption/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#ebs-ephemeral-and-root-block-devices
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Results #5-6 HIGH Subnet associates public IP address. (2 similar results)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  ../../../assignment1/terraform/modules/web-env/network.tf:30
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-   24    resource "aws_subnet" "public" {
-   25      for_each = local.public_subnets
-   26    
-   27      vpc_id                  = aws_vpc.main.id
-   28      cidr_block              = each.value.cidr
-   29      availability_zone       = each.value.az
-   30  [   map_public_ip_on_launch = true (true)
-   31    
-   32      tags = { Name = "${local.name_prefix}-subnet-${each.key}" }
-   33    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-  Individual Causes
-  - ../../../assignment1/terraform/modules/web-env/network.tf:5-14 (module.web_env) 2 instances
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-          ID aws-ec2-no-public-ip-subnet
-      Impact The instance is publicly accessible
-  Resolution Set the instance to not be publicly accessible
-
-  More Information
-  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-ip-subnet/
-  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet#map_public_ip_on_launch
-──────────────────────────────────────────────────────────────────────────────────────────────────────
-
-
-Result #7 MEDIUM VPC Flow Logs is not enabled for VPC  
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+Result #1 MEDIUM VPC Flow Logs is not enabled for VPC  
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
   ../../../assignment1/terraform/modules/web-env/network.tf:16-22
-   via main.tf:5-14 (module.web_env)
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+   via main.tf:4-13 (module.web_env)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
    16    resource "aws_vpc" "main" {
    17      cidr_block           = var.vpc_cidr
    18      enable_dns_support   = true
@@ -275,40 +128,40 @@ Result #7 MEDIUM VPC Flow Logs is not enabled for VPC
    20    
    21      tags = { Name = "${local.name_prefix}-vpc" }
    22    }
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
           ID aws-ec2-require-vpc-flow-logs-for-all-vpcs
       Impact Without VPC flow logs, you risk not having enough information about network traffic flow to investigate incidents or identify security issues.
   Resolution Enable flow logs for VPC
 
   More Information
   - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/require-vpc-flow-logs-for-all-vpcs/
-──────────────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 
   timings
   ──────────────────────────────────────────
-  disk i/o             246.045µs
-  parsing              32.306357ms
-  adaptation           416.756µs
-  checks               13.781945ms
-  total                46.751103ms
+  disk i/o             182.996µs
+  parsing              29.71661ms
+  adaptation           500.649µs
+  checks               16.680074ms
+  total                47.080329ms
 
   counts
   ──────────────────────────────────────────
   modules downloaded   0
   modules processed    2
-  blocks processed     44
+  blocks processed     50
   files read           11
 
   results
   ──────────────────────────────────────────
   passed               6
-  ignored              0
-  critical             3
-  high                 3
+  ignored              4
+  critical             0
+  high                 0
   medium               1
   low                  0
 
-  6 passed, 7 potential problem(s) detected.
+  6 passed, 4 ignored, 1 potential problem(s) detected.
 
 exit code: 1
