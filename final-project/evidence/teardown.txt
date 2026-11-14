@@ -1,4 +1,4 @@
-Thu Nov 12 18:24:19 UTC 2026
+Sat Nov 14 01:49:16 UTC 2026
 === 1. Kubernetes: the final project's namespace, then Lab 7's Service back on NodePort 30080
 namespace "acs730-final" deleted
 service/acs730-lab7-svc created
@@ -9,42 +9,42 @@ deployment.apps/acs730-lab7-web scaled
 /etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service
 ○ actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)
      Loaded: loaded (/etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service; enabled; preset: disabled)
-     Active: inactive (dead) since Thu 2026-11-12 18:24:31 UTC; 18ms ago
-   Duration: 25min 20.523s
-    Process: 10307 ExecStart=/home/acs730-lab7-runner/actions-runner/runsvc.sh (code=exited, status=0/SUCCESS)
-   Main PID: 10307 (code=exited, status=0/SUCCESS)
-        CPU: 20.822s
+     Active: inactive (dead) since Sat 2026-11-14 01:49:28 UTC; 14ms ago
+   Duration: 11min 3.064s
+    Process: 15282 ExecStart=/home/acs730-lab7-runner/actions-runner/runsvc.sh (code=exited, status=0/SUCCESS)
+   Main PID: 15282 (code=exited, status=0/SUCCESS)
+        CPU: 12.561s
 
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopping actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)...
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Shutting down runner listener
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGINT to runner listener to stop
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGKILL to runner listener
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Exiting...
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exited with error code 0
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exit with 0 return code, stop the service, no retry needed.
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Deactivated successfully.
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopped actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner).
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Consumed 20.822s CPU time.
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: Stopping actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)...
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Shutting down runner listener
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Sending SIGINT to runner listener to stop
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Sending SIGKILL to runner listener
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Exiting...
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Runner listener exited with error code 0
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Runner listener exit with 0 return code, stop the service, no retry needed.
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Deactivated successfully.
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: Stopped actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner).
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Consumed 12.561s CPU time.
 
 /etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service
 ○ actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)
      Loaded: loaded (/etc/systemd/system/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service; enabled; preset: disabled)
-     Active: inactive (dead) since Thu 2026-11-12 18:24:31 UTC; 60ms ago
-   Duration: 25min 20.523s
-    Process: 10307 ExecStart=/home/acs730-lab7-runner/actions-runner/runsvc.sh (code=exited, status=0/SUCCESS)
-   Main PID: 10307 (code=exited, status=0/SUCCESS)
-        CPU: 20.822s
+     Active: inactive (dead) since Sat 2026-11-14 01:49:28 UTC; 49ms ago
+   Duration: 11min 3.064s
+    Process: 15282 ExecStart=/home/acs730-lab7-runner/actions-runner/runsvc.sh (code=exited, status=0/SUCCESS)
+   Main PID: 15282 (code=exited, status=0/SUCCESS)
+        CPU: 12.561s
 
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopping actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)...
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Shutting down runner listener
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGINT to runner listener to stop
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Sending SIGKILL to runner listener
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Exiting...
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exited with error code 0
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal runsvc.sh[10310]: Runner listener exit with 0 return code, stop the service, no retry needed.
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Deactivated successfully.
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: Stopped actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner).
-Nov 12 18:24:31 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Consumed 20.822s CPU time.
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: Stopping actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner)...
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Shutting down runner listener
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Sending SIGINT to runner listener to stop
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Sending SIGKILL to runner listener
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Exiting...
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Runner listener exited with error code 0
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal runsvc.sh[15285]: Runner listener exit with 0 return code, stop the service, no retry needed.
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Deactivated successfully.
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: Stopped actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service - GitHub Actions Runner (jhui26-seneca-acs730-coursework.acs730-lab7-runner).
+Nov 14 01:49:28 ip-172-31-17-152.ec2.internal systemd[1]: actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service: Consumed 12.561s CPU time.
 Removed "/etc/systemd/system/multi-user.target.wants/actions.runner.jhui26-seneca-acs730-coursework.acs730-lab7-runner.service".
 
 # Runner removal
@@ -59,21 +59,24 @@ runners registered in GitHub: 0
 runner services on this machine: 0
 
 === 3. Terraform: destroy the staging stack (the Assignment 1 module)
-module.web_env.data.aws_ssm_parameter.db_password: Reading...
-module.web_env.data.aws_ami.web: Reading...
 module.web_env.data.aws_availability_zones.available: Reading...
-module.web_env.aws_vpc.main: Refreshing state... [id=vpc-0423392a767fd12e4]
+module.web_env.aws_vpc.main: Refreshing state... [id=vpc-0e8cf9a3a4610b928]
+module.web_env.data.aws_ami.web: Reading...
+module.web_env.data.aws_ssm_parameter.db_password: Reading...
 module.web_env.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
 module.web_env.data.aws_ssm_parameter.db_password: Read complete after 0s [id=/acs730/assign1/final-staging/db_password]
-module.web_env.data.aws_ami.web: Read complete after 1s [id=ami-0355052079a448ed4]
-module.web_env.aws_subnet.public["a"]: Refreshing state... [id=subnet-0c93ffec16c0877d6]
-module.web_env.aws_internet_gateway.main: Refreshing state... [id=igw-010e2285c44da3fa8]
-module.web_env.aws_subnet.public["b"]: Refreshing state... [id=subnet-0417deb5e3931ec00]
-module.web_env.aws_security_group.web: Refreshing state... [id=sg-0123e8959381b2cfd]
-module.web_env.aws_route_table.public: Refreshing state... [id=rtb-0b5ffb59a1ece1f68]
-module.web_env.aws_route_table_association.public["a"]: Refreshing state... [id=rtbassoc-0d389a79ceda3d2da]
-module.web_env.aws_route_table_association.public["b"]: Refreshing state... [id=rtbassoc-08fab4e0251cc1bd0]
-module.web_env.aws_instance.web: Refreshing state... [id=i-07fd9bc5fec936f1b]
+module.web_env.data.aws_ami.web: Read complete after 0s [id=ami-0129e28f078083cdf]
+module.web_env.aws_subnet.public["a"]: Refreshing state... [id=subnet-002cbd7e825cf3064]
+module.web_env.aws_internet_gateway.main: Refreshing state... [id=igw-07fe5e5134c5da743]
+module.web_env.aws_subnet.public["b"]: Refreshing state... [id=subnet-0de671b39f2e5858d]
+module.web_env.aws_security_group.web: Refreshing state... [id=sg-0868062fa146db904]
+module.web_env.aws_security_group_rule.all_out: Refreshing state... [id=sgrule-1329947784]
+module.web_env.aws_security_group_rule.http_public: Refreshing state... [id=sgrule-2178082533]
+module.web_env.aws_route_table.public: Refreshing state... [id=rtb-0d59456af8cd48815]
+module.web_env.aws_route_table_association.public["a"]: Refreshing state... [id=rtbassoc-0cadbc6b1fb3864ba]
+module.web_env.aws_route_table_association.public["b"]: Refreshing state... [id=rtbassoc-034af47c573bed0c6]
+module.web_env.aws_instance.web: Refreshing state... [id=i-01e532dc6242e6b7d]
+module.web_env.aws_cloudwatch_metric_alarm.status_check_failed: Refreshing state... [id=acs730-assign1-staging-status-alarm]
 module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Refreshing state... [id=acs730-assign1-staging-cpu-alarm]
 
 Terraform used the selected providers to generate the following execution
@@ -92,7 +95,7 @@ Terraform will perform the following actions:
       - comparison_operator                   = "GreaterThanThreshold" -> null
       - datapoints_to_alarm                   = 0 -> null
       - dimensions                            = {
-          - "InstanceId" = "i-07fd9bc5fec936f1b"
+          - "InstanceId" = "i-01e532dc6242e6b7d"
         } -> null
       - evaluation_periods                    = 3 -> null
       - id                                    = "acs730-assign1-staging-cpu-alarm" -> null
@@ -118,10 +121,46 @@ Terraform will perform the following actions:
         # (4 unchanged attributes hidden)
     }
 
+  # module.web_env.aws_cloudwatch_metric_alarm.status_check_failed will be destroyed
+  - resource "aws_cloudwatch_metric_alarm" "status_check_failed" {
+      - actions_enabled                       = true -> null
+      - alarm_actions                         = [] -> null
+      - alarm_description                     = "ACS730 assign1 staging: acs730-assign1-staging-web failed an EC2 status check (instance or host) for 3 periods of 60 s" -> null
+      - alarm_name                            = "acs730-assign1-staging-status-alarm" -> null
+      - arn                                   = "arn:aws:cloudwatch:us-east-1:572751986246:alarm:acs730-assign1-staging-status-alarm" -> null
+      - comparison_operator                   = "GreaterThanThreshold" -> null
+      - datapoints_to_alarm                   = 0 -> null
+      - dimensions                            = {
+          - "InstanceId" = "i-01e532dc6242e6b7d"
+        } -> null
+      - evaluation_periods                    = 3 -> null
+      - id                                    = "acs730-assign1-staging-status-alarm" -> null
+      - insufficient_data_actions             = [] -> null
+      - metric_name                           = "StatusCheckFailed" -> null
+      - namespace                             = "AWS/EC2" -> null
+      - ok_actions                            = [] -> null
+      - period                                = 60 -> null
+      - statistic                             = "Maximum" -> null
+      - tags                                  = {
+          - "Name" = "acs730-assign1-staging-status-alarm"
+        } -> null
+      - tags_all                              = {
+          - "Course"      = "ACS730"
+          - "Environment" = "staging"
+          - "ManagedBy"   = "terraform"
+          - "Name"        = "acs730-assign1-staging-status-alarm"
+          - "Project"     = "final"
+          - "Role"        = "web"
+        } -> null
+      - threshold                             = 0 -> null
+      - treat_missing_data                    = "missing" -> null
+        # (4 unchanged attributes hidden)
+    }
+
   # module.web_env.aws_instance.web will be destroyed
   - resource "aws_instance" "web" {
-      - ami                                  = "ami-0355052079a448ed4" -> null
-      - arn                                  = "arn:aws:ec2:us-east-1:572751986246:instance/i-07fd9bc5fec936f1b" -> null
+      - ami                                  = "ami-0129e28f078083cdf" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:572751986246:instance/i-01e532dc6242e6b7d" -> null
       - associate_public_ip_address          = true -> null
       - availability_zone                    = "us-east-1a" -> null
       - cpu_core_count                       = 1 -> null
@@ -132,7 +171,7 @@ Terraform will perform the following actions:
       - get_password_data                    = false -> null
       - hibernation                          = false -> null
       - iam_instance_profile                 = "LabInstanceProfile" -> null
-      - id                                   = "i-07fd9bc5fec936f1b" -> null
+      - id                                   = "i-01e532dc6242e6b7d" -> null
       - instance_initiated_shutdown_behavior = "stop" -> null
       - instance_state                       = "running" -> null
       - instance_type                        = "t3.micro" -> null
@@ -140,15 +179,15 @@ Terraform will perform the following actions:
       - ipv6_addresses                       = [] -> null
       - monitoring                           = true -> null
       - placement_partition_number           = 0 -> null
-      - primary_network_interface_id         = "eni-08f04622e3fedd3f6" -> null
-      - private_dns                          = "ip-10-40-1-100.ec2.internal" -> null
-      - private_ip                           = "10.40.1.100" -> null
-      - public_dns                           = "ec2-44-211-141-61.compute-1.amazonaws.com" -> null
+      - primary_network_interface_id         = "eni-0cdb24522133ae8f0" -> null
+      - private_dns                          = "ip-10-40-1-118.ec2.internal" -> null
+      - private_ip                           = "10.40.1.118" -> null
+      - public_dns                           = "ec2-3-92-50-220.compute-1.amazonaws.com" -> null
       - public_ip                            = "<vm-public-ip>" -> null
       - secondary_private_ips                = [] -> null
       - security_groups                      = [] -> null
       - source_dest_check                    = true -> null
-      - subnet_id                            = "subnet-0c93ffec16c0877d6" -> null
+      - subnet_id                            = "subnet-002cbd7e825cf3064" -> null
       - tags                                 = {
           - "Name" = "acs730-assign1-staging-web"
         } -> null
@@ -164,7 +203,7 @@ Terraform will perform the following actions:
       - user_data                            = (sensitive value) -> null
       - user_data_replace_on_change          = true -> null
       - vpc_security_group_ids               = [
-          - "sg-0123e8959381b2cfd",
+          - "sg-0868062fa146db904",
         ] -> null
         # (7 unchanged attributes hidden)
 
@@ -207,15 +246,10 @@ Terraform will perform the following actions:
       - root_block_device {
           - delete_on_termination = true -> null
           - device_name           = "/dev/xvda" -> null
-          - encrypted             = false -> null
+          - encrypted             = true -> null
           - iops                  = 3000 -> null
-          - tags                  = {
-              - "Course"      = "ACS730"
-              - "Environment" = "staging"
-              - "ManagedBy"   = "terraform"
-              - "Project"     = "final"
-              - "Role"        = "web"
-            } -> null
+          - kms_key_id            = "arn:aws:kms:us-east-1:572751986246:key/93bd4fc5-89a9-4a62-999d-0b4126ae2e7a" -> null
+          - tags                  = {} -> null
           - tags_all              = {
               - "Course"      = "ACS730"
               - "Environment" = "staging"
@@ -224,17 +258,16 @@ Terraform will perform the following actions:
               - "Role"        = "web"
             } -> null
           - throughput            = 125 -> null
-          - volume_id             = "vol-0a4976a3bc9b3ccd9" -> null
+          - volume_id             = "vol-03f57dc116d73c284" -> null
           - volume_size           = 8 -> null
           - volume_type           = "gp3" -> null
-            # (1 unchanged attribute hidden)
         }
     }
 
   # module.web_env.aws_internet_gateway.main will be destroyed
   - resource "aws_internet_gateway" "main" {
-      - arn      = "arn:aws:ec2:us-east-1:572751986246:internet-gateway/igw-010e2285c44da3fa8" -> null
-      - id       = "igw-010e2285c44da3fa8" -> null
+      - arn      = "arn:aws:ec2:us-east-1:572751986246:internet-gateway/igw-07fe5e5134c5da743" -> null
+      - id       = "igw-07fe5e5134c5da743" -> null
       - owner_id = "572751986246" -> null
       - tags     = {
           - "Name" = "acs730-assign1-staging-igw"
@@ -247,19 +280,19 @@ Terraform will perform the following actions:
           - "Project"     = "final"
           - "Role"        = "web"
         } -> null
-      - vpc_id   = "vpc-0423392a767fd12e4" -> null
+      - vpc_id   = "vpc-0e8cf9a3a4610b928" -> null
     }
 
   # module.web_env.aws_route_table.public will be destroyed
   - resource "aws_route_table" "public" {
-      - arn              = "arn:aws:ec2:us-east-1:572751986246:route-table/rtb-0b5ffb59a1ece1f68" -> null
-      - id               = "rtb-0b5ffb59a1ece1f68" -> null
+      - arn              = "arn:aws:ec2:us-east-1:572751986246:route-table/rtb-0d59456af8cd48815" -> null
+      - id               = "rtb-0d59456af8cd48815" -> null
       - owner_id         = "572751986246" -> null
       - propagating_vgws = [] -> null
       - route            = [
           - {
               - cidr_block                 = "0.0.0.0/0"
-              - gateway_id                 = "igw-010e2285c44da3fa8"
+              - gateway_id                 = "igw-07fe5e5134c5da743"
                 # (11 unchanged attributes hidden)
             },
         ] -> null
@@ -274,35 +307,35 @@ Terraform will perform the following actions:
           - "Project"     = "final"
           - "Role"        = "web"
         } -> null
-      - vpc_id           = "vpc-0423392a767fd12e4" -> null
+      - vpc_id           = "vpc-0e8cf9a3a4610b928" -> null
     }
 
   # module.web_env.aws_route_table_association.public["a"] will be destroyed
   - resource "aws_route_table_association" "public" {
-      - id             = "rtbassoc-0d389a79ceda3d2da" -> null
-      - route_table_id = "rtb-0b5ffb59a1ece1f68" -> null
-      - subnet_id      = "subnet-0c93ffec16c0877d6" -> null
+      - id             = "rtbassoc-0cadbc6b1fb3864ba" -> null
+      - route_table_id = "rtb-0d59456af8cd48815" -> null
+      - subnet_id      = "subnet-002cbd7e825cf3064" -> null
         # (1 unchanged attribute hidden)
     }
 
   # module.web_env.aws_route_table_association.public["b"] will be destroyed
   - resource "aws_route_table_association" "public" {
-      - id             = "rtbassoc-08fab4e0251cc1bd0" -> null
-      - route_table_id = "rtb-0b5ffb59a1ece1f68" -> null
-      - subnet_id      = "subnet-0417deb5e3931ec00" -> null
+      - id             = "rtbassoc-034af47c573bed0c6" -> null
+      - route_table_id = "rtb-0d59456af8cd48815" -> null
+      - subnet_id      = "subnet-0de671b39f2e5858d" -> null
         # (1 unchanged attribute hidden)
     }
 
   # module.web_env.aws_security_group.web will be destroyed
   - resource "aws_security_group" "web" {
-      - arn                    = "arn:aws:ec2:us-east-1:572751986246:security-group/sg-0123e8959381b2cfd" -> null
+      - arn                    = "arn:aws:ec2:us-east-1:572751986246:security-group/sg-0868062fa146db904" -> null
       - description            = "ACS730 assign1 staging web server - HTTP only, no SSH" -> null
       - egress                 = [
           - {
               - cidr_blocks      = [
                   - "0.0.0.0/0",
                 ]
-              - description      = "All outbound (dnf, SSM agent)"
+              - description      = "All outbound (dnf, SSM agent, Ansible over SSM)"
               - from_port        = 0
               - ipv6_cidr_blocks = []
               - prefix_list_ids  = []
@@ -312,13 +345,13 @@ Terraform will perform the following actions:
               - to_port          = 0
             },
         ] -> null
-      - id                     = "sg-0123e8959381b2cfd" -> null
+      - id                     = "sg-0868062fa146db904" -> null
       - ingress                = [
           - {
               - cidr_blocks      = [
                   - "0.0.0.0/0",
                 ]
-              - description      = "HTTP from anywhere"
+              - description      = "HTTP from anywhere (the web page)"
               - from_port        = 80
               - ipv6_cidr_blocks = []
               - prefix_list_ids  = []
@@ -342,13 +375,45 @@ Terraform will perform the following actions:
           - "Project"     = "final"
           - "Role"        = "web"
         } -> null
-      - vpc_id                 = "vpc-0423392a767fd12e4" -> null
+      - vpc_id                 = "vpc-0e8cf9a3a4610b928" -> null
         # (1 unchanged attribute hidden)
+    }
+
+  # module.web_env.aws_security_group_rule.all_out will be destroyed
+  - resource "aws_security_group_rule" "all_out" {
+      - cidr_blocks            = [
+          - "0.0.0.0/0",
+        ] -> null
+      - description            = "All outbound (dnf, SSM agent, Ansible over SSM)" -> null
+      - from_port              = 0 -> null
+      - id                     = "sgrule-1329947784" -> null
+      - protocol               = "-1" -> null
+      - security_group_id      = "sg-0868062fa146db904" -> null
+      - security_group_rule_id = "sgr-0f75f757f557289b5" -> null
+      - self                   = false -> null
+      - to_port                = 0 -> null
+      - type                   = "egress" -> null
+    }
+
+  # module.web_env.aws_security_group_rule.http_public will be destroyed
+  - resource "aws_security_group_rule" "http_public" {
+      - cidr_blocks            = [
+          - "0.0.0.0/0",
+        ] -> null
+      - description            = "HTTP from anywhere (the web page)" -> null
+      - from_port              = 80 -> null
+      - id                     = "sgrule-2178082533" -> null
+      - protocol               = "tcp" -> null
+      - security_group_id      = "sg-0868062fa146db904" -> null
+      - security_group_rule_id = "sgr-094b2d0b148fea2f7" -> null
+      - self                   = false -> null
+      - to_port                = 80 -> null
+      - type                   = "ingress" -> null
     }
 
   # module.web_env.aws_subnet.public["a"] will be destroyed
   - resource "aws_subnet" "public" {
-      - arn                                            = "arn:aws:ec2:us-east-1:572751986246:subnet/subnet-0c93ffec16c0877d6" -> null
+      - arn                                            = "arn:aws:ec2:us-east-1:572751986246:subnet/subnet-002cbd7e825cf3064" -> null
       - assign_ipv6_address_on_creation                = false -> null
       - availability_zone                              = "us-east-1a" -> null
       - availability_zone_id                           = "use1-az2" -> null
@@ -357,7 +422,7 @@ Terraform will perform the following actions:
       - enable_lni_at_device_index                     = 0 -> null
       - enable_resource_name_dns_a_record_on_launch    = false -> null
       - enable_resource_name_dns_aaaa_record_on_launch = false -> null
-      - id                                             = "subnet-0c93ffec16c0877d6" -> null
+      - id                                             = "subnet-002cbd7e825cf3064" -> null
       - ipv6_native                                    = false -> null
       - map_customer_owned_ip_on_launch                = false -> null
       - map_public_ip_on_launch                        = true -> null
@@ -374,13 +439,13 @@ Terraform will perform the following actions:
           - "Project"     = "final"
           - "Role"        = "web"
         } -> null
-      - vpc_id                                         = "vpc-0423392a767fd12e4" -> null
+      - vpc_id                                         = "vpc-0e8cf9a3a4610b928" -> null
         # (4 unchanged attributes hidden)
     }
 
   # module.web_env.aws_subnet.public["b"] will be destroyed
   - resource "aws_subnet" "public" {
-      - arn                                            = "arn:aws:ec2:us-east-1:572751986246:subnet/subnet-0417deb5e3931ec00" -> null
+      - arn                                            = "arn:aws:ec2:us-east-1:572751986246:subnet/subnet-0de671b39f2e5858d" -> null
       - assign_ipv6_address_on_creation                = false -> null
       - availability_zone                              = "us-east-1b" -> null
       - availability_zone_id                           = "use1-az4" -> null
@@ -389,7 +454,7 @@ Terraform will perform the following actions:
       - enable_lni_at_device_index                     = 0 -> null
       - enable_resource_name_dns_a_record_on_launch    = false -> null
       - enable_resource_name_dns_aaaa_record_on_launch = false -> null
-      - id                                             = "subnet-0417deb5e3931ec00" -> null
+      - id                                             = "subnet-0de671b39f2e5858d" -> null
       - ipv6_native                                    = false -> null
       - map_customer_owned_ip_on_launch                = false -> null
       - map_public_ip_on_launch                        = true -> null
@@ -406,26 +471,26 @@ Terraform will perform the following actions:
           - "Project"     = "final"
           - "Role"        = "web"
         } -> null
-      - vpc_id                                         = "vpc-0423392a767fd12e4" -> null
+      - vpc_id                                         = "vpc-0e8cf9a3a4610b928" -> null
         # (4 unchanged attributes hidden)
     }
 
   # module.web_env.aws_vpc.main will be destroyed
   - resource "aws_vpc" "main" {
-      - arn                                  = "arn:aws:ec2:us-east-1:572751986246:vpc/vpc-0423392a767fd12e4" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:572751986246:vpc/vpc-0e8cf9a3a4610b928" -> null
       - assign_generated_ipv6_cidr_block     = false -> null
       - cidr_block                           = "10.40.0.0/16" -> null
-      - default_network_acl_id               = "acl-087ce0852d68c4278" -> null
-      - default_route_table_id               = "rtb-069f30bfd78f2a5ab" -> null
-      - default_security_group_id            = "sg-0fb719c82aa20e67f" -> null
+      - default_network_acl_id               = "acl-075b68e6a4a874a82" -> null
+      - default_route_table_id               = "rtb-0f35e1ab4a93e901a" -> null
+      - default_security_group_id            = "sg-0d80c4ed2a0837b32" -> null
       - dhcp_options_id                      = "dopt-001cf5cd26a6ccd11" -> null
       - enable_dns_hostnames                 = true -> null
       - enable_dns_support                   = true -> null
       - enable_network_address_usage_metrics = false -> null
-      - id                                   = "vpc-0423392a767fd12e4" -> null
+      - id                                   = "vpc-0e8cf9a3a4610b928" -> null
       - instance_tenancy                     = "default" -> null
       - ipv6_netmask_length                  = 0 -> null
-      - main_route_table_id                  = "rtb-069f30bfd78f2a5ab" -> null
+      - main_route_table_id                  = "rtb-0f35e1ab4a93e901a" -> null
       - owner_id                             = "572751986246" -> null
       - tags                                 = {
           - "Name" = "acs730-assign1-staging-vpc"
@@ -441,37 +506,46 @@ Terraform will perform the following actions:
         # (4 unchanged attributes hidden)
     }
 
-Plan: 0 to add, 0 to change, 10 to destroy.
+Plan: 0 to add, 0 to change, 13 to destroy.
 
 Changes to Outputs:
   - cpu_alarm_name                = "acs730-assign1-staging-cpu-alarm" -> null
   - db_password_parameter_version = 1 -> null
   - environment                   = "staging" -> null
-  - instance_id                   = "i-07fd9bc5fec936f1b" -> null
+  - instance_id                   = "i-01e532dc6242e6b7d" -> null
+  - status_alarm_name             = "acs730-assign1-staging-status-alarm" -> null
   - web_url                       = "http://<vm-public-ip>" -> null
+module.web_env.aws_security_group_rule.all_out: Destroying... [id=sgrule-1329947784]
 module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Destroying... [id=acs730-assign1-staging-cpu-alarm]
-module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Destruction complete after 1s
-module.web_env.aws_instance.web: Destroying... [id=i-07fd9bc5fec936f1b]
-module.web_env.aws_instance.web: Still destroying... [id=i-07fd9bc5fec936f1b, 00m10s elapsed]
-module.web_env.aws_instance.web: Destruction complete after 19s
-module.web_env.aws_route_table_association.public["a"]: Destroying... [id=rtbassoc-0d389a79ceda3d2da]
-module.web_env.aws_security_group.web: Destroying... [id=sg-0123e8959381b2cfd]
-module.web_env.aws_route_table_association.public["b"]: Destroying... [id=rtbassoc-08fab4e0251cc1bd0]
+module.web_env.aws_cloudwatch_metric_alarm.status_check_failed: Destroying... [id=acs730-assign1-staging-status-alarm]
+module.web_env.aws_security_group_rule.http_public: Destroying... [id=sgrule-2178082533]
+module.web_env.aws_cloudwatch_metric_alarm.status_check_failed: Destruction complete after 0s
+module.web_env.aws_cloudwatch_metric_alarm.cpu_high: Destruction complete after 0s
+module.web_env.aws_instance.web: Destroying... [id=i-01e532dc6242e6b7d]
+module.web_env.aws_security_group_rule.all_out: Destruction complete after 0s
+module.web_env.aws_security_group_rule.http_public: Destruction complete after 1s
+module.web_env.aws_instance.web: Still destroying... [id=i-01e532dc6242e6b7d, 00m10s elapsed]
+module.web_env.aws_instance.web: Still destroying... [id=i-01e532dc6242e6b7d, 00m20s elapsed]
+module.web_env.aws_instance.web: Still destroying... [id=i-01e532dc6242e6b7d, 00m30s elapsed]
+module.web_env.aws_instance.web: Destruction complete after 30s
+module.web_env.aws_route_table_association.public["b"]: Destroying... [id=rtbassoc-034af47c573bed0c6]
+module.web_env.aws_route_table_association.public["a"]: Destroying... [id=rtbassoc-0cadbc6b1fb3864ba]
+module.web_env.aws_security_group.web: Destroying... [id=sg-0868062fa146db904]
 module.web_env.aws_route_table_association.public["a"]: Destruction complete after 1s
 module.web_env.aws_route_table_association.public["b"]: Destruction complete after 1s
-module.web_env.aws_subnet.public["b"]: Destroying... [id=subnet-0417deb5e3931ec00]
-module.web_env.aws_subnet.public["a"]: Destroying... [id=subnet-0c93ffec16c0877d6]
-module.web_env.aws_route_table.public: Destroying... [id=rtb-0b5ffb59a1ece1f68]
+module.web_env.aws_subnet.public["a"]: Destroying... [id=subnet-002cbd7e825cf3064]
+module.web_env.aws_subnet.public["b"]: Destroying... [id=subnet-0de671b39f2e5858d]
+module.web_env.aws_route_table.public: Destroying... [id=rtb-0d59456af8cd48815]
 module.web_env.aws_security_group.web: Destruction complete after 1s
-module.web_env.aws_subnet.public["a"]: Destruction complete after 0s
-module.web_env.aws_route_table.public: Destruction complete after 0s
-module.web_env.aws_internet_gateway.main: Destroying... [id=igw-010e2285c44da3fa8]
 module.web_env.aws_subnet.public["b"]: Destruction complete after 0s
+module.web_env.aws_route_table.public: Destruction complete after 0s
+module.web_env.aws_subnet.public["a"]: Destruction complete after 0s
+module.web_env.aws_internet_gateway.main: Destroying... [id=igw-07fe5e5134c5da743]
 module.web_env.aws_internet_gateway.main: Destruction complete after 1s
-module.web_env.aws_vpc.main: Destroying... [id=vpc-0423392a767fd12e4]
+module.web_env.aws_vpc.main: Destroying... [id=vpc-0e8cf9a3a4610b928]
 module.web_env.aws_vpc.main: Destruction complete after 0s
 
-Destroy complete! Resources: 10 destroyed.
+Destroy complete! Resources: 13 destroyed.
 
 === 4. The SSM parameter (after the destroy, which still reads it) and the transfer bucket
 deleted /acs730/assign1/final-staging/db_password
@@ -479,10 +553,8 @@ remove_bucket: acs730-final-ssm-572751986246
 deleted bucket acs730-final-ssm-572751986246
 
 === 5. The frontend images on the workstation
-Untagged: acs730-final-web:35e856b36b1d
-Untagged: acs730-final-web:8d368586b551
 Untagged: acs730-final-web:bootstrap
-Untagged: acs730-final-web:local
+Untagged: acs730-final-web:fa8ef4066fdb
 Deleted: sha256:66b3051ec8e51048d4dde60b5b2c879e701562cb2f64e5f8bb47593655d590de
 
 === 6. Proof that nothing is left
