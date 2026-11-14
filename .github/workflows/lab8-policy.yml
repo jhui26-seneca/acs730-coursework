@@ -3,8 +3,10 @@
 # the merge. There is deliberately no "|| true", no continue-on-error and no soft_fail anywhere,
 # and no marketplace tfsec action (it defaults to soft_fail).
 # No paths: filter, on purpose: a required check must report on EVERY pull request, or pull
-# requests that don't touch lab8/ would wait for it forever. It scans only lab8/, needs no AWS
-# credentials, and stays enabled for the Final Project.
+# requests that don't touch lab8/ would wait for it forever. It needs no AWS credentials.
+# Since the Final Project it has a second step: the project's brief requires a security scan that
+# blocks any change before it can merge, so the same job also scans final-project/terraform, which
+# follows the callers into the Assignment 1 module. Same job, same check name, still no paths: filter.
 name: lab8-policy
 
 on:
@@ -38,3 +40,6 @@ jobs:
 
       - name: Gate - tfsec lab8, HIGH and above (any finding fails the job)
         run: tfsec lab8 --minimum-severity HIGH --no-color
+
+      - name: Gate - tfsec final-project/terraform, HIGH and above (any finding fails the job)
+        run: tfsec final-project/terraform --minimum-severity HIGH --no-color
