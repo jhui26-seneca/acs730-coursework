@@ -1,7 +1,6 @@
-# Final project, prod: written and validated to keep the multi-environment pattern, never applied
-# role). This is the environment the deploy pipeline applies on every merge to main, through the
-# GitHub Environment "final". It reuses the Assignment 1 module unchanged: same code as
-# assign1's dev, staging and prod, different values.
+# Final project, prod: written and validated to keep the multi-environment pattern, never applied.
+# The deploy pipeline applies only staging; this caller is checked by final-ci (terraform validate)
+# and by the required tfsec check. It reuses the Assignment 1 module in place, with prod's values.
 module "web_env" {
   source = "../../../assignment1/terraform/modules/web-env"
 

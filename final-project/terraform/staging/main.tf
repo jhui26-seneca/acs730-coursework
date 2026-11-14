@@ -1,7 +1,8 @@
 # Final project, staging: the VM half of the application (Apache, configured by the Assignment 2
 # role). This is the environment the deploy pipeline applies on every merge to main, through the
-# GitHub Environment "final". It reuses the Assignment 1 module unchanged: same code as
-# assign1's dev, staging and prod, different values.
+# GitHub Environment "final". It reuses the Assignment 1 module in place: the same code as
+# assign1's dev, staging and prod, with different values. Since November that module encrypts the
+# root volume, keeps each security group rule separate, and adds a status-check alarm.
 module "web_env" {
   source = "../../../assignment1/terraform/modules/web-env"
 
