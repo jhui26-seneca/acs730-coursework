@@ -41,7 +41,7 @@ In November I hardened the module, because the final project reuses it and its r
 | `cpu_alarm_threshold` | 80 | 70 | 60 |
 | SSM parameter | `/acs730/assign1/dev/db_password` | `/acs730/assign1/staging/db_password` | `/acs730/assign1/prod/db_password` |
 | Deployed by | `scripts/create-dev.sh` (workstation) | `assign1-deploy.yml`, automatically on merge | `assign1-deploy.yml`, after a required reviewer approves |
-| GitHub Environment | none | `staging`: no reviewer | `prod`: reviewer `jhui26-seneca`, `main` only |
+| GitHub Environment | none | `staging`: no reviewer | `prod`: reviewer `<owner>`, `main` only |
 
 ## Module inputs and outputs
 
@@ -72,7 +72,7 @@ Outputs: `environment`, `vpc_id`, `subnet_ids`, `security_group_id`, `instance_i
 | `scripts/destroy-env.sh` | Nothing | Everything Terraform built for that environment (`terraform destroy`) | `dev`, `staging` or `prod` | Workstation |
 | `scripts/delete-ssm-parameters.sh` | Nothing | `/acs730/assign1/<env>/db_password` for each environment named (no destroy removes them, because Terraform never created them) | One or more of `dev`, `staging`, `prod` | Workstation, after `destroy-env.sh` |
 | `scripts/teardown.sh` | `evidence/destroy-complete.txt` | dev, staging and prod (via `destroy-env.sh`), then all three SSM parameters; ends with proof that nothing is left | None | Workstation |
-| `../scripts/refresh-gha-creds.sh` (course template) | The three AWS secrets on each environment named, and the `AWS_REGION` variable | Nothing | Since Task 4: `jhui26-seneca/acs730-coursework staging prod` | Workstation, once per lab session |
+| `../scripts/refresh-gha-creds.sh` (course template) | The three AWS secrets on each environment named, and the `AWS_REGION` variable | Nothing | Since Task 4: `<owner>/acs730-coursework staging prod` | Workstation, once per lab session |
 
 ## Workflows
 
@@ -103,12 +103,12 @@ All from 13 to 14 November 2026 (UTC).
 | File | Shows |
 |---|---|
 | `evidence/caller-identity.png` | The workstation's AWS identity (`assumed-role/LabRole`) |
-| `evidence/environments.json` | `staging` with no rules; `prod` with required reviewer `jhui26-seneca` and the deployment branch policy `main` |
+| `evidence/environments.json` | `staging` with no rules; `prod` with required reviewer `<owner>` and the deployment branch policy `main` |
 | `evidence/secrets-scope.txt` | No AWS secret at repository level; all three on `staging` and on `prod` |
 | `evidence/dev-apply.txt` | dev built by `create-dev.sh`: `Plan: 13 to add`, the encrypted `root_block_device`, the two rule resources, both alarms, and the page |
 | `evidence/staging-apply.txt` | Run 43529808689 (merge of PR #48): the staging job started 4 seconds after it was created, no approval, `Apply complete! Resources: 13 added`, page answered |
 | `evidence/prod-approval-pending.png` | The same run waiting: "requested your review to deploy to prod", staging already green |
-| `evidence/prod-approval-approved.png` | The same run after approval: both jobs green, approved by `jhui26-seneca` with the comment |
+| `evidence/prod-approval-approved.png` | The same run after approval: both jobs green, approved by `<owner>` with the comment |
 | `evidence/prod-apply.txt` | The approval and deployment history first (`waiting` 23:50:07, `queued` 23:55:43, `success` 23:57:22), then the prod job log: `Plan: 13 to add`, `Apply complete! Resources: 13 added`, page answered |
 | `evidence/backend-state-keys.txt` | Three state objects in the bucket: `assign1/dev`, `assign1/staging`, `assign1/prod` |
 | `evidence/ssm-parameter.txt` | The prod parameter in AWS and the value Terraform's data source read, side by side |
@@ -118,8 +118,8 @@ All from 13 to 14 November 2026 (UTC).
 
 ## Run order
 
-1. Each session: Start Lab, then `../scripts/session-start.sh` and `../scripts/refresh-gha-creds.sh jhui26-seneca/acs730-coursework staging prod`.
-2. Once: `scripts/configure-environments.sh jhui26-seneca/acs730-coursework`.
+1. Each session: Start Lab, then `../scripts/session-start.sh` and `../scripts/refresh-gha-creds.sh <owner>/acs730-coursework staging prod`.
+2. Once: `scripts/configure-environments.sh <owner>/acs730-coursework`.
 3. Parameters: `scripts/create-ssm-parameters.sh dev staging prod`.
 4. dev: `scripts/create-dev.sh`.
 5. staging and prod: open a pull request (LocalStack check), merge it (staging deploys), read the prod plan, approve the `prod` deployment in the Actions run.

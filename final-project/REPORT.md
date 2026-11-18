@@ -1,6 +1,6 @@
 # Final Project - Two Services, Terraform, Ansible and Kubernetes, Deployed on Merge
 
-**Report** - John Hui (GitHub `jhui26-seneca`), ACS730, November 2026. Repository: `jhui26-seneca/acs730-coursework`, folder `final-project/`. File-by-file details and scripts are in `README.md`; every claim below points to a file in `evidence/`.
+**Report** - ACS730, November 2026. Repository: `<owner>/acs730-coursework`, folder `final-project/`. File-by-file details and scripts are in `README.md`; every claim below points to a file in `evidence/`.
 
 ## Introduction
 
@@ -124,7 +124,7 @@ The instance profile has one real advantage, and I took it seriously: nothing wo
 - **How long it lasts.** The instance profile's credentials are refreshed for as long as the instance runs. The session credentials die with the lab session, a few hours at most.
 - **Where the work runs.** Using the instance profile would move Terraform and Ansible onto my workstation's runner, next to the cluster and next to my admin shell, so one compromised job could reach both AWS and Kubernetes. Keeping them on GitHub-hosted runners keeps each job to one kind of access.
 
-What it costs me is the refresh. If I start a session and forget `refresh-gha-creds.sh`, the next merge fails at its first AWS step with an expired token. That's a loud failure, which I'd rather have than a quiet standing permission. In a real account I'd use neither: OIDC, with the trust policy from my Assignment 1 report scoped to `sub = repo:jhui26-seneca/acs730-coursework:environment:final`, and no stored keys at all.
+What it costs me is the refresh. If I start a session and forget `refresh-gha-creds.sh`, the next merge fails at its first AWS step with an expired token. That's a loud failure, which I'd rather have than a quiet standing permission. In a real account I'd use neither: OIDC, with the trust policy from my Assignment 1 report scoped to `sub = repo:<owner>/acs730-coursework:environment:final`, and no stored keys at all.
 
 **The first run on 12 November, and why it's still in this report.** Run 43276314354, from merging #44, went green in 8 seconds of `deploy`, and that was wrong. My first paste of `final-deploy.yml` had been cut off after the `kubectl apply` line. The run paused the Deployment, applied the manifests and stopped: no `set image`, no `resume`, no gate, no smoke test. Every step that did run succeeded, so the run was green, and the Deployment sat paused on the bootstrap image. I found it by reading the step list, not the colour, and fixed the workflow in PR #45. The lesson is the one Lab 7 taught from the other side: a deploy with no gate looks exactly as green as one with a gate, so I now count the steps before I trust a run.
 
