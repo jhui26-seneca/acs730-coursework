@@ -1,0 +1,10 @@
+
+===== As LabRole (the workstation) (07:48:31 UTC)
+
+An error occurred (AccessDeniedException) when calling the ValidatePolicy operation: User: arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240 is not authorized to perform: access-analyzer:ValidatePolicy on resource: arn:aws:access-analyzer:us-east-1:572751986246:* because no identity-based policy allows the access-analyzer:ValidatePolicy action
+exit code: 254
+
+===== As voclabs (07:48:32 UTC)
+
+An error occurred (AccessDeniedException) when calling the ValidatePolicy operation: User: arn:aws:sts::572751986246:assumed-role/voclabs/<session> is not authorized to perform: access-analyzer:ValidatePolicy on resource: arn:aws:access-analyzer:us-east-1:572751986246:* because no identity-based policy allows the access-analyzer:ValidatePolicy action
+exit code: 254
