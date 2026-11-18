@@ -1,4 +1,4 @@
-Fri Oct 16 01:05:32 UTC 2026
+Wed Nov 18 05:56:54 UTC 2026
 [WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
 [DEPRECATION WARNING]: Passing `disable_lookups` to `template` is deprecated. This feature will be removed from ansible-core version 2.23.
 [WARNING]: Found variable using reserved name 'tags'.
@@ -10,17 +10,22 @@ tags
 PLAY [Configure the lab6 web servers] ******************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [i-07220900903cf5a3b]
+ok: [i-0b11cc738485df360]
+ok: [i-01a13af7e775a780c]
 
 TASK [webserver : Install the web server package] ******************************
-ok: [i-07220900903cf5a3b]
+ok: [i-0b11cc738485df360]
+ok: [i-01a13af7e775a780c]
 
 TASK [webserver : Render the home page from the template] **********************
-ok: [i-07220900903cf5a3b]
+ok: [i-0b11cc738485df360]
+ok: [i-01a13af7e775a780c]
 
 TASK [webserver : Start and enable the web server] *****************************
-ok: [i-07220900903cf5a3b]
+ok: [i-0b11cc738485df360]
+ok: [i-01a13af7e775a780c]
 
 PLAY RECAP *********************************************************************
-i-07220900903cf5a3b        : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+i-01a13af7e775a780c        : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+i-0b11cc738485df360        : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 

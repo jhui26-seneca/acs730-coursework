@@ -56,7 +56,8 @@ SUBNET_ID=$(aws ec2 describe-subnets --region "$REGION" \
     sleep 2
   done
   echo "+$(( $(date +%s) - START ))s   READY: page served"
-  curl -s -m 3 "http://$IP/" | grep '<h1>'
+  curl -s -m 3 "http://$IP/" | grep -E "<h1>|Build:"
+  echo "baked.html: HTTP $(curl -s -o /dev/null -w "%{http_code}" -m 3 "http://$IP/baked.html")"
 
   aws ec2 terminate-instances --region "$REGION" --instance-ids "$ID" >/dev/null
   aws ec2 wait instance-terminated --region "$REGION" --instance-ids "$ID"
