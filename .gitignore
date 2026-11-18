@@ -17,3 +17,4 @@ assignment1/terraform/modules/**/.terraform.lock.hcl
 *.tfstate.*
 lab6/evidence/experiments/
 lab7/evidence/experiments/
+lab8/evidence/experiments/

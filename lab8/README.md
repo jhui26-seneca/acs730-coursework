@@ -1,36 +1,12 @@
 # Lab 8: Security and policy as code
 
-`lab8/main.tf` describes a small web host in the default VPC: one security group, its two rules and one t3.micro instance. It is only ever planned and scanned, never applied. `tfsec lab8 --minimum-severity HIGH` exits 0 on it, and that scan is a required check on `main`.
-
-## The finding I reproduced
-
-The first version of `main.tf` (commit `29c5931`, replaced before the merge) opened SSH to the whole internet: `cidr_blocks = ["0.0.0.0/0"]` on port 22. tfsec reported it as `aws-ec2-no-public-ingress-sgr`, CRITICAL, at `main.tf:57`, with the resolution "Set a more restrictive cidr range". The same file also left the root volume unencrypted (`aws-ec2-enable-at-rest-encryption`, HIGH) and allowed IMDSv1 (`aws-ec2-enforce-http-token-imds`, HIGH). An open port 22 is found by internet-wide scanners within minutes of an instance starting. From there an attacker can brute-force or reuse passwords and keys, or exploit an unpatched `sshd`, to get a shell. With IMDSv1 that shell, or even a server-side request forgery bug in the web app, can read the instance role's temporary credentials from `169.254.169.254` with a single unauthenticated GET. An unencrypted volume means any snapshot or copy of the disk can be read by whoever gets hold of it. The fixed file allows SSH only from one `/32` (`var.admin_cidr`, with a validation rule that refuses anything else; the default is the documentation address `203.0.113.10/32`, because this repository is public and my own IP doesn't belong in it), sets `encrypted = true` and requires IMDSv2.
-
-## Why the scan blocks a merge
-
-`.github/workflows/lab8-policy.yml` runs one job, `tfsec (HIGH and above)`, on every pull request and every push to `main`. Its gate step is `tfsec lab8 --minimum-severity HIGH --no-color`, with no `|| true`, no `continue-on-error` and no `soft_fail`, and tfsec is installed from its release with the checksum checked rather than through the marketplace action, which defaults to soft fail. When tfsec finds anything at HIGH or above it exits with code 1, the step fails, and so does the job. Branch protection on `main` lists `tfsec (HIGH and above)` as a required status check next to Lab 4's `summary` (`evidence/required-status-checks.json`), so GitHub refuses to merge while that check is red. Pull request #40 shows both states: with the broken file the check failed and the PR was `BLOCKED` (`pr-checks-blocked.txt`, `pr-mergeable-blocked.json`; `pr-blocked.png` shows the same blocked state on throwaway PR #41, which put the open SSH rule back and was closed without merging); after the fix it passed and the PR became `CLEAN` (`pr-checks-passing.txt`, `pr-mergeable-passing.json`, `pr-passing.png`). The workflow has no `paths:` filter on purpose: a required check has to report on every pull request, or PRs that don't touch `lab8/` would wait for it forever. The check stays enabled for the Final Project, and since then the same job has a second step that scans `final-project/terraform` too, so the check's name and its place in branch protection haven't changed. As the repository admin I still see a "bypass rules" checkbox on a blocked PR, because "Do not allow bypassing the above settings" is off; I never use it, and on a team repository that setting would be on so the gate binds admins too.
-
-## The one suppression I kept
-
-I suppressed `aws-ec2-no-public-egress-sgr` (CRITICAL) on one rule, `aws_security_group_rule.https_out`, which lets the host make outbound HTTPS connections (port 443 only) to any address. The host needs that to reach the Amazon Linux package repositories for `dnf` updates and the Systems Manager endpoints for the SSM agent, and neither has a fixed address range I could list instead. The risk I'm accepting is that something running on the host could send data out over HTTPS; nothing on the internet can open a connection in through this rule, and every other port, in and out, stays closed. In production I'd replace it with VPC endpoints for SSM and S3 plus an egress proxy, and the review date is 2026-12-31. The `#tfsec:ignore:aws-ec2-no-public-egress-sgr` comment sits on the line directly above the rule, with the reason, my name (`jhui26-seneca`) and the date on the lines above it, and it is the only `tfsec:ignore` in the folder (`tfsec-ignores.txt`, where the every-severity scan shows `ignored 1`).
-
-## LabRole vs voclabs
-
-LabRole is the role behind the workstation's instance profile: the CLI and Terraform on the workstation get its credentials from the instance metadata service, which renews them automatically for as long as the instance runs. voclabs is the role behind the Vocareum session, the one whose keys I copy from "AWS CLI: Show" into the GitHub secrets for CI. I ran the same 11 calls as both (`labrole-vs-voclabs.txt`), and in this account they behaved the same: both can read EC2, SSM, S3, CloudTrail and IAM roles, both can launch a t3.micro (dry run), both can create an IAM policy, and both are refused `iam:CreateRole` and Access Analyzer with "no identity-based policy allows". The handout expects `aws iam create-policy` to be denied; here it isn't. LabRole created `acs730-lab8-deploy-policy`, and I deleted it straight away (`iam-create-policy-labrole.txt`), so the AccessDenied I capture is the next step, creating a role to attach the policy to (`iam-create-policy-accessdenied.txt`). What differs is what's attached and where the credentials come from. LabRole carries three VocLabPolicy policies plus AWS-managed SSM, EKS and ECR policies, meant for services that run as it; voclabs carries `Pvoclabs1`, `Pvoclabs2` and `voc-cancel-cred`, and neither role is allowed to read those documents (LabRole is blocked by an explicit deny in VocLabPolicy2, the voclabs policies by the Academy's service control policy). That explains "works locally, fails in CI": the workstation's LabRole credentials keep renewing, while the voclabs keys in GitHub belong to one Academy session and stop working when it ends or restarts (judging by its name, `voc-cancel-cred` is how Vocareum revokes an old session's keys). The same command then succeeds on the workstation and fails in CI with `ExpiredToken`, which is why every lab session since Lab 3 starts with `refresh-gha-creds.sh`.
-
-## Supporting notes
-
-**Least privilege.** `policies/lab8-deploy-policy.json` replaces PowerUserAccess (every action except IAM and Organizations, on every service) with what the plan needs (`plan-resources.txt`: one security group, two rules, one instance). It has four statements: read anything in EC2 so Terraform can plan and refresh (`ec2:Describe*` plus `sts:GetCallerIdentity`); create the security group, its rules and the instance only in `us-east-1`; tag only while creating; and change or delete only resources tagged `Lab = lab8`, which the provider's `default_tags` put on everything this file creates. There's no IAM, no `iam:PassRole` (the instance has no profile) and no S3 (no remote state). I stopped there. The next step would limit `RunInstances` to `t3.micro` and one AMI, which needs a separate statement for each resource type in the request, and I'd only do that in an account where I could test it, since the Academy won't let me attach the policy to anything.
-
-**Secrets in git history.** `gitleaks git --redact --log-opts=--all` found three `generic-api-key` matches, all `KEY_NAME="acs730-lab2-key"` in Lab 2 scripts (commit `86d1144`). That's the name of an EC2 key pair, not a secret, so they are false positives; I recorded their fingerprints with the reason in `.gitleaksignore` at the repository root instead of changing Lab 2, which is already graded, and the second scan exits 0 (`gitleaks-history.txt`, `gitleaks-report.json`). `git log --all --name-only` still lists `midterm-practice/terraform/terraform.tfstate`, and the same starter commit (`acffcc0`) had `AKIAIOSFODNN7EXAMPLE` in `midterm-practice/scripts/deploy.sh`. Both came from the midterm practice starter repository: the state file is from LocalStack (account `000000000000`), and the key is AWS's published documentation example, so there is nothing to rotate. I removed both in `6bc40bc` and chose not to rewrite history, because that means force-pushing `main` and changing the SHA of every commit since, including the Lab 7 commits whose SHAs are the deployed image tags in its evidence. With a real credential the order would be: rotate it first, then rewrite history.
-
-**Checkov for comparison.** Checkov 3.4.3 failed 6 checks on the broken file and 3 on the fixed one (`checkov-before.txt`, `checkov-after.txt`). It agrees on SSH, encryption and IMDS, never flags the open egress rule, and still fails detailed monitoring, EBS optimisation and the missing IAM role, which I accept for a planned-only lab host. tfsec is the gate.
+`lab8/main.tf` describes a small web host in the default VPC (a security group, its two rules and one t3.micro). It is only ever scanned and planned, never applied, and `tfsec lab8 --minimum-severity HIGH` exits 0 on it as a required check on `main`. The files and evidence are listed first; the four paragraphs the walkthrough asks for are under **Security controls and what they caught**, followed by the experiments.
 
 ## Files
 
 | File | What it is |
 |---|---|
-| `main.tf` | The fixed configuration: SSH from one `/32`, encrypted root volume, IMDSv2, one justified `tfsec:ignore` |
+| `main.tf` | The fixed configuration: SSH from one `/32`, encrypted root volume, IMDSv2, one signed `tfsec:ignore` |
 | `.terraform.lock.hcl` | Provider lock file from `terraform init` |
 | `policies/lab8-deploy-policy.json` | The scoped deploy policy |
 | `../.github/workflows/lab8-policy.yml` | The `tfsec (HIGH and above)` gate |
@@ -51,15 +27,131 @@ Nothing in this folder is applied to AWS. `terraform plan` was run with the work
 | File | Shows |
 |---|---|
 | `caller-identity.png` | Workstation identity at the start |
-| `tfsec-all-severities.txt`, `tfsec-before.txt` | The four findings on the broken file, exit code 1 |
-| `checkov-before.txt`, `checkov-after.txt` | Checkov on the broken and fixed file |
+| `tfsec-all-severities.txt`, `tfsec-before.txt` | The findings on the broken file, with rule IDs, exit code 1 |
+| `checkov-before.txt`, `checkov-after.txt` | Checkov (optional second opinion) on the broken and fixed file |
 | `required-status-checks.json` | `summary` and `tfsec (HIGH and above)` required on `main` |
-| `pr-checks-blocked.txt`, `pr-mergeable-blocked.json`, `pr-blocked.png` | PR #40 red and `BLOCKED` |
+| `pr-checks-blocked.txt`, `pr-mergeable-blocked.json`, `pr-blocked.png` | The check red and the pull request `BLOCKED` |
 | `tfsec-after.txt` | `No problems detected`, exit code 0 |
 | `tfsec-ignores.txt` | Exactly one `tfsec:ignore`, with its reason |
-| `pr-checks-passing.txt`, `pr-mergeable-passing.json`, `pr-passing.png` | PR #40 green and `CLEAN` |
+| `pr-checks-passing.txt`, `pr-mergeable-passing.json`, `pr-passing.png` | Pull request #40 green and `CLEAN` |
 | `plan-resources.txt` | What the plan would create, the input to the policy |
-| `iam-create-policy-labrole.txt` | LabRole allowed to create the policy, and its deletion |
+| `iam-create-policy-labrole.txt` | LabRole allowed to create the policy in this account, and its deletion |
 | `iam-create-policy-accessdenied.txt` | `AccessDenied` on `iam:CreateRole` for voclabs and LabRole |
-| `labrole-vs-voclabs.txt` | The same 11 calls as both identities |
+| `labrole-vs-voclabs.txt`, `labrole-vs-voclabs-wide.txt` | 11 and then 33 more calls run as both identities |
 | `gitleaks-history.txt`, `gitleaks-report.json` | Full-history secret scan (redacted), the history file list, and the scan with `.gitleaksignore` |
+
+## Security controls and what they caught
+
+These are the four paragraphs the walkthrough asks for, one per numbered heading.
+
+### 1. The required check that guards `main`
+
+`.github/workflows/lab8-policy.yml` runs one job, shown as `tfsec (HIGH and above)`, on every pull request and every push to `main`. Its gate step is `tfsec lab8 --minimum-severity HIGH --no-color`, with no `|| true`, no `continue-on-error` and no `soft_fail`. Any HIGH or CRITICAL finding makes tfsec exit 1 and fails the job. It needs no AWS credentials, because tfsec only reads the HCL on disk.
+
+The job is a required status check on `main`, next to Lab 4's `summary`. It's in the classic branch protection rule for `main` (Settings, Branches, Branch protection rules, `main`, "Require status checks to pass before merging"). I added it with `gh api` (POST to the rule's `required_status_checks/contexts`) once it had reported on pull request #40, and the receipt is `evidence/required-status-checks.json`.
+
+The workflow has no `paths:` filter on purpose (Experiment 3 below shows why), and the rule stays on for the Final Project.
+
+### 2. The misconfiguration, the block and the fix
+
+Commit `29c5931` on pull request #40 broke `lab8/main.tf` in two unrelated ways:
+
+- SSH open to the world (`cidr_blocks = ["0.0.0.0/0"]` on port 22, rule `aws-ec2-no-public-ingress-sgr`, CRITICAL)
+- an unencrypted root volume (`encrypted = false`, rule `aws-ec2-enable-at-rest-encryption`, HIGH)
+
+It also left IMDSv1 on (`aws-ec2-enforce-http-token-imds`, HIGH). `evidence/tfsec-before.txt` shows the findings with their rule IDs and exit code 1.
+
+With `0.0.0.0/0`, every internet scanner can reach `sshd` within minutes and try passwords, stolen keys or an unpatched exploit. With a `/32`, only my one address can even open the connection. An unencrypted volume costs you the day a snapshot is shared or copied, or a disk is recovered: whoever holds the copy can read it, whereas an encrypted one also needs permission on the KMS key.
+
+The merge was prevented, not merely flagged. The check went red and GitHub reported the pull request `BLOCKED` (`evidence/pr-checks-blocked.txt`, `evidence/pr-mergeable-blocked.json`). `evidence/pr-blocked.png` shows the same blocked state on throwaway pull request #41, which put the open SSH rule back and was closed without merging.
+
+The fix, commit `d8b7465` on the same pull request, changed `cidr_blocks` back to `[var.admin_cidr]` (a variable whose validation only accepts a `/32`), set `encrypted = true`, and added `http_tokens = "required"`. `evidence/tfsec-after.txt` says "No problems detected!" with exit code 0, and the pull request went `CLEAN` (`evidence/pr-checks-passing.txt`, `evidence/pr-mergeable-passing.json`, `evidence/pr-passing.png`). It was merged with `--merge`, so the breaking and the fixing commit are both on `main`.
+
+### 3. The deploy policy, the one ignore and the secret scan
+
+`policies/lab8-deploy-policy.json` replaces PowerUserAccess with what the plan needs (`evidence/plan-resources.txt`). Here are three things PowerUserAccess allows that it doesn't:
+
+- any service at all: a pipeline with PowerUserAccess could create an RDS database, a Lambda function or an S3 bucket, while mine only reaches EC2
+- any region: mine creates only in `us-east-1`
+- changing or deleting any instance or security group in the account, including my workstation: mine only touches resources tagged `Lab = lab8`
+
+The walkthrough expects `aws iam create-policy` to be refused. In this Academy account it was allowed, so I deleted the policy straight away (`evidence/iam-create-policy-labrole.txt`) and captured the refusal one step later: creating the role the policy would attach to was denied with `AccessDenied` for `assumed-role/LabRole` and for voclabs (`evidence/iam-create-policy-accessdenied.txt`). That denial is the expected outcome, not a failure. The Learner Lab lets students write IAM documents but not give them to anything.
+
+The one suppression, `#tfsec:ignore:aws-ec2-no-public-egress-sgr` (CRITICAL), sits directly above `aws_security_group_rule.https_out`. That rule lets the host make outbound HTTPS connections to any address, because the Amazon Linux package repositories and the SSM endpoints have no fixed address ranges; nothing can connect in through it. I signed it as `jhui26-seneca` on 2026-11-12 with a review date of 2026-12-31, and it's the only ignore in the folder (`evidence/tfsec-ignores.txt`). I'd remove it once SSM and S3 VPC endpoints plus an egress proxy are in place.
+
+The secret scan was `gitleaks git --redact --log-opts="--all"`, which read all 75 commits of history on every branch rather than the working tree. It exited 1 with three `generic-api-key` findings in Lab 2 scripts. All three were the name of an EC2 key pair, not a key, so I recorded them by fingerprint with that reason in `../.gitleaksignore`, and the rescan exited 0 (`evidence/gitleaks-history.txt`, `evidence/gitleaks-report.json`).
+
+### 4. LabRole versus voclabs: where each environment gets its identity
+
+My three environments run as three different things:
+
+- The workstation calls AWS as LabRole, through its instance profile, with credentials the metadata service keeps renewing.
+- The Vocareum console and any CLI configured from the AWS Details keys act as voclabs.
+- A GitHub runner has no AWS identity at all until `refresh-gha-creds.sh` copies a voclabs session into the repository secrets, and those keys die when the Academy session ends. The Lab 8 tfsec job never gets one, because it doesn't need one.
+
+The two roles carry different policies (LabRole: VocLabPolicy1 to 3 plus the AWS-managed SSM, EKS and ECR policies; voclabs: `Pvoclabs1`, `Pvoclabs2` and `voc-cancel-cred`), and neither is allowed to read the other's documents.
+
+I ran 44 identical calls as both (`evidence/labrole-vs-voclabs.txt`, `evidence/labrole-vs-voclabs-wide.txt`). In this account they were allowed or refused alike, though sometimes by different layers: `ec2:DescribeInstances` in `eu-west-1` is refused for LabRole by the service control policy and for voclabs because none of its own policies allows it.
+
+So the "works locally, fails in CI" difference here is where the credentials come from and how long they last. `aws sts get-caller-identity` succeeds on the workstation at any time. In CI it fails with "Unable to locate credentials" in a job like the tfsec one, and with `ExpiredToken` once the session whose keys are in the secrets has ended. My own receipt is a worked example of a refusal: `iam:CreateRole` denied to `assumed-role/LabRole`.
+
+Calls 1 to 11 are from November 12 (`evidence/labrole-vs-voclabs.txt`) and 12 to 44 from November 18 (`evidence/labrole-vs-voclabs-wide.txt`). Every call is read-only, a `--dry-run`, or sends an empty document, so nothing was created. Each verdict shows which layer answered: "no policy allows" is the role's own policies, "explicit deny" a Deny statement in them, and "SCP" the Academy's service control policy over the whole account.
+
+| # | Call | LabRole (workstation) | voclabs (console, CLI keys, CI) |
+|---|---|---|---|
+| 1 | `ec2 describe-vpcs` | ALLOWED | ALLOWED |
+| 2 | `ec2 run-instances t3.micro (--dry-run)` | ALLOWED (dry run) | ALLOWED (dry run) |
+| 3 | `ssm describe-parameters` | ALLOWED | ALLOWED |
+| 4 | `s3api list-buckets` | ALLOWED | ALLOWED |
+| 5 | `cloudtrail lookup-events` | ALLOWED | ALLOWED |
+| 6 | `iam get-role LabRole` | ALLOWED | ALLOWED |
+| 7 | `iam list-attached-role-policies LabRole` | ALLOWED | ALLOWED |
+| 8 | `iam list-attached-role-policies voclabs` | ALLOWED | ALLOWED |
+| 9 | `iam create-policy (empty document)` | ALLOWED (reached validation) | ALLOWED (reached validation) |
+| 10 | `iam create-role (empty trust policy)` | DENIED (no policy allows it) | DENIED (no policy allows it) |
+| 11 | `access-analyzer validate-policy` | DENIED (no policy allows it) | DENIED (no policy allows it) |
+| 12 | `lambda list-functions` | ALLOWED | ALLOWED |
+| 13 | `rds describe-db-instances` | ALLOWED | ALLOWED |
+| 14 | `eks list-clusters` | ALLOWED | ALLOWED |
+| 15 | `ecr describe-repositories` | ALLOWED | ALLOWED |
+| 16 | `ecs list-clusters` | ALLOWED | ALLOWED |
+| 17 | `cloudformation list-stacks` | ALLOWED | ALLOWED |
+| 18 | `dynamodb list-tables` | ALLOWED | ALLOWED |
+| 19 | `sns list-topics` | ALLOWED | ALLOWED |
+| 20 | `sqs list-queues` | ALLOWED | ALLOWED |
+| 21 | `kms list-keys` | ALLOWED | ALLOWED |
+| 22 | `secretsmanager list-secrets` | ALLOWED | ALLOWED |
+| 23 | `logs describe-log-groups` | ALLOWED | ALLOWED |
+| 24 | `cloudwatch describe-alarms` | ALLOWED | ALLOWED |
+| 25 | `events list-rules` | ALLOWED | ALLOWED |
+| 26 | `elbv2 describe-load-balancers` | ALLOWED | ALLOWED |
+| 27 | `autoscaling describe-auto-scaling-groups` | ALLOWED | ALLOWED |
+| 28 | `route53 list-hosted-zones` | ALLOWED | ALLOWED |
+| 29 | `cloudtrail describe-trails` | ALLOWED | ALLOWED |
+| 30 | `config describe-config-rules` | ALLOWED | ALLOWED |
+| 31 | `guardduty list-detectors` | ALLOWED | ALLOWED |
+| 32 | `organizations describe-organization` | DENIED | DENIED |
+| 33 | `iam list-users` | ALLOWED | ALLOWED |
+| 34 | `iam list-roles` | ALLOWED | ALLOWED |
+| 35 | `iam get-account-summary` | ALLOWED | ALLOWED |
+| 36 | `iam list-policies (local)` | ALLOWED | ALLOWED |
+| 37 | `iam get-policy-version (a VocLabPolicy)` | DENIED (explicit deny) | DENIED (explicit deny) |
+| 38 | `ssm describe-instance-information` | ALLOWED | ALLOWED |
+| 39 | `ce get-cost-and-usage (billing)` | ALLOWED | ALLOWED |
+| 40 | `ec2 describe-instances in eu-west-1` | DENIED (SCP) | DENIED (no policy allows) |
+| 41 | `ec2 describe-instances in us-west-2` | ALLOWED | ALLOWED |
+| 42 | `ec2 run-instances with LabInstanceProfile (--dry-run)` | ALLOWED (dry run) | ALLOWED (dry run) |
+| 43 | `ec2 run-instances t3.2xlarge (--dry-run)` | DENIED (explicit deny) | DENIED (explicit deny) |
+| 44 | `ec2 create-vpc (--dry-run)` | ALLOWED (dry run) | ALLOWED (dry run) |
+
+## Experiments (optional, not on the hand-in list)
+
+**1. Lower the gate to MEDIUM.** Locally, tfsec at MEDIUM found nothing and exited 0, the same as at HIGH, and a scratch pull request (#60, closed unmerged) whose workflow scanned `lab8/` at MEDIUM went green and `CLEAN`. After the fix this configuration has no MEDIUM or LOW findings at all, so the bar made no difference, and my signed ignore played no part, since it suppresses a CRITICAL rule. A team still gates at HIGH and reports LOW weekly, because a gate that fails on every low-grade finding gets bypassed, while a weekly report keeps those findings visible without stopping work.
+
+**2. Make the ignore blanket.** With the signed ignore, tfsec on every severity showed `passed 7, ignored 1`; with `#tfsec:ignore:*` it showed `passed 6, ignored 2`, and still "No problems detected!". The blanket version silenced a second rule on that resource, one that was passing, so it hides every future finding there too, and nothing in the output tells a reviewer anything changed. That makes it worse than no ignore: with none, the finding is at least visible and somebody has to decide about it.
+
+**3. Break the path filter.** A scratch pull request (#61, closed unmerged) gave `pull_request` a `paths: ['lab7/**']` filter and changed a line under `lab8/`. The tfsec check never ran, and even 60 seconds later GitHub listed no tfsec result at all and kept the pull request `BLOCKED`, waiting on a required check that would never report. A required check that never runs isn't passing, it's missing, which is why my workflow has no `paths:` filter.
+
+**4. Ask AWS to grade the policy.** `aws accessanalyzer validate-policy` on `lab8-deploy-policy.json` was refused for both LabRole and voclabs with "no identity-based policy allows the access-analyzer:ValidatePolicy action". In this account AWS won't review a policy for me, so the review has to happen before AWS: JSON validation, reading it against the plan, and tools in the pipeline.
+
+**5. History versus working tree.** The walkthrough's sample key, which ends in `EXAMPLEKEY`, gave "no leaks found" (exit 0) when scanned with `--no-git`, because gitleaks deliberately ignores AWS's published example keys; a random-looking key in the same place was caught at once (`generic-api-key`, exit 1). A `--no-git` scan of this repository's working tree found 5 matches (exit 1): the three Lab 2 scripts, plus `.gitleaksignore` and an earlier version of this README, which quoted the same line, so writing about a false positive made two more. The history scan of the same repository exited 0, because `.gitleaksignore` entries are tied to commit fingerprints. And a working-tree scan says nothing about a key committed in Week 2 and deleted in Week 3: it only sees the files as they are now, while the key is still in the Week 2 commit for anyone with a clone.
