@@ -2,28 +2,50 @@
 
 Terraform creates two tagged web servers in the default VPC with LabInstanceProfile and no port 22 ingress at all. Ansible finds them by tag and configures them over AWS Systems Manager, from the workstation and from GitHub Actions in the step straight after `terraform apply`. Packer bakes the same `webserver` role into a golden AMI, and both approaches are timed from the launch request to the page being served.
 
-## The three answers
+The README covers the walkthrough's list in order: the three required sentences first, then the measured comparison and the recommendation, the SSM bucket-and-region constraint, and the experiments.
 
-I used Ansible over Session Manager (the `aws_ssm` connection), because the SSM agent on each instance dials out using LabInstanceProfile, so neither the workstation nor the GitHub runner needs a stored SSH key and port 22 is never opened; Packer reaches its build instance the same way, through an SSM port-forward with a temporary key it creates and deletes in the same run. A second run reporting changed=0 proves that every task checked the real state of the host and found it already matched what the role asks for, which is what makes the same command safe on a new instance, a converged one, and from a pipeline on every merge. Deregistering an AMI only deletes the image record: the EBS snapshot behind it is the stored data and the thing that bills, it stays behind, and once the AMI is gone `describe-images` can no longer tell you which snapshot belonged to it, so teardown reads the snapshot ID first and deletes it after.
+## The three required answers
 
-## Boot-to-ready
+**Which runner-to-instance mechanism I used, and why.** AWS Systems Manager Session Manager (Ansible's `aws_ssm` connection), because the SSM agent on each instance dials out over HTTPS using LabInstanceProfile, so there's no long-lived private key in the repository secrets and no port 22 open to the world for a GitHub runner whose address changes every run.
+
+**What changed=0 on a second run proves.** Not that the playbook did nothing, but that every task checked the real state of each host and found it already matched what the role asks for, which is what makes the same command safe on a brand-new instance and on a converged one, and safe to run from the pipeline on every merge.
+
+**Why deregistering an AMI is not enough.** The AMI is only a pointer: the EBS snapshot behind it holds the data and is what bills, deregistering leaves it behind, and once the AMI is gone `describe-images` can no longer tell you which snapshot belonged to it, so `teardown.sh` reads the snapshot ID first, deregisters, then deletes the snapshot.
+
+Packer reaches its own build instance the same way, through an SSM port-forward with a temporary key pair it creates and deletes in the same run, and the build uses a security group with no inbound rules.
+
+## The two measured numbers
 
 | Approach | Launch request to page served | What the time includes |
 |---|---|---|
-| Plain Amazon Linux 2023, then Ansible over SSM | 83 s (`evidence/boot-to-ready-ansible.txt`) | Launch 20 s, SSM agent Online at 21 s, then about 62 s of playbook (dnf installs httpd, template, service start) |
-| Golden AMI baked by Packer with the same role | 24 s (`evidence/boot-to-ready-golden.txt`) | Launch 20 s, then httpd is already installed and enabled, so the page is up 4 s later |
+| Converge-on-boot: plain Amazon Linux 2023, then Ansible over SSM | 83 s (`evidence/boot-to-ready-ansible.txt`) | Instance launch to running 20 s; SSM agent registration Online at 21 s; then about 62 s of playbook: dnf downloads and installs httpd, the template is rendered, the service starts |
+| Golden AMI baked by Packer with the same role | 24 s (`evidence/boot-to-ready-golden.txt`) | Instance launch to running 20 s; no SSM wait and no dnf; httpd is already installed and enabled, so the service is serving 4 s later |
 
 The page itself says which path built it: `Build: ansible-converge` on the converged instance, and `Build: golden-ami` on the one launched from the image, where Packer overrode `webserver_build_tag` with `--extra-vars`. The golden instance also serves `/baked.html` (HTTP 200), a static file Packer copied in after the role ran; the converged instance returns 404 for it, because the role never creates that file.
 
-In the slow path the time didn't go into Ansible's own logic. SSM registered after one second this time (on another day it can take 30 to 60 s), and most of the 62 s was dnf pulling httpd and its dependencies over the network, which happens again on every instance at every launch.
+## Where the time went in the slow path
 
-A golden AMI doesn't remove that work, it moves it: the same role runs once at bake time (the Packer build took 4 min 38 s) instead of once per launch. So the image wins as soon as I launch more than a couple of instances, or launch them often, and it loses for a single instance, where I'd pay a full Packer build to save about a minute.
+Not into Ansible's own logic. It went into waiting: first for the SSM agent to register (one second this time, but 30 to 60 s on another day), then for dnf to pull httpd and its dependencies over the network, which was most of the 62 s of playbook. That download happens again on every instance, at every launch.
 
-Each approach breaks in its own way. An image is frozen at bake time: security updates released after the bake aren't in it, so it needs a rebuild schedule, and you can't see what's inside it without the build log, whereas the playbook is its own documentation. Converge-on-boot depends on the package mirrors and SSM being reachable at the moment of launch: if a mirror is down, instances boot and never become ready, and an autoscaling event at 3 a.m. is exactly when I don't want a network dependency in the boot path.
+## The cost a golden AMI moves rather than removes
 
-My recommendation: golden AMI for these web servers, because they're launched in groups and should come up in seconds, with the playbook kept in the pipeline to catch drift on running hosts; I'd switch to converge-on-boot for a server I launch once and change often, where rebuilding an image for every change costs more than the minute it saves.
+The work still happens, once at build time instead of N times at launch time: the same role ran inside the Packer build, which took 4 min 38 s. So the image wins as soon as I launch more than a couple of instances, or launch them often, and it loses for a single instance, where I'd pay a full Packer build to save about a minute.
 
-One constraint worth knowing: Ansible's SSM connection copies each module through an S3 bucket, and the bucket, `ansible_aws_ssm_region` and the instances all have to be in us-east-1. Experiment 5 shows what a mismatch looks like.
+## What breaks with golden AMIs
+
+An image is a frozen moment: updates released after the bake aren't in it, so it needs a rebuild cadence. And you can't see what's inside it without reading the build log (`evidence/packer-build.txt`), whereas the playbook is its own documentation.
+
+## What breaks with converge-on-boot
+
+Every launch depends on the package mirrors (and SSM) being reachable right then. A mirror outage means instances that boot and never become ready, and an autoscaling event at 3 a.m. is exactly when I don't want a network dependency in the boot path.
+
+## My recommendation
+
+Golden AMI, because these web servers are launched in groups and should serve within seconds of booting, with the playbook kept in the pipeline to catch drift; I'd switch to converge-on-boot if the servers were launched one at a time and changed more often than I'd want to rebuild an image.
+
+## The SSM bucket-and-region constraint
+
+Ansible's `aws_ssm` connection doesn't stream files down the session: it stages every module through an S3 bucket I own, `acs730-lab6-ssm-<account-id>`. The bucket, `ansible_aws_ssm_region` in `group_vars/role_web.yml` and the instances all have to be in us-east-1. A mismatched bucket region gives `PermanentRedirect`; Experiment 5 shows that a wrong session region fails even earlier, with `TargetNotConnected`. The bucket is created with the AWS CLI (`scripts/create-ssm-bucket.sh`), not Terraform, because the Academy account denies a read the Terraform provider makes after creating any bucket.
 
 ## Experiments
 
