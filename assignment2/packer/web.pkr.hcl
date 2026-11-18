@@ -75,7 +75,7 @@ build {
   # Ansible runs on the workstation and connects through Packer's Session Manager tunnel
   # (use_proxy = false: straight to the tunnel's local port, with Packer's temporary key).
   provisioner "ansible" {
-    playbook_file    = "../ansible/bake.yml"
+    playbook_file    = "${path.root}/../ansible/bake.yml"
     user             = "ec2-user"
     use_proxy        = false
     ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False"]
