@@ -61,7 +61,7 @@ build {
   # and connects through Packer's Session Manager tunnel (use_proxy = false: straight to the
   # tunnel's local port with Packer's temporary key), so no port 22 is opened.
   provisioner "ansible" {
-    playbook_file    = "../ansible/site.yml"
+    playbook_file    = "${path.root}/../ansible/site.yml"
     user             = "ec2-user"
     use_proxy        = false
     ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False"]
@@ -74,7 +74,7 @@ build {
   # A static page decided once at bake time, beside the rendered index.html.
   # The role never manages baked.html, so idempotency is unaffected.
   provisioner "file" {
-    source      = "files/index.html"
+    source      = "${path.root}/files/index.html"
     destination = "/tmp/baked.html"
   }
 
