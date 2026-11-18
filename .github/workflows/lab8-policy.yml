@@ -39,7 +39,7 @@ jobs:
           tfsec --version
 
       - name: Gate - tfsec lab8, HIGH and above (any finding fails the job)
-        run: tfsec lab8 --minimum-severity HIGH --no-color
+        run: tfsec lab8 --minimum-severity MEDIUM --no-color
 
       - name: Gate - tfsec final-project/terraform, HIGH and above (any finding fails the job)
         run: tfsec final-project/terraform --minimum-severity HIGH --no-color
