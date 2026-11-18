@@ -38,6 +38,7 @@ Nothing in this folder is applied to AWS. `terraform plan` was run with the work
 | `iam-create-policy-labrole.txt` | LabRole allowed to create the policy in this account, and its deletion |
 | `iam-create-policy-accessdenied.txt` | `AccessDenied` on `iam:CreateRole` for voclabs and LabRole |
 | `labrole-vs-voclabs.txt`, `labrole-vs-voclabs-wide.txt` | 11 and then 33 more calls run as both identities |
+| `access-analyzer-denied.txt` | Experiment 4: `validate-policy` refused for LabRole and for voclabs |
 | `gitleaks-history.txt`, `gitleaks-report.json` | Full-history secret scan (redacted), the history file list, and the scan with `.gitleaksignore` |
 
 ## Security controls and what they caught
@@ -152,6 +153,6 @@ Calls 1 to 11 are from November 12 (`evidence/labrole-vs-voclabs.txt`) and 12 to
 
 **3. Break the path filter.** A scratch pull request (#61, closed unmerged) gave `pull_request` a `paths: ['lab7/**']` filter and changed a line under `lab8/`. The tfsec check never ran, and even 60 seconds later GitHub listed no tfsec result at all and kept the pull request `BLOCKED`, waiting on a required check that would never report. A required check that never runs isn't passing, it's missing, which is why my workflow has no `paths:` filter.
 
-**4. Ask AWS to grade the policy.** `aws accessanalyzer validate-policy` on `lab8-deploy-policy.json` was refused for both LabRole and voclabs with "no identity-based policy allows the access-analyzer:ValidatePolicy action". In this account AWS won't review a policy for me, so the review has to happen before AWS: JSON validation, reading it against the plan, and tools in the pipeline.
+**4. Ask AWS to grade the policy.** `aws accessanalyzer validate-policy` on `lab8-deploy-policy.json` was refused for both LabRole and voclabs with "no identity-based policy allows the access-analyzer:ValidatePolicy action" (`evidence/access-analyzer-denied.txt`). In this account AWS won't review a policy for me, so the review has to happen before AWS: JSON validation, reading it against the plan, and tools in the pipeline.
 
 **5. History versus working tree.** The walkthrough's sample key, which ends in `EXAMPLEKEY`, gave "no leaks found" (exit 0) when scanned with `--no-git`, because gitleaks deliberately ignores AWS's published example keys; a random-looking key in the same place was caught at once (`generic-api-key`, exit 1). A `--no-git` scan of this repository's working tree found 5 matches (exit 1): the three Lab 2 scripts, plus `.gitleaksignore` and an earlier version of this README, which quoted the same line, so writing about a false positive made two more. The history scan of the same repository exited 0, because `.gitleaksignore` entries are tied to commit fingerprints. And a working-tree scan says nothing about a key committed in Week 2 and deleted in Week 3: it only sees the files as they are now, while the key is still in the Week 2 commit for anyone with a clone.
