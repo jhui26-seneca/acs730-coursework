@@ -15,3 +15,4 @@ packer_cache/
 crash.log
 assignment1/terraform/modules/**/.terraform.lock.hcl
 *.tfstate.*
+lab6/evidence/experiments/

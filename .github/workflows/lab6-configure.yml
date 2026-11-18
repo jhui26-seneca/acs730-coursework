@@ -46,21 +46,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ vars.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "<2.0.0"
-          terraform_wrapper: false
-      - name: Terraform apply (tagged target, no port 22)
-        working-directory: lab6/terraform
-        run: |
-          terraform init -input=false -no-color
-          terraform apply -input=false -no-color -auto-approve
+
+      # All tooling goes in BEFORE provisioning, so nothing sits between
+      # "terraform apply" and "Converge the instances with Ansible".
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -75,14 +63,33 @@ jobs:
             https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb
           sudo dpkg -i /tmp/session-manager-plugin.deb
           session-manager-plugin --version
-      - name: Wait for SSM PingStatus Online
-        run: bash lab6/scripts/wait-for-ssm.sh
-      - name: Dynamic inventory by tag
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "<2.0.0"
+          terraform_wrapper: false
+      - name: terraform init
+        working-directory: lab6/terraform
+        run: terraform init -input=false -no-color
+
+      - name: terraform apply
+        working-directory: lab6/terraform
+        run: terraform apply -input=false -no-color -auto-approve
+
+      # THE GRADED STEP: nothing between this and the apply above.
+      # apply returns before the SSM agents register, so the wait is part of this step.
+      - name: Converge the instances with Ansible
         working-directory: lab6/ansible
-        run: ansible-inventory --graph
-      - name: Converge
-        working-directory: lab6/ansible
-        run: ansible-playbook site.yml
+        run: |
+          bash ../scripts/wait-for-ssm.sh
+          ansible-inventory --graph
+          ansible-playbook site.yml
+
       - name: Second run must report changed=0
         working-directory: lab6/ansible
         run: |

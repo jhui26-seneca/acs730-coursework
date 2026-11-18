@@ -4,6 +4,10 @@ packer {
       source  = "github.com/hashicorp/amazon"
       version = "~> 1"
     }
+    ansible = {
+      source  = "github.com/hashicorp/ansible"
+      version = "~> 1"
+    }
   }
 }
 
@@ -25,10 +29,11 @@ source "amazon-ebs" "web" {
   }
 
   # Connect through Session Manager, not SSH over the internet.
-  communicator         = "ssh"
-  ssh_username         = "ec2-user"
-  ssh_interface        = "session_manager"
-  iam_instance_profile = "LabInstanceProfile"
+  communicator            = "ssh"
+  ssh_username            = "ec2-user"
+  ssh_interface           = "session_manager"
+  iam_instance_profile    = "LabInstanceProfile"
+  temporary_key_pair_type = "ed25519"
 
   # Use our no-ingress group, so Packer never creates a temporary group with port 22.
   security_group_filter {
@@ -52,17 +57,30 @@ source "amazon-ebs" "web" {
 build {
   sources = ["source.amazon-ebs.web"]
 
+  # The SAME webserver role that configures the live servers. Ansible runs on the workstation
+  # and connects through Packer's Session Manager tunnel (use_proxy = false: straight to the
+  # tunnel's local port with Packer's temporary key), so no port 22 is opened.
+  provisioner "ansible" {
+    playbook_file    = "../ansible/site.yml"
+    user             = "ec2-user"
+    use_proxy        = false
+    ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False"]
+    extra_arguments = [
+      "--extra-vars", "ansible_python_interpreter=/usr/bin/python3",
+      "--extra-vars", "webserver_build_tag=golden-ami"
+    ]
+  }
+
+  # A static page decided once at bake time, beside the rendered index.html.
+  # The role never manages baked.html, so idempotency is unaffected.
   provisioner "file" {
     source      = "files/index.html"
-    destination = "/tmp/index.html"
+    destination = "/tmp/baked.html"
   }
 
   provisioner "shell" {
     inline = [
-      "sudo dnf install -y httpd",
-      "sudo install -m 0644 -o root -g root /tmp/index.html /var/www/html/index.html",
-      "sudo systemctl enable httpd"
+      "sudo install -m 0644 -o root -g root /tmp/baked.html /var/www/html/baked.html"
     ]
   }
 }
-
