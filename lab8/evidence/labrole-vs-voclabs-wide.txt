@@ -1,0 +1,41 @@
+=== LabRole vs voclabs, wider read-only comparison - Wed Nov 18 07:52:19 UTC 2026 ===
+LabRole: arn:aws:sts::572751986246:assumed-role/LabRole/i-0dd1c590059340240
+voclabs: arn:aws:sts::572751986246:assumed-role/voclabs/<session>
+
+Call                                                 LabRole (workstation)      voclabs (console / CLI keys / CI)
+----                                                 ---------------------      ---------------------------------
+lambda list-functions                                ALLOWED                    ALLOWED
+rds describe-db-instances                            ALLOWED                    ALLOWED
+eks list-clusters                                    ALLOWED                    ALLOWED
+ecr describe-repositories                            ALLOWED                    ALLOWED
+ecs list-clusters                                    ALLOWED                    ALLOWED
+cloudformation list-stacks                           ALLOWED                    ALLOWED
+dynamodb list-tables                                 ALLOWED                    ALLOWED
+sns list-topics                                      ALLOWED                    ALLOWED
+sqs list-queues                                      ALLOWED                    ALLOWED
+kms list-keys                                        ALLOWED                    ALLOWED
+secretsmanager list-secrets                          ALLOWED                    ALLOWED
+logs describe-log-groups                             ALLOWED                    ALLOWED
+cloudwatch describe-alarms                           ALLOWED                    ALLOWED
+events list-rules                                    ALLOWED                    ALLOWED
+elbv2 describe-load-balancers                        ALLOWED                    ALLOWED
+autoscaling describe-auto-scaling-groups             ALLOWED                    ALLOWED
+route53 list-hosted-zones                            ALLOWED                    ALLOWED
+cloudtrail describe-trails                           ALLOWED                    ALLOWED
+config describe-config-rules                         ALLOWED                    ALLOWED
+guardduty list-detectors                             ALLOWED                    ALLOWED
+organizations describe-organization                  DENIED                     DENIED
+iam list-users                                       ALLOWED                    ALLOWED
+iam list-roles                                       ALLOWED                    ALLOWED
+iam get-account-summary                              ALLOWED                    ALLOWED
+iam list-policies (local)                            ALLOWED                    ALLOWED
+iam get-policy-version (a VocLabPolicy)              DENIED (explicit deny)     DENIED (explicit deny)
+ssm describe-instance-information                    ALLOWED                    ALLOWED
+ce get-cost-and-usage (billing)                      ALLOWED                    ALLOWED
+ec2 describe-instances in eu-west-1                  DENIED (SCP)               DENIED (no policy allows)
+ec2 describe-instances in us-west-2                  ALLOWED                    ALLOWED
+ec2 run-instances with LabInstanceProfile (--dry-run) ALLOWED (dry run)          ALLOWED (dry run)
+ec2 run-instances t3.2xlarge (--dry-run)             DENIED (explicit deny)     DENIED (explicit deny)
+ec2 create-vpc (--dry-run)                           ALLOWED (dry run)          ALLOWED (dry run)
+
+No call above differs between the two identities.
