@@ -63,3 +63,4 @@ Nothing in this folder is applied to AWS. `terraform plan` was run with the work
 | `iam-create-policy-accessdenied.txt` | `AccessDenied` on `iam:CreateRole` for voclabs and LabRole |
 | `labrole-vs-voclabs.txt` | The same 11 calls as both identities |
 | `gitleaks-history.txt`, `gitleaks-report.json` | Full-history secret scan (redacted), the history file list, and the scan with `.gitleaksignore` |
+

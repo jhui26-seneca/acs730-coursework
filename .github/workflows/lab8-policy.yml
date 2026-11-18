@@ -11,6 +11,7 @@ name: lab8-policy
 
 on:
   pull_request:
+    paths: ['lab7/**']
   push:
     branches: [main]
   workflow_dispatch:
