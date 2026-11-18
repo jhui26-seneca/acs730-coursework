@@ -2,4 +2,6 @@ webserver_package: httpd
 webserver_service: httpd
 webserver_docroot: /var/www/html
 webserver_title: "ACS730 lab6"
-webserver_message: "Configured by Ansible over SSM - no SSH, no port 22."
+webserver_message: "Configured by Ansible - no SSH, no port 22."
+# Which path produced the machine; Packer overrides it with --extra-vars at bake time.
+webserver_build_tag: "ansible-converge"

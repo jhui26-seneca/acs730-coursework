@@ -1,5 +1,7 @@
+# hosts: all - the inventory (and -l) decide which machines run, not the play.
+# Packer's build instance is in no group, so a play pinned to role_web would match 0 hosts there.
 - name: Configure the lab6 web servers
-  hosts: role_web
+  hosts: all
   become: true
   roles:
     - webserver

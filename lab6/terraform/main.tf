@@ -99,7 +99,14 @@ resource "aws_security_group" "packer" {
 # The SSM transfer bucket is created by scripts/create-ssm-bucket.sh (AWS CLI):
 # the Academy account denies an S3 read the Terraform provider makes after creating a bucket.
 
+variable "instance_count" {
+  description = "How many web servers. Two proves the inventory is dynamic."
+  type        = number
+  default     = 2
+}
+
 resource "aws_instance" "web" {
+  count                  = var.instance_count
   ami                    = data.aws_ami.al2023.id
   instance_type          = "t3.micro"
   subnet_id              = data.aws_subnet.default_a.id
@@ -111,17 +118,17 @@ resource "aws_instance" "web" {
   }
 
   tags = {
-    Name = "acs730-lab6-web"
+    Name = "acs730-lab6-web-${count.index}"
     Role = "web"
   }
 }
 
-output "instance_id" {
-  value = aws_instance.web.id
+output "instance_ids" {
+  value = aws_instance.web[*].id
 }
 
-output "private_ip" {
-  value = aws_instance.web.private_ip
+output "private_ips" {
+  value = aws_instance.web[*].private_ip
 }
 
 output "ssm_bucket" {
