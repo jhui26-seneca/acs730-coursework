@@ -20,7 +20,7 @@ jobs:
   kubeconform:
     runs-on: ubuntu-latest
     env:
-      KUBECONFORM_VERSION: v0.6.7
+      KUBECONFORM_VERSION: v0.8.0
     steps:
       - uses: actions/checkout@v5
 
