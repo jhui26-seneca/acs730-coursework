@@ -2,6 +2,8 @@
 # Final project: configure the VM half of the application with the Assignment 2 role, unchanged.
 # Only the page's text differs. Play vars outrank the role's defaults, so these two values replace
 # defaults/main.yml's, and every other setting (package, Apache drop-in, service) is the role's own.
+# The role is named by its path, which Ansible resolves from this file's folder, so the play also
+# works when it isn't run from final-project/ansible (the course checker runs it from the repo root).
 - name: Configure the final project backend (Apache on the VM)
   hosts: role_web
   become: true
@@ -9,4 +11,4 @@
     webserver_title: "ACS730 final project - backend"
     webserver_message: "Served by Apache on an EC2 VM: provisioned by the Assignment 1 Terraform module, configured by the Assignment 2 Ansible role over SSM."
   roles:
-    - webserver
+    - role: ../../assignment2/ansible/roles/webserver

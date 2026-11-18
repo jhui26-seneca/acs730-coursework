@@ -20,7 +20,7 @@ This folder deploys a two-service application. The backend is Apache on an EC2 V
 
 ## Where it came from
 
-Nothing from earlier work was copied and edited in place. `terraform/*/main.tf` calls the Assignment 1 module by relative path (`source = "../../../assignment1/terraform/modules/web-env"`), and `ansible/ansible.cfg` points `roles_path` at `../../assignment2/ansible/roles`, so the final project runs the same files those assignments run. The app in `app/` started as a copy of `lab4/` (same Dockerfile, dependencies and `/healthz`); only `app.py` and its tests are new. The Kubernetes pieces follow my Lab 7 pattern, in their own namespace, on the cluster Lab 7 created.
+Nothing from earlier work was copied and edited in place. `terraform/*/main.tf` calls the Assignment 1 module by relative path (`source = "../../../assignment1/terraform/modules/web-env"`), and `ansible/site.yml` names the role by its path, `../../assignment2/ansible/roles/webserver`, so the final project runs the same files those assignments run. The app in `app/` started as a copy of `lab4/` (same Dockerfile, dependencies and `/healthz`); only `app.py` and its tests are new. The Kubernetes pieces follow my Lab 7 pattern, in their own namespace, on the cluster Lab 7 created.
 
 The module itself changed once, in November, and the change was made in `assignment1/` (PRs #47 and #48), not here: an encrypted root volume, one `aws_security_group_rule` per rule so tfsec suppressions cover only the rules I accept, and a second alarm on `StatusCheckFailed`. The final project picked those up through the `source` line without a single edit to its callers' arguments.
 
@@ -40,7 +40,7 @@ Each folder has the same four files as Assignment 1's environments (`versions.tf
 | `ansible.cfg` | Points at the dynamic inventory and at `../../assignment2/ansible/roles`; enables the `amazon.aws.aws_ec2` plugin |
 | `inventory/final.aws_ec2.yml` | Running instances tagged `Role=web` and `Project=final`; group `role_web` from the `Role` tag; hosts named by instance ID. No host list, IDs or IPs |
 | `group_vars/role_web.yml` | SSM connection (`community.aws.aws_ssm`), region and transfer bucket `acs730-final-ssm-<account>` |
-| `site.yml` | Applies the Assignment 2 `webserver` role to `role_web` with `become`. Its two play variables (`webserver_title`, `webserver_message`) replace the role's defaults for the page text; everything else is the role's own |
+| `site.yml` | Applies the Assignment 2 `webserver` role, named by its path so the play resolves it from any working directory (until Nov 18 it was found through `roles_path` in `ansible.cfg`, which only works from this folder), to `role_web` with `become`. Its two play variables (`webserver_title`, `webserver_message`) replace the role's defaults for the page text; everything else is the role's own |
 
 ## The frontend (`app/`)
 
