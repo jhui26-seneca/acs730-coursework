@@ -73,7 +73,7 @@ There's no `configmap.yaml`. The ConfigMap holds the VM's address, which changes
 | `make-deployer-kubeconfig.sh` | `/home/acs730-lab7-runner/.kube/config` logging in as `acs730-final-deployer` with a short-lived token (copy of Lab 7's script with the namespace and ServiceAccount changed) | Its temporary folder | Optional duration, default `24h` | Workstation, as ec2-user, each session the runner is used |
 | `capture-evidence.sh` | `evidence/pipeline-merge-deploy.txt`, `credential-model.txt`, `kubectl-get-all.txt`, `app-response.txt` and `monitoring.txt`, all from one run, with the VM's IP masked. `monitoring.txt` waits up to 20 minutes for both alarms to leave `INSUFFICIENT_DATA`, then records their state, the last 15 minutes of both metrics and the frontend's HTTP code | Nothing (overwrites those five) | `<run-id> <pr-number>` | Workstation, straight after the merge-triggered run is green |
 | `teardown.sh` | `evidence/teardown.txt` | Namespace `acs730-final`; the runner's service and registration (through `lab7/scripts/teardown-runner.sh`); the staging stack (`terraform destroy`: VM, VPC, subnets, gateway, routes, security group and rules, both alarms); the SSM parameter; the transfer bucket; the frontend images on the workstation. Puts Lab 7's Service back and scales it to 2. Ends with proof that nothing is left | None | Workstation, at the end |
-| `../../scripts/refresh-gha-creds.sh` (course template) | The three AWS secrets on each environment named, and the `AWS_REGION` variable | Nothing | `jhui26-seneca/acs730-coursework final` (add `staging prod assign2` when those are needed too) | Workstation, once per lab session |
+| `../../scripts/refresh-gha-creds.sh` (course template) | The three AWS secrets on each environment named, and the `AWS_REGION` variable | Nothing | `<owner>/acs730-coursework final` (add `staging prod assign2` when those are needed too) | Workstation, once per lab session |
 
 ## Workflows (repository root)
 
@@ -108,8 +108,8 @@ The VM's public IP is replaced by `<vm-public-ip>` in every file.
 
 ## Run order
 
-1. Each session: Start Lab, resize the workstation to t3.large if needed, `./scripts/session-start.sh`, then `./scripts/refresh-gha-creds.sh jhui26-seneca/acs730-coursework final`. Start the kind node if it's stopped (`docker start acs730-lab7-control-plane`).
-2. Once: `scripts/configure-environment.sh jhui26-seneca/acs730-coursework`, `scripts/create-ssm-parameter.sh staging`, `scripts/create-ssm-bucket.sh`.
+1. Each session: Start Lab, resize the workstation to t3.large if needed, `./scripts/session-start.sh`, then `./scripts/refresh-gha-creds.sh <owner>/acs730-coursework final`. Start the kind node if it's stopped (`docker start acs730-lab7-control-plane`).
+2. Once: `scripts/configure-environment.sh <owner>/acs730-coursework`, `scripts/create-ssm-parameter.sh staging`, `scripts/create-ssm-bucket.sh`.
 3. `terraform -chdir=terraform/staging init`, `plan`, `apply`; then from `ansible/`: `ansible-inventory --graph` and `ansible-playbook site.yml` twice.
 4. `scripts/bootstrap-k8s.sh`, then the runner: `scripts/make-deployer-kubeconfig.sh`, the iptables rule that blocks the runner user from the metadata service, registration and `svc.sh install` (the commands in the Lab 7 guide's appendix).
 5. Open a pull request (`final-ci`, `summary` and `tfsec (HIGH and above)` must pass), merge it, watch `final-deploy`, then `scripts/capture-evidence.sh <run-id> <pr-number>`.
